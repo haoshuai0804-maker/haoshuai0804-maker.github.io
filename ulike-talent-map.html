@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ulike 人才情报图谱</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b0f1a;
+      --panel: #141b2d;
+      --border: #243049;
+      --text: #e8edf7;
+      --muted: #8b9bb4;
+      --pink: #f472b6;
+      --rose: #fb7185;
+      --purple: #a78bfa;
+      --cyan: #22d3ee;
+      --amber: #fbbf24;
+      --green: #34d399;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(36,48,73,.35) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(36,48,73,.35) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+    }
+    .wrap { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 24px 20px 60px; }
+
+    header {
+      text-align: center; padding: 36px 20px 28px;
+      background: linear-gradient(180deg, rgba(190,24,93,.18) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      border-radius: 0 0 24px 24px;
+    }
+    header .badge {
+      display: inline-block; font-size: 11px; letter-spacing: .12em;
+      color: var(--pink); border: 1px solid rgba(244,114,182,.4);
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 14px;
+    }
+    header h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 700; margin-bottom: 8px; }
+    header h1 span { color: var(--pink); }
+    header p { color: var(--muted); font-size: 14px; max-width: 720px; margin: 0 auto; line-height: 1.7; }
+
+    .kpi-row {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 28px;
+    }
+    .kpi {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px 12px; text-align: center; transition: border-color .2s, transform .2s;
+    }
+    .kpi:hover { border-color: var(--pink); transform: translateY(-2px); }
+    .kpi .n { font-size: 22px; font-weight: 700; color: var(--pink); }
+    .kpi .l { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+    .nav-tabs {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center;
+    }
+    .nav-tabs button {
+      background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+      padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 13px;
+      transition: all .2s;
+    }
+    .nav-tabs button.active, .nav-tabs button:hover {
+      color: var(--text); border-color: var(--pink); background: rgba(244,114,182,.12);
+    }
+
+    .section { display: none; animation: fadeIn .4s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+      padding: 18px; margin-bottom: 20px;
+    }
+    .panel-title {
+      font-size: 15px; font-weight: 600; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .panel-title::before {
+      content: ""; width: 4px; height: 16px; background: var(--pink); border-radius: 2px;
+    }
+    .panel-desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; padding-left: 12px; }
+
+    .chart { width: 100%; }
+    .chart-lg { height: 620px; }
+    .chart-xl { height: 720px; }
+    .chart-md { height: 400px; }
+    .chart-sm { height: 300px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+    .legend-row {
+      display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+      margin-top: 12px; font-size: 12px; color: var(--muted);
+    }
+    .legend-row span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .insight-cards {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px;
+    }
+    .insight {
+      background: rgba(244,114,182,.06); border: 1px solid rgba(244,114,182,.2);
+      border-radius: 12px; padding: 14px; font-size: 12px; line-height: 1.65;
+    }
+    .insight strong { color: var(--pink); display: block; margin-bottom: 6px; font-size: 13px; }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 11px;
+      margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 1100px) {
+      .kpi-row { grid-template-columns: repeat(3, 1fr); }
+      .grid-2, .grid-3, .insight-cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="wrap">
+
+<header>
+  <div class="badge">人选视角 · 交互式情报图谱</div>
+  <h1><span>Ulike</span>（由莱科技）人才情报图谱</h1>
+  <p>以关系网络、组织树、桑基漏斗与时间轴呈现公司人才版图 · 数据来自 HiBole 云略库（履历 + 笔记 + 项目三联查）</p>
+</header>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="n">130</div><div class="l">履历校友</div></div>
+  <div class="kpi"><div class="n">3,197</div><div class="l">笔记人选</div></div>
+  <div class="kpi"><div class="n">7,994</div><div class="l">项目人选</div></div>
+  <div class="kpi"><div class="n">4,291</div><div class="l">情报笔记</div></div>
+  <div class="kpi"><div class="n">205</div><div class="l">关联项目</div></div>
+  <div class="kpi"><div class="n">20</div><div class="l">内部人候选</div></div>
+</div>
+
+<div class="nav-tabs">
+  <button class="active" data-tab="overview">总览图谱</button>
+  <button data-tab="org">组织图谱</button>
+  <button data-tab="talent">人才流向</button>
+  <button data-tab="funnel">项目漏斗</button>
+  <button data-tab="time">时间雷达</button>
+  <button data-tab="candidates">人选关系</button>
+</div>
+
+<!-- ===== 总览 ===== -->
+<div id="overview" class="section active">
+  <div class="panel">
+    <div class="panel-title">核心知识图谱 · 公司 × 数据 × 职能 × 情报</div>
+    <div class="panel-desc">点击节点可查看关联；节点大小反映数据量级或需求热度。粉色=公司核心，紫色=子品牌/区域，青色=数据源，绿色=职能，琥珀=情报主题。</div>
+    <div id="mainGraph" class="chart chart-lg"></div>
+    <div class="legend-row">
+      <span><i class="dot" style="background:#fb7185"></i>公司核心</span>
+      <span><i class="dot" style="background:#a78bfa"></i>品牌/区域</span>
+      <span><i class="dot" style="background:#22d3ee"></i>数据层</span>
+      <span><i class="dot" style="background:#34d399"></i>职能线</span>
+      <span><i class="dot" style="background:#fbbf24"></i>情报主题</span>
+      <span><i class="dot" style="background:#60a5fa"></i>顾问节点</span>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">三层数据覆盖对比</div>
+      <div class="panel-desc">笔记与项目的覆盖远超结构化履历——分析必须以笔记+项目为主。</div>
+      <div id="dataCoverage" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">情报主题雷达</div>
+      <div class="panel-desc">4,291 条笔记关键词命中分布。</div>
+      <div id="themeRadar" class="chart chart-md"></div>
+    </div>
+  </div>
+  <div class="insight-cards">
+    <div class="insight"><strong>数据悖论</strong>履历仅 130 人，但笔记 3,197 人、项目 7,994 人——公司情报 96% 藏在沟通记录里。</div>
+    <div class="insight"><strong>阶段判断</strong>需求从品牌/电商延伸至 CFO、北美 CMO、各区域 GM——多品牌全球化 + 组织升级期。</div>
+    <div class="insight"><strong>Echo 样本</strong>Riley 2026.04 笔记：品牌总监离职、品牌部无 KPI——「岗位承诺落差」标准发现卡。</div>
+  </div>
+</div>
+
+<!-- ===== 组织 ===== -->
+<div id="org" class="section">
+  <div class="grid-3">
+    <div class="panel">
+      <div class="panel-title">组织认知树（笔记拼接 · 非官方架构）</div>
+      <div class="panel-desc">由多条顾问笔记交叉验证的近似组织结构；线宽=情报提及频次。</div>
+      <div id="orgTree" class="chart chart-lg"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">客户需求岗位 Top（项目侧）</div>
+      <div class="panel-desc">205 个项目中候选人次最多的岗位需求。</div>
+      <div id="jobDemand" class="chart chart-lg"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">履历校友职能分布（130 人）</div>
+      <div id="workRoles" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">多品牌矩阵</div>
+      <div class="panel-desc">笔记中提及的子品牌与业务定位。</div>
+      <div id="brandGraph" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 人才流向 ===== -->
+<div id="talent" class="section">
+  <div class="panel">
+    <div class="panel-title">人才外流图谱 · Ulike 校友 → 下一站</div>
+    <div class="panel-desc">基于履历表下一家雇主；线条粗细=人数（样本 130 人，外流分散）。</div>
+    <div id="outflowGraph" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">内部人候选网络</div>
+      <div class="panel-desc">20 人：既有 Ulike 工作经历，又出现在 Ulike 项目推荐中——高价值知情来源。</div>
+      <div id="insiderGraph" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">情报贡献顾问 Top 7</div>
+      <div id="consultantBar" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 漏斗 ===== -->
+<div id="funnel" class="section">
+  <div class="panel">
+    <div class="panel-title">项目交付桑基图 · 7,994 人次 → 录用 5</div>
+    <div class="panel-desc">KeyProjectResume 状态流转；高端岗位筛选极严，初试→录用约 3%。</div>
+    <div id="sankey" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">漏斗各阶段人数</div>
+      <div id="funnelBar" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">淘汰原因分布</div>
+      <div id="rejectPie" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 时间 ===== -->
+<div id="time" class="section">
+  <div class="panel">
+    <div class="panel-title">情报热度时间轴 · 笔记提及 Ulike 的年度/月度趋势</div>
+    <div class="panel-desc">2024–2025 持续高位；2025 年 8–10 月为高峰，可能与秋季招聘/组织调整相关。</div>
+    <div id="timeline" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">2025 年月度笔记热度</div>
+      <div id="monthly2025" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">近期离职信号时间线</div>
+      <div class="panel-desc">2025–2026 笔记中提取的关键事件。</div>
+      <div id="eventTimeline" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 人选关系 ===== -->
+<div id="candidates" class="section">
+  <div class="panel">
+    <div class="panel-title">Ulike 候选人 × 公司关系图谱（真实履历数据）</div>
+    <div class="panel-desc">
+      左=入职前公司 · 中=候选人（绿色）· 粉=Ulike主体 · 右=离职后公司 · 紫=项目需求（内部人）。
+      拖拽节点可调整布局；点击候选人高亮其职业路径。数据：130 名履历校友样本。
+    </div>
+    <div id="candidateCompanyGraph" class="chart chart-xl"></div>
+    <div class="legend-row">
+      <span><i class="dot" style="background:#94a3b8"></i>入职前公司</span>
+      <span><i class="dot" style="background:#34d399"></i>候选人</span>
+      <span><i class="dot" style="background:#fb7185"></i>Ulike 主体</span>
+      <span><i class="dot" style="background:#60a5fa"></i>离职后公司</span>
+      <span><i class="dot" style="background:#c084fc"></i>项目岗位（内部人）</span>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">人才来源桑基图 · 上游公司 → Ulike</div>
+      <div class="panel-desc">入职 Ulike 前的上一家公司（履历表统计）。</div>
+      <div id="inboundSankey" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">人才去向桑基图 · Ulike → 下一家公司</div>
+      <div class="panel-desc">离开 Ulike 后的下一站雇主（履历表统计）。</div>
+      <div id="outboundSankey" class="chart chart-md"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">内部人候选 · 曾就职 Ulike 且进入 Ulike 项目</div>
+    <div class="panel-desc">20 名高价值知情源：工作经历与项目推荐双重关联（节选）。</div>
+    <div id="insiderTable" class="chart chart-md"></div>
+  </div>
+  <div class="insight-cards">
+    <div class="insight"><strong>美妆基因</strong>外流去向高度集中在自然堂、逐本、珀莱雅、雅诗兰黛等美妆个护公司，与 Ulike 人才画像一致。</div>
+    <div class="insight"><strong>跨界流动</strong>亦流向 OPPO、华宝新能源、美的、Corsair 等硬件/消费电子，体现「品牌+出海」复合能力。</div>
+    <div class="insight"><strong>内部人价值</strong>宋道瑞、李湘科、吴培川等既有 Ulike 履历又在 Ulike 项目中，是 mapping 的一手情报源。</div>
+  </div>
+</div>
+
+<footer>
+  Ulike 人才情报交互图谱 · HiBole 厦门云略 · 2026-06-05 · 公司名含 29 种变体已合并检索
+</footer>
+</div>
+
+<script>
+const charts = [];
+
+function initChart(id, option) {
+  const el = document.getElementById(id);
+  const c = echarts.init(el, null, { renderer: 'canvas' });
+  c.setOption(option);
+  charts.push(c);
+  return c;
+}
+
+// ─── Tab switching ───
+function activateTab(tab) {
+  const target = document.querySelector(`.nav-tabs button[data-tab="${tab}"]`);
+  if (!target || !document.getElementById(tab)) return;
+    document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  target.classList.add('active');
+  document.getElementById(tab).classList.add('active');
+    setTimeout(() => charts.forEach(c => c.resize()), 80);
+}
+
+document.querySelectorAll('.nav-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+});
+
+window.addEventListener('resize', () => charts.forEach(c => c.resize()));
+
+const colors = {
+  core: '#fb7185', brand: '#a78bfa', data: '#22d3ee',
+  func: '#34d399', theme: '#fbbf24', consultant: '#60a5fa', out: '#94a3b8'
+};
+
+// ─── 1. Main knowledge graph ───
+const mainNodes = [
+  { id: 'ulike', name: 'Ulike\n由莱科技', symbolSize: 90, category: 0,
+    label: { fontSize: 13, fontWeight: 'bold' } },
+
+  // Data layers
+  { id: 'work', name: '履历表\n130人', symbolSize: 42, category: 2 },
+  { id: 'notes', name: '沟通笔记\n3197人/4291条', symbolSize: 65, category: 2 },
+  { id: 'project', name: '项目记录\n7994人/205项', symbolSize: 72, category: 2 },
+
+  // Brands
+  { id: 'jinmu', name: '金茉\n奢华美容仪', symbolSize: 38, category: 1 },
+  { id: 'jimeng', name: '极萌', symbolSize: 30, category: 1 },
+  { id: 'cuisi', name: '翠斯/水光', symbolSize: 28, category: 1 },
+
+  // Regions
+  { id: 'sz', name: '深圳总部\n龙华', symbolSize: 40, category: 1 },
+  { id: 'hz', name: '杭州\n由莱主体', symbolSize: 40, category: 1 },
+  { id: 'na', name: '北美\n60-70%重心', symbolSize: 45, category: 1 },
+  { id: 'sea', name: '东南亚\nGM', symbolSize: 38, category: 1 },
+  { id: 'eu', name: '欧洲\n市场总监', symbolSize: 35, category: 1 },
+
+  // Functions
+  { id: 'brand', name: '品牌部\n无KPI看公司', symbolSize: 44, category: 3 },
+  { id: 'mkt', name: '市场/电商\n北美CMO', symbolSize: 42, category: 3 },
+  { id: 'product', name: '产品总监\n需求414', symbolSize: 40, category: 3 },
+  { id: 'cfo', name: 'CFO\n需求226', symbolSize: 36, category: 3 },
+  { id: 'supply', name: '供应链\n总监165', symbolSize: 34, category: 3 },
+  { id: 'hr', name: 'HR/OD\n组织升级', symbolSize: 32, category: 3 },
+  { id: 'live', name: '直播/达播', symbolSize: 34, category: 3 },
+
+  // Themes
+  { id: 'leave', name: '离职信号\n944条', symbolSize: 48, category: 4 },
+  { id: 'overseas', name: '海外\n682条', symbolSize: 40, category: 4 },
+  { id: 'founder', name: '李总/李勋\n177条', symbolSize: 38, category: 4 },
+  { id: 'gap', name: '岗位落差\n承诺不符', symbolSize: 42, category: 4 },
+
+  // Consultants
+  { id: 'joy', name: 'Joy\n694条', symbolSize: 32, category: 5 },
+  { id: 'sherry', name: 'Sherry\n518条', symbolSize: 30, category: 5 },
+  { id: 'riley', name: 'Riley\n品牌总监案例', symbolSize: 34, category: 5 },
+
+  // Outflow sample
+  { id: 'beauty', name: '美妆行业\n自然堂等', symbolSize: 28, category: 6 },
+  { id: 'agency', name: '广告\n阳狮等', symbolSize: 26, category: 6 },
+];
+
+const mainLinks = [
+  { source: 'ulike', target: 'work', value: 130 },
+  { source: 'ulike', target: 'notes', value: 4291 },
+  { source: 'ulike', target: 'project', value: 8831 },
+  { source: 'ulike', target: 'jinmu' }, { source: 'ulike', target: 'jimeng' }, { source: 'ulike', target: 'cuisi' },
+  { source: 'ulike', target: 'sz' }, { source: 'ulike', target: 'hz' },
+  { source: 'ulike', target: 'na' }, { source: 'ulike', target: 'sea' }, { source: 'ulike', target: 'eu' },
+  { source: 'ulike', target: 'brand' }, { source: 'ulike', target: 'mkt' }, { source: 'ulike', target: 'product' },
+  { source: 'ulike', target: 'cfo' }, { source: 'ulike', target: 'supply' }, { source: 'ulike', target: 'hr' },
+  { source: 'ulike', target: 'live' },
+  { source: 'notes', target: 'leave' }, { source: 'notes', target: 'overseas' }, { source: 'notes', target: 'founder' },
+  { source: 'notes', target: 'gap' },
+  { source: 'notes', target: 'joy' }, { source: 'notes', target: 'sherry' }, { source: 'notes', target: 'riley' },
+  { source: 'brand', target: 'gap' }, { source: 'riley', target: 'gap' }, { source: 'riley', target: 'brand' },
+  { source: 'mkt', target: 'na' }, { source: 'jinmu', target: 'brand' },
+  { source: 'work', target: 'beauty' }, { source: 'work', target: 'agency' },
+  { source: 'project', target: 'product' }, { source: 'project', target: 'cfo' }, { source: 'project', target: 'na' },
+];
+
+initChart('mainGraph', {
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: '#1e293b', borderColor: '#334155', textStyle: { color: '#e2e8f0', fontSize: 12 },
+    formatter: p => p.dataType === 'edge'
+      ? `${p.data.source} → ${p.data.target}`
+      : `<b>${p.name.replace(/\n/g, ' ')}</b>`
+  },
+  legend: { show: false },
+  series: [{
+    type: 'graph', layout: 'force', roam: true, draggable: true,
+    data: mainNodes.map(n => ({
+      ...n, itemStyle: { color: [colors.core, colors.brand, colors.data, colors.func, colors.theme, colors.consultant, colors.out][n.category] },
+      label: { show: true, color: '#e8edf7', fontSize: 10 }
+    })),
+    links: mainLinks.map(l => ({
+      ...l, lineStyle: { color: 'rgba(148,163,184,.35)', width: Math.max(1, (l.value || 1) / 800), curveness: 0.15 }
+    })),
+    categories: [
+      { name: '核心' }, { name: '品牌/区域' }, { name: '数据' }, { name: '职能' }, { name: '主题' }, { name: '顾问' }, { name: '外流' }
+    ],
+    force: { repulsion: 320, edgeLength: [80, 180], gravity: 0.08 },
+    emphasis: { focus: 'adjacency', lineStyle: { width: 3, color: colors.pink } }
+  }]
+});
+
+// ─── 2. Data coverage ───
+initChart('dataCoverage', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 50, right: 30, top: 30, bottom: 40 },
+  xAxis: { type: 'category', data: ['履历校友', '笔记人选', '项目人选'], axisLabel: { color: '#8b9bb4' }, axisLine: { lineStyle: { color: '#334155' } } },
+  yAxis: { type: 'log', logBase: 10, axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  series: [{
+    type: 'bar', barWidth: '50%',
+    data: [
+      { value: 130, itemStyle: { color: colors.data, borderRadius: [6,6,0,0] } },
+      { value: 3197, itemStyle: { color: colors.core, borderRadius: [6,6,0,0] } },
+      { value: 7994, itemStyle: { color: colors.brand, borderRadius: [6,6,0,0] } }
+    ],
+    label: { show: true, position: 'top', color: '#e8edf7', fontWeight: 'bold' }
+  }]
+});
+
+// ─── 3. Theme radar ───
+initChart('themeRadar', {
+  radar: {
+    indicator: [
+      { name: '离职/离开\n944', max: 1000 },
+      { name: '品牌\n671', max: 1000 },
+      { name: '海外\n682', max: 1000 },
+      { name: '市场\n552', max: 1000 },
+      { name: '李总\n177', max: 1000 },
+      { name: '直播\n118', max: 1000 }
+    ],
+    axisName: { color: '#8b9bb4', fontSize: 11 },
+    splitArea: { areaStyle: { color: ['rgba(36,48,73,.3)', 'rgba(36,48,73,.15)'] } },
+    axisLine: { lineStyle: { color: '#334155' } }, splitLine: { lineStyle: { color: '#334155' } }
+  },
+  series: [{
+    type: 'radar',
+    data: [{ value: [944, 671, 682, 552, 177, 118], name: '笔记主题',
+      areaStyle: { color: 'rgba(244,114,182,.25)' }, lineStyle: { color: colors.core }, itemStyle: { color: colors.core } }]
+  }]
+});
+
+// ─── 4. Org tree ───
+initChart('orgTree', {
+  tooltip: { trigger: 'item', triggerOn: 'mousemove' },
+  series: [{
+    type: 'tree', orient: 'TB', top: '5%', left: '10%', bottom: '5%', right: '15%',
+    symbolSize: 10, expandAndCollapse: true, initialTreeDepth: 3,
+    label: { color: '#e8edf7', fontSize: 11, position: 'left' },
+    leaves: { label: { position: 'right' } },
+    lineStyle: { color: 'rgba(244,114,182,.45)', width: 2 },
+    itemStyle: { color: colors.core, borderColor: colors.brand },
+    data: [{
+      name: '由莱集团 / Ulike\n（李总+配偶 · 创始团队）',
+      children: [
+        { name: '战略方向\n60-90亿 · 多品牌 · 全渠道', children: [
+          { name: '线上电商（起家）\n增长瓶颈' },
+          { name: '线下体验 / 双美\n加盟模式 5000店?' },
+          { name: '海外拓展\n北美60-70%' }
+        ]},
+        { name: '品牌矩阵', children: [
+          { name: 'Ulike 脱毛仪（主品牌）' },
+          { name: '金茉 · 线上佐伊/线下海霞分管' },
+          { name: '极萌 / 翠斯 / 水光' }
+        ]},
+        { name: '职能线（笔记+项目）', children: [
+          { name: '品牌部\n全年campaign · 无KPI', children: [
+            { name: '品牌总监 ~65w\nRiley案例 2025离职' }
+          ]},
+          { name: '市场+电商\n北美CMO 300-400W', children: [
+            { name: '市场部' }, { name: '运营部 / 线上业务' }
+          ]},
+          { name: '产品总监\n项目需求 Top1' },
+          { name: 'CFO / 财务' },
+          { name: '供应链总监' },
+          { name: '各区域 GM', children: [
+            { name: '东南亚 GM' }, { name: '欧洲市场总监' }, { name: '北美面罩总监' }
+          ]},
+          { name: 'HR / OD / 招聘总监' },
+          { name: '直播 / 达播' }
+        ]},
+        { name: '办公据点', children: [
+          { name: '深圳龙华 · 北站中心' },
+          { name: '杭州 · 由莱科技主体' }
+        ]}
+      ]
+    }]
+  }]
+});
+
+// ─── 5. Job demand bar ───
+const jobs = [
+  ['产品总监', 414], ['包装设计总监', 228], ['CFO', 226], ['东南亚GM', 218],
+  ['OD专家', 216], ['产品总监/VP', 198], ['北美市场总监', 196], ['欧洲市场总监', 171],
+  ['供应链总监', 165], ['招聘总监', 163], ['CMO', 143], ['独立站运营总监', 142]
+];
+initChart('jobDemand', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 110, right: 40, top: 10, bottom: 20 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  yAxis: { type: 'category', data: jobs.map(j => j[0]).reverse(), axisLabel: { color: '#c4b5fd', fontSize: 11 }, axisLine: { show: false } },
+  series: [{
+    type: 'bar', data: jobs.map(j => j[1]).reverse(), barWidth: 14,
+    itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#7c3aed'},{offset:1,color:'#f472b6'}]), borderRadius: [0,6,6,0] },
+    label: { show: true, position: 'right', color: '#e8edf7', fontSize: 11 }
+  }]
+});
+
+// ─── 6. Work roles pie ───
+initChart('workRoles', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'pie', radius: ['38%', '68%'], center: ['50%', '52%'],
+    label: { color: '#c4b5fd', fontSize: 11 },
+    data: [
+      { value: 8, name: '品牌总监/品牌' },
+      { value: 7, name: '达播/直播' },
+      { value: 6, name: '海外/亚马逊' },
+      { value: 5, name: 'HRBP/招聘' },
+      { value: 4, name: '市场总监' },
+      { value: 4, name: '电商/全渠道' },
+      { value: 3, name: '产品总监' },
+      { value: 93, name: '其他职能', itemStyle: { color: '#334155' } }
+    ],
+    itemStyle: { borderRadius: 4, borderColor: '#141b2d', borderWidth: 2 },
+    color: ['#f472b6','#a78bfa','#22d3ee','#34d399','#fbbf24','#60a5fa','#fb7185','#334155']
+  }]
+});
+
+// ─── 7. Brand subgraph ───
+initChart('brandGraph', {
+  tooltip: {},
+  series: [{
+    type: 'graph', layout: 'circular', circular: { rotateLabel: true }, roam: true,
+    label: { show: true, color: '#e8edf7', fontSize: 11 },
+    data: [
+      { name: '由莱集团', symbolSize: 55, itemStyle: { color: colors.core } },
+      { name: 'Ulike\n脱毛仪', symbolSize: 42, itemStyle: { color: colors.brand } },
+      { name: '金茉\n线上/线下分拆', symbolSize: 38, itemStyle: { color: '#c084fc' } },
+      { name: '极萌', symbolSize: 30, itemStyle: { color: '#818cf8' } },
+      { name: '翠斯', symbolSize: 26, itemStyle: { color: '#6366f1' } },
+      { name: '水光', symbolSize: 24, itemStyle: { color: '#4f46e5' } },
+    ],
+    links: [
+      { source: '由莱集团', target: 'Ulike\n脱毛仪' },
+      { source: '由莱集团', target: '金茉\n线上/线下分拆' },
+      { source: '由莱集团', target: '极萌' },
+      { source: '由莱集团', target: '翠斯' },
+      { source: '由莱集团', target: '水光' },
+      { source: 'Ulike\n脱毛仪', target: '金茉\n线上/线下分拆', lineStyle: { type: 'dashed' } },
+    ],
+    lineStyle: { color: 'rgba(167,139,250,.5)', width: 2 }
+  }]
+});
+
+// ─── 8. Outflow graph ───
+initChart('outflowGraph', {
+  tooltip: {},
+  series: [{
+    type: 'graph', layout: 'force', roam: true,
+    label: { show: true, color: '#e8edf7', fontSize: 10 },
+    force: { repulsion: 200, edgeLength: 120 },
+    data: [
+      { name: 'Ulike\n由莱', symbolSize: 70, itemStyle: { color: colors.core }, x: 400, y: 300, fixed: true },
+      { name: '美妆\n自然堂/新高姿', symbolSize: 32, itemStyle: { color: colors.func } },
+      { name: '广告\n阳狮', symbolSize: 28, itemStyle: { color: colors.theme } },
+      { name: '硬件\n华宝/Jackery', symbolSize: 30, itemStyle: { color: colors.data } },
+      { name: '宗匠科技', symbolSize: 26, itemStyle: { color: colors.out } },
+      { name: 'OPPO', symbolSize: 28, itemStyle: { color: colors.consultant } },
+      { name: '独立工作室\n艺术品等', symbolSize: 34, itemStyle: { color: colors.brand } },
+      { name: '同行消费\n电子/个护', symbolSize: 30, itemStyle: { color: '#64748b' } },
+    ],
+    links: [
+      { source: 'Ulike\n由莱', target: '美妆\n自然堂/新高姿', value: 2 },
+      { source: 'Ulike\n由莱', target: '广告\n阳狮', value: 2 },
+      { source: 'Ulike\n由莱', target: '硬件\n华宝/Jackery', value: 2 },
+      { source: 'Ulike\n由莱', target: '宗匠科技', value: 2 },
+      { source: 'Ulike\n由莱', target: 'OPPO', value: 2 },
+      { source: 'Ulike\n由莱', target: '独立工作室\n艺术品等', value: 3 },
+      { source: 'Ulike\n由莱', target: '同行消费\n电子/个护', value: 4 },
+    ],
+    lineStyle: { color: 'rgba(148,163,184,.4)', width: 2, curveness: 0.2 },
+    emphasis: { focus: 'adjacency' }
+  }]
+});
+
+// ─── 9. Insider graph ───
+initChart('insiderGraph', {
+  tooltip: {},
+  series: [{
+    type: 'graph', layout: 'force',
+    label: { show: true, fontSize: 11, color: '#e8edf7' },
+    force: { repulsion: 150 },
+    data: [
+      { name: 'Ulike\n内部人 20人', symbolSize: 55, itemStyle: { color: colors.core } },
+      { name: '曾就职\nUlike', symbolSize: 38, itemStyle: { color: colors.brand } },
+      { name: '项目推荐\n记录', symbolSize: 38, itemStyle: { color: colors.data } },
+      { name: '高价值\n知情源', symbolSize: 42, itemStyle: { color: colors.func } },
+      { name: 'Mapping\n客户理解', symbolSize: 36, itemStyle: { color: colors.theme } },
+    ],
+    links: [
+      { source: '曾就职\nUlike', target: 'Ulike\n内部人 20人' },
+      { source: '项目推荐\n记录', target: 'Ulike\n内部人 20人' },
+      { source: 'Ulike\n内部人 20人', target: '高价值\n知情源' },
+      { source: '高价值\n知情源', target: 'Mapping\n客户理解' },
+    ],
+    lineStyle: { width: 3, color: 'rgba(52,211,153,.6)' },
+    itemStyle: { borderColor: '#fff', borderWidth: 1 }
+  }]
+});
+
+// ─── 10. Consultant bar ───
+initChart('consultantBar', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 70, right: 20, top: 20, bottom: 30 },
+  xAxis: { type: 'category', data: ['Joy','Sherry','April','Alan','Vinson','Vila','Star'], axisLabel: { color: '#8b9bb4' } },
+  yAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  series: [{
+    type: 'bar', data: [694, 518, 208, 181, 180, 179, 168], barWidth: '55%',
+    itemStyle: { color: colors.consultant, borderRadius: [6,6,0,0] },
+    label: { show: true, position: 'top', color: '#e8edf7' }
+  }]
+});
+
+// ─── 11. Sankey ───
+initChart('sankey', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'sankey', layout: 'none', emphasis: { focus: 'adjacency' },
+    nodeAlign: 'left', nodeGap: 14,
+    lineStyle: { color: 'gradient', curveness: 0.5, opacity: 0.45 },
+    label: { color: '#e8edf7', fontSize: 11 },
+    data: [
+      { name: '项目人选\n7994', itemStyle: { color: '#6366f1' } },
+      { name: '正在联络\n6160', itemStyle: { color: '#475569' } },
+      { name: '候选人不考虑\n755', itemStyle: { color: '#64748b' } },
+      { name: '顾问淘汰\n530', itemStyle: { color: '#64748b' } },
+      { name: '不合适\n402', itemStyle: { color: '#64748b' } },
+      { name: '推荐给部门\n362', itemStyle: { color: '#22d3ee' } },
+      { name: '企业初试\n167', itemStyle: { color: '#34d399' } },
+      { name: '企业复试\n57', itemStyle: { color: '#a3e635' } },
+      { name: '初试淘汰等\n271', itemStyle: { color: '#f87171' } },
+      { name: '录用\n5', itemStyle: { color: '#fbbf24' } },
+      { name: '通过试用期\n9', itemStyle: { color: '#4ade80' } },
+    ],
+    links: [
+      { source: '项目人选\n7994', target: '正在联络\n6160', value: 6160 },
+      { source: '项目人选\n7994', target: '候选人不考虑\n755', value: 755 },
+      { source: '项目人选\n7994', target: '顾问淘汰\n530', value: 530 },
+      { source: '项目人选\n7994', target: '不合适\n402', value: 402 },
+      { source: '正在联络\n6160', target: '推荐给部门\n362', value: 362 },
+      { source: '推荐给部门\n362', target: '企业初试\n167', value: 167 },
+      { source: '企业初试\n167', target: '企业复试\n57', value: 57 },
+      { source: '企业初试\n167', target: '初试淘汰等\n271', value: 110 },
+      { source: '企业复试\n57', target: '录用\n5', value: 5 },
+      { source: '企业复试\n57', target: '通过试用期\n9', value: 9 },
+      { source: '企业复试\n57', target: '初试淘汰等\n271', value: 43 },
+    ]
+  }]
+});
+
+// ─── 12. Funnel bar ───
+initChart('funnelBar', {
+  tooltip: { trigger: 'item', formatter: '{b}: {c}' },
+  series: [{
+    type: 'funnel', left: '10%', width: '80%', top: 20, bottom: 20,
+    sort: 'descending', gap: 4,
+    label: { color: '#e8edf7', fontSize: 12, formatter: '{b}\n{c}' },
+    itemStyle: { borderColor: '#141b2d', borderWidth: 2 },
+    data: [
+      { value: 7994, name: '项目人选', itemStyle: { color: '#6366f1' } },
+      { value: 6160, name: '正在联络', itemStyle: { color: '#475569' } },
+      { value: 362, name: '推荐给部门', itemStyle: { color: '#22d3ee' } },
+      { value: 167, name: '企业初试', itemStyle: { color: '#34d399' } },
+      { value: 57, name: '企业复试', itemStyle: { color: '#a3e635' } },
+      { value: 5, name: '录用', itemStyle: { color: '#fbbf24' } },
+    ]
+  }]
+});
+
+// ─── 13. Reject pie ───
+initChart('rejectPie', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'pie', radius: '65%', center: ['50%', '55%'],
+    label: { color: '#e8edf7', fontSize: 11 },
+    data: [
+      { value: 755, name: '候选人不考虑' },
+      { value: 530, name: '顾问淘汰' },
+      { value: 402, name: '不合适' },
+      { value: 173, name: '客户淘汰' },
+      { value: 94, name: '初试/复试淘汰' },
+    ],
+    color: ['#f87171','#fb923c','#fbbf24','#a78bfa','#64748b']
+  }]
+});
+
+// ─── 14. Timeline ───
+initChart('timeline', {
+  tooltip: { trigger: 'axis' },
+  legend: { data: ['笔记条数', '涉及人选'], textStyle: { color: '#8b9bb4' }, top: 0 },
+  grid: { left: 50, right: 30, top: 40, bottom: 40 },
+  xAxis: { type: 'category', data: ['2022','2023','2024','2025','2026'], axisLabel: { color: '#8b9bb4' }, axisLine: { lineStyle: { color: '#334155' } } },
+  yAxis: [
+    { type: 'value', name: '笔记', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    { type: 'value', name: '人选', axisLabel: { color: '#8b9bb4' }, splitLine: { show: false } }
+  ],
+  series: [
+    { name: '笔记条数', type: 'bar', data: [49, 710, 1617, 1814, 100], itemStyle: { color: colors.core, borderRadius: [4,4,0,0] } },
+    { name: '涉及人选', type: 'line', yAxisIndex: 1, smooth: true, data: [46, 586, 1240, 1421, 86],
+      lineStyle: { color: colors.cyan, width: 3 }, itemStyle: { color: colors.cyan },
+      areaStyle: { color: 'rgba(34,211,238,.12)' } }
+  ]
+});
+
+// ─── 15. Monthly 2025 ───
+initChart('monthly2025', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 40, right: 20, top: 20, bottom: 30 },
+  xAxis: { type: 'category', data: ['1','2','3','4','5','6','7','8','9','10','11','12'], name: '月', axisLabel: { color: '#8b9bb4' } },
+  yAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  series: [{
+    type: 'line', smooth: true, data: [102,109,173,139,90,56,142,233,260,232,169,109],
+    lineStyle: { color: colors.pink || colors.core, width: 3 },
+    itemStyle: { color: colors.core },
+    areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(244,114,182,.35)'},{offset:1,color:'rgba(244,114,182,0)'}]) },
+    markPoint: { data: [{ type: 'max', name: '峰值' }], itemStyle: { color: colors.amber || '#fbbf24' } }
+  }]
+});
+
+// ─── 16. Event timeline ───
+initChart('eventTimeline', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'graph', layout: 'none', symbolSize: 14,
+    label: { show: true, position: 'bottom', color: '#c4b5fd', fontSize: 10, width: 120, overflow: 'break' },
+    edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 8,
+    data: [
+      { name: '2024.06\n北美CMO会议', x: 80, y: 200, itemStyle: { color: colors.consultant } },
+      { name: '2024.09\nIP法务候选', x: 220, y: 120, itemStyle: { color: colors.data } },
+      { name: '2025.02\n书亦对标拜访', x: 360, y: 200, itemStyle: { color: colors.theme } },
+      { name: '2025.04\n双美战略现场', x: 500, y: 100, itemStyle: { color: colors.brand } },
+      { name: '2025.05\n李总战略笔记', x: 640, y: 200, itemStyle: { color: colors.core } },
+      { name: '2025.08-10\n情报高峰', x: 780, y: 80, symbolSize: 22, itemStyle: { color: colors.amber || '#fbbf24' } },
+      { name: '2026.04\n品牌总监离职\nRiley案例', x: 920, y: 180, symbolSize: 20, itemStyle: { color: '#f87171' } },
+    ],
+    links: [
+      { source: '2024.06\n北美CMO会议', target: '2024.09\nIP法务候选' },
+      { source: '2024.09\nIP法务候选', target: '2025.02\n书亦对标拜访' },
+      { source: '2025.02\n书亦对标拜访', target: '2025.04\n双美战略现场' },
+      { source: '2025.04\n双美战略现场', target: '2025.05\n李总战略笔记' },
+      { source: '2025.05\n李总战略笔记', target: '2025.08-10\n情报高峰' },
+      { source: '2025.08-10\n情报高峰', target: '2026.04\n品牌总监离职\nRiley案例' },
+    ],
+    lineStyle: { color: 'rgba(244,114,182,.6)', width: 2, curveness: 0.1 }
+  }]
+});
+
+// ─── 17. Candidate × Company relation graph ───
+const catColors = ['#94a3b8', '#34d399', '#fb7185', '#60a5fa', '#c084fc'];
+const ccNodesRaw = [
+  // 入职前公司
+  { id: 'p_laifen', name: '徕芬电子\n(×2)', x: 50, y: 60, cat: 0, sz: 34 },
+  { id: 'p_baibeike', name: '白贝壳\n(×2)', x: 50, y: 120, cat: 0, sz: 34 },
+  { id: 'p_polaiya', name: '珀莱雅', x: 50, y: 180, cat: 0, sz: 30 },
+  { id: 'p_huaxizi', name: '花西子', x: 50, y: 230, cat: 0, sz: 28 },
+  { id: 'p_betaine', name: '贝泰妮', x: 50, y: 280, cat: 0, sz: 28 },
+  { id: 'p_guyu', name: '谷雨', x: 50, y: 330, cat: 0, sz: 26 },
+  { id: 'p_zeekr', name: '极氪', x: 50, y: 380, cat: 0, sz: 26 },
+
+  // Ulike 主体
+  { id: 'u_hz', name: '杭州由莱科技\n(Ulike主品牌)', x: 360, y: 200, cat: 2, sz: 58 },
+  { id: 'u_sz', name: '深圳由莱\n智能电子', x: 360, y: 320, cat: 2, sz: 44 },
+  { id: 'u_global', name: 'Ulike\nGlobal', x: 360, y: 420, cat: 2, sz: 38 },
+
+  // 候选人
+  { id: 'c_song', name: '宋道瑞\n海外CBO', x: 200, y: 40, cat: 1, sz: 32 },
+  { id: 'c_lixiang', name: '李湘科\n达播总监', x: 200, y: 90, cat: 1, sz: 30 },
+  { id: 'c_wu', name: '吴培川\n品牌总监', x: 200, y: 140, cat: 1, sz: 30 },
+  { id: 'c_xia', name: '夏女士\n品牌创意总监', x: 200, y: 190, cat: 1, sz: 28 },
+  { id: 'c_cai', name: '蔡先生\n销售副总', x: 200, y: 240, cat: 1, sz: 28 },
+  { id: 'c_bao', name: '包咏鑫\n品牌设计经理', x: 200, y: 290, cat: 1, sz: 26 },
+  { id: 'c_qin', name: '钦女士\n品牌经理', x: 200, y: 340, cat: 1, sz: 26 },
+  { id: 'c_li_hd', name: '李海洋\n市场总监', x: 200, y: 390, cat: 1, sz: 26 },
+  { id: 'c_ma', name: '马朝辉\n海外销售总监', x: 200, y: 440, cat: 1, sz: 26 },
+  { id: 'c_gu', name: '顾女士\n渠道市场', x: 200, y: 490, cat: 1, sz: 24 },
+  { id: 'c_zeng', name: '曾先生\n产品总监', x: 200, y: 540, cat: 1, sz: 24 },
+  { id: 'c_alessio', name: 'Alessio\nPR Manager', x: 200, y: 590, cat: 1, sz: 24 },
+  { id: 'c_lu', name: '鹿慧Ellen\n内审内控VP', x: 200, y: 640, cat: 1, sz: 26 },
+  { id: 'c_zhang', name: '张女士\n市场总监', x: 200, y: 690, cat: 1, sz: 24 },
+  { id: 'c_li_cg', name: '李先生\n采购总监', x: 200, y: 740, cat: 1, sz: 24 },
+
+  // 离职后公司
+  { id: 'n_zhiben', name: '上海逐本\n化妆品', x: 680, y: 70, cat: 3, sz: 32 },
+  { id: 'n_natural', name: '自然堂\n集团', x: 680, y: 120, cat: 3, sz: 32 },
+  { id: 'n_lining', name: '李宁集团', x: 680, y: 170, cat: 3, sz: 30 },
+  { id: 'n_corsair', name: 'Corsair\n美商海盗船', x: 680, y: 220, cat: 3, sz: 30 },
+  { id: 'n_oppo', name: 'OPPO', x: 680, y: 270, cat: 3, sz: 28 },
+  { id: 'n_huabao', name: '华宝新能源\nJackery', x: 680, y: 320, cat: 3, sz: 30 },
+  { id: 'n_yaes', name: '雅诗兰黛', x: 680, y: 370, cat: 3, sz: 28 },
+  { id: 'n_polaiya2', name: '珀莱雅\n(外流)', x: 680, y: 420, cat: 3, sz: 26 },
+  { id: 'n_bosideng', name: '波司登', x: 680, y: 470, cat: 3, sz: 26 },
+  { id: 'n_boss', name: '老板电器', x: 680, y: 520, cat: 3, sz: 26 },
+  { id: 'n_microport', name: '微创医疗', x: 680, y: 570, cat: 3, sz: 26 },
+  { id: 'n_ruimi', name: '睿米科技', x: 680, y: 620, cat: 3, sz: 24 },
+  { id: 'n_yangshi', name: '阳狮广告', x: 680, y: 670, cat: 3, sz: 26 },
+  { id: 'n_zongjiang', name: '宗匠科技', x: 680, y: 720, cat: 3, sz: 24 },
+
+  // 项目岗位（内部人）
+  { id: 'pr_na', name: '项目:北美\n品牌总监', x: 900, y: 40, cat: 4, sz: 28 },
+  { id: 'pr_dabo', name: '项目:达播总监', x: 900, y: 100, cat: 4, sz: 28 },
+  { id: 'pr_brand', name: '项目:品牌\n创意总监', x: 900, y: 160, cat: 4, sz: 28 },
+  { id: 'pr_sea', name: '项目:东南亚GM', x: 900, y: 220, cat: 4, sz: 26 },
+  { id: 'pr_jimeng', name: '项目:极萌\n海外VP', x: 900, y: 280, cat: 4, sz: 26 },
+  { id: 'pr_audit', name: '项目:内审\n内控VP', x: 900, y: 640, cat: 4, sz: 26 },
+];
+const ccNodes = ccNodesRaw;
+
+const ccLinks = [
+  // 上游 → Ulike
+  { s: 'p_laifen', t: 'u_hz', v: 2 }, { s: 'p_baibeike', t: 'u_hz', v: 2 },
+  { s: 'p_polaiya', t: 'u_hz', v: 1 }, { s: 'p_huaxizi', t: 'u_hz', v: 1 },
+  { s: 'p_betaine', t: 'u_hz', v: 1 }, { s: 'p_guyu', t: 'u_hz', v: 1 }, { s: 'p_zeekr', t: 'u_sz', v: 1 },
+
+  // 候选人 → Ulike（就职）
+  { s: 'c_song', t: 'u_hz' }, { s: 'c_lixiang', t: 'u_hz' }, { s: 'c_wu', t: 'u_hz' },
+  { s: 'c_xia', t: 'u_hz' }, { s: 'c_cai', t: 'u_hz' }, { s: 'c_bao', t: 'u_hz' },
+  { s: 'c_qin', t: 'u_hz' }, { s: 'c_li_hd', t: 'u_hz' }, { s: 'c_ma', t: 'u_sz' },
+  { s: 'c_gu', t: 'u_hz' }, { s: 'c_zeng', t: 'u_hz' }, { s: 'c_alessio', t: 'u_global' },
+  { s: 'c_lu', t: 'u_hz' }, { s: 'c_zhang', t: 'u_hz' }, { s: 'c_li_cg', t: 'u_hz' },
+
+  // 入职前 → 候选人（个别可追溯）
+  { s: 'p_polaiya', t: 'c_qin' }, { s: 'p_betaine', t: 'c_gu' },
+
+  // 候选人 → 离职后
+  { s: 'c_lixiang', t: 'n_zhiben' }, { s: 'c_bao', t: 'n_natural' }, { s: 'c_xia', t: 'n_lining' },
+  { s: 'c_cai', t: 'n_corsair' }, { s: 'c_alessio', t: 'n_oppo' }, { s: 'c_ma', t: 'n_ruimi' },
+  { s: 'c_gu', t: 'n_yaes' }, { s: 'c_qin', t: 'n_polaiya2' }, { s: 'c_li_cg', t: 'n_bosideng' },
+  { s: 'c_zeng', t: 'n_microport' },
+
+  // Ulike → 外流聚合（无具体人选的）
+  { s: 'u_hz', t: 'n_yangshi', v: 2 }, { s: 'u_hz', t: 'n_zongjiang', v: 2 }, { s: 'u_hz', t: 'n_huabao', v: 2 },
+
+  // 内部人 → 项目岗位（虚线）
+  { s: 'c_song', t: 'pr_na', dash: true }, { s: 'c_song', t: 'pr_sea', dash: true },
+  { s: 'c_lixiang', t: 'pr_dabo', dash: true }, { s: 'c_wu', t: 'pr_brand', dash: true },
+  { s: 'c_cai', t: 'pr_jimeng', dash: true }, { s: 'c_li_hd', t: 'pr_jimeng', dash: true },
+  { s: 'c_lu', t: 'pr_audit', dash: true },
+];
+
+initChart('candidateCompanyGraph', {
+  tooltip: {
+    trigger: 'item',
+    backgroundColor: '#1e293b', borderColor: '#475569',
+    formatter: p => {
+      if (p.dataType === 'edge') {
+        const dash = p.data.lineStyle?.type === 'dashed' ? '（内部人·项目）' : '';
+        return `${p.data.source.replace(/\n/g,' ')} → ${p.data.target.replace(/\n/g,' ')}${dash}`;
+      }
+      const tips = {
+        c_song: '笔记10条 · 北美品牌总监/东南亚GM项目',
+        c_lixiang: '达播总监 · 已流向逐本 · 项目匹配达播总监',
+        c_wu: '品牌总监 · 项目品牌创意总监',
+        c_lu: '内审内控VP · 项目状态99',
+        c_xia: '品牌创意总监 → 李宁潮奢线',
+        c_cai: '销售副总 → Corsair亚洲区',
+      };
+      return `<b>${p.name.replace(/\n/g, ' ')}</b>${tips[p.data.id] ? '<br/>' + tips[p.data.id] : ''}`;
+    }
+  },
+  series: [{
+    type: 'graph', layout: 'none', roam: true, draggable: true,
+    data: ccNodes.map(n => ({
+      id: n.id, name: n.name, x: n.x, y: n.y,
+      symbolSize: n.sz, category: n.cat,
+      itemStyle: { color: catColors[n.cat], borderColor: '#fff', borderWidth: 1 },
+      label: { show: true, color: '#e8edf7', fontSize: 9, lineHeight: 13 }
+    })),
+    links: ccLinks.map(l => ({
+      source: l.s, target: l.t,
+      lineStyle: {
+        color: l.dash ? 'rgba(192,132,252,.7)' : 'rgba(148,163,184,.45)',
+        width: l.v ? Math.min(4, 1 + l.v) : 1.5,
+        type: l.dash ? 'dashed' : 'solid',
+        curveness: l.dash ? 0.25 : 0.08
+      }
+    })),
+    categories: [
+      { name: '入职前' }, { name: '候选人' }, { name: 'Ulike' }, { name: '离职后' }, { name: '项目岗' }
+    ],
+    emphasis: { focus: 'adjacency', lineStyle: { width: 4 } },
+    edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 6
+  }]
+});
+
+// ─── 18. Inbound sankey ───
+initChart('inboundSankey', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'sankey', nodeGap: 10, lineStyle: { color: 'gradient', opacity: 0.5 },
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { name: '徕芬电子', itemStyle: { color: '#64748b' } },
+      { name: '白贝壳', itemStyle: { color: '#64748b' } },
+      { name: '珀莱雅', itemStyle: { color: '#64748b' } },
+      { name: '花西子', itemStyle: { color: '#64748b' } },
+      { name: '贝泰妮', itemStyle: { color: '#64748b' } },
+      { name: '谷雨', itemStyle: { color: '#64748b' } },
+      { name: '极氪', itemStyle: { color: '#64748b' } },
+      { name: '其他上游', itemStyle: { color: '#475569' } },
+      { name: 'Ulike/由莱', itemStyle: { color: '#fb7185' } },
+    ],
+    links: [
+      { source: '徕芬电子', target: 'Ulike/由莱', value: 2 },
+      { source: '白贝壳', target: 'Ulike/由莱', value: 2 },
+      { source: '珀莱雅', target: 'Ulike/由莱', value: 1 },
+      { source: '花西子', target: 'Ulike/由莱', value: 1 },
+      { source: '贝泰妮', target: 'Ulike/由莱', value: 1 },
+      { source: '谷雨', target: 'Ulike/由莱', value: 1 },
+      { source: '极氪', target: 'Ulike/由莱', value: 1 },
+      { source: '其他上游', target: 'Ulike/由莱', value: 8 },
+    ]
+  }]
+});
+
+// ─── 19. Outbound sankey ───
+initChart('outboundSankey', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'sankey', nodeGap: 10, lineStyle: { color: 'gradient', opacity: 0.5 },
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { name: 'Ulike/由莱', itemStyle: { color: '#fb7185' } },
+      { name: '美妆个护\n自然堂/逐本/珀莱雅', itemStyle: { color: '#60a5fa' } },
+      { name: '硬件出海\n华宝/宗匠/OPPO', itemStyle: { color: '#22d3ee' } },
+      { name: '广告营销\n阳狮', itemStyle: { color: '#a78bfa' } },
+      { name: 'Corsair/睿米', itemStyle: { color: '#34d399' } },
+      { name: '其他去向', itemStyle: { color: '#475569' } },
+    ],
+    links: [
+      { source: 'Ulike/由莱', target: '美妆个护\n自然堂/逐本/珀莱雅', value: 5 },
+      { source: 'Ulike/由莱', target: '硬件出海\n华宝/宗匠/OPPO', value: 6 },
+      { source: 'Ulike/由莱', target: '广告营销\n阳狮', value: 2 },
+      { source: 'Ulike/由莱', target: 'Corsair/睿米', value: 4 },
+      { source: 'Ulike/由莱', target: '其他去向', value: 8 },
+    ]
+  }]
+});
+
+// ─── 20. Insider candidates graph ───
+initChart('insiderTable', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'graph', layout: 'force', roam: true,
+    label: { show: true, fontSize: 10, color: '#e8edf7' },
+    force: { repulsion: 280, edgeLength: [60, 120] },
+    data: [
+      { name: 'Ulike\n(雇主)', symbolSize: 55, itemStyle: { color: '#fb7185' }, category: 0 },
+      { name: '宋道瑞\n海外CBO', symbolSize: 38, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '李湘科\n达播总监', symbolSize: 34, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '吴培川\n品牌总监', symbolSize: 34, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '鹿慧Ellen\n内审VP', symbolSize: 32, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '李海洋\n市场总监', symbolSize: 32, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '蔡先生\n销售副总', symbolSize: 32, itemStyle: { color: '#34d399' }, category: 1 },
+      { name: '北美品牌总监', symbolSize: 28, itemStyle: { color: '#c084fc' }, category: 2 },
+      { name: '东南亚GM', symbolSize: 28, itemStyle: { color: '#c084fc' }, category: 2 },
+      { name: '达播总监\n(项目)', symbolSize: 28, itemStyle: { color: '#c084fc' }, category: 2 },
+      { name: '品牌创意总监', symbolSize: 28, itemStyle: { color: '#c084fc' }, category: 2 },
+      { name: '极萌海外VP', symbolSize: 28, itemStyle: { color: '#c084fc' }, category: 2 },
+      { name: '内审内控VP', symbolSize: 26, itemStyle: { color: '#c084fc' }, category: 2 },
+    ],
+    links: [
+      { source: '宋道瑞\n海外CBO', target: 'Ulike\n(雇主)' },
+      { source: '李湘科\n达播总监', target: 'Ulike\n(雇主)' },
+      { source: '吴培川\n品牌总监', target: 'Ulike\n(雇主)' },
+      { source: '鹿慧Ellen\n内审VP', target: 'Ulike\n(雇主)' },
+      { source: '李海洋\n市场总监', target: 'Ulike\n(雇主)' },
+      { source: '蔡先生\n销售副总', target: 'Ulike\n(雇主)' },
+      { source: '宋道瑞\n海外CBO', target: '北美品牌总监', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '宋道瑞\n海外CBO', target: '东南亚GM', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '李湘科\n达播总监', target: '达播总监\n(项目)', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '吴培川\n品牌总监', target: '品牌创意总监', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '李海洋\n市场总监', target: '极萌海外VP', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '蔡先生\n销售副总', target: '极萌海外VP', lineStyle: { type: 'dashed', color: '#c084fc' } },
+      { source: '鹿慧Ellen\n内审VP', target: '内审内控VP', lineStyle: { type: 'dashed', color: '#c084fc' } },
+    ],
+    lineStyle: { color: 'rgba(52,211,153,.5)', width: 2 },
+    emphasis: { focus: 'adjacency' }
+  }]
+});
+
+const initialTab = new URLSearchParams(window.location.search).get('tab');
+if (initialTab) activateTab(initialTab);
+</script>
+</body>
+</html>

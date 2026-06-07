@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大疆 内部人选关系图谱</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+  <style>
+    :root {
+      --bg: #080d18;
+      --panel: #111827;
+      --border: #1e3a5f;
+      --text: #e8edf7;
+      --muted: #7b9bb8;
+      --blue: #3b82f6;
+      --cyan: #22d3ee;
+      --indigo: #818cf8;
+      --green: #34d399;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Microsoft YaHei", "PingFang SC", "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(30,58,95,.3) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30,58,95,.3) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, black, transparent);
+    }
+    .wrap { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 24px 20px 60px; }
+
+    header {
+      text-align: center; padding: 36px 20px 28px;
+      background: linear-gradient(180deg, rgba(59,130,246,.15) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px; border-radius: 0 0 24px 24px;
+    }
+    header .badge {
+      display: inline-block; font-size: 11px; letter-spacing: .12em;
+      color: var(--cyan); border: 1px solid rgba(34,211,238,.35);
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 14px;
+    }
+    header h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 700; margin-bottom: 8px; }
+    header h1 span { color: var(--cyan); }
+    header p { color: var(--muted); font-size: 14px; max-width: 760px; margin: 0 auto; line-height: 1.7; }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 28px; }
+    .kpi {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px 12px; text-align: center; transition: border-color .2s, transform .2s;
+    }
+    .kpi:hover { border-color: var(--cyan); transform: translateY(-2px); }
+    .kpi .n { font-size: 22px; font-weight: 700; color: var(--cyan); }
+    .kpi .l { font-size: 11px; color: var(--muted); margin-top: 6px; line-height: 1.4; }
+
+    .nav-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center; }
+    .nav-tabs button {
+      background: var(--panel); border: 1px solid var(--border); color: var(--muted);
+      padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: all .2s;
+    }
+    .nav-tabs button.active, .nav-tabs button:hover {
+      color: var(--text); border-color: var(--cyan); background: rgba(34,211,238,.1);
+    }
+
+    .section { display: none; animation: fadeIn .4s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    .panel {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+      padding: 18px; margin-bottom: 20px;
+    }
+    .panel-title {
+      font-size: 15px; font-weight: 600; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .panel-title::before {
+      content: ""; width: 4px; height: 16px; background: var(--cyan); border-radius: 2px;
+    }
+    .panel-desc { font-size: 12px; color: var(--muted); margin-bottom: 14px; padding-left: 12px; }
+
+    .chart { width: 100%; }
+    .chart-xl { height: 780px; }
+    .chart-lg { height: 620px; }
+    .chart-md { height: 400px; }
+    .chart-sm { height: 300px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+    .legend-row {
+      display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+      margin-top: 12px; font-size: 12px; color: var(--muted);
+    }
+    .legend-row span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .insight-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+    .insight {
+      background: rgba(59,130,246,.06); border: 1px solid rgba(59,130,246,.2);
+      border-radius: 12px; padding: 14px; font-size: 12px; line-height: 1.65;
+    }
+    .insight strong { color: var(--cyan); display: block; margin-bottom: 6px; font-size: 13px; }
+
+    footer {
+      text-align: center; color: var(--muted); font-size: 11px;
+      margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 1100px) {
+      .kpi-row { grid-template-columns: repeat(3, 1fr); }
+      .grid-2, .grid-3, .insight-cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="wrap">
+
+<header>
+  <div class="badge">人选视角 · 内部关系网络</div>
+  <h1><span>大疆创新（DJI）</span> 内部人选关系图谱</h1>
+  <p>以顾问笔记拼接组织条线、汇报关系与平级协作，呈现大疆内部人选之间的连接网络 · 数据来自 HiBole 云略库（履历 + 笔记 + 项目三联查）</p>
+</header>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="n">818</div><div class="l">履历校友</div></div>
+  <div class="kpi"><div class="n">3,605</div><div class="l">笔记人选</div></div>
+  <div class="kpi"><div class="n">6,802</div><div class="l">项目人选</div></div>
+  <div class="kpi"><div class="n">4,431</div><div class="l">情报笔记</div></div>
+  <div class="kpi"><div class="n">463</div><div class="l">含汇报关系笔记</div></div>
+  <div class="kpi"><div class="n">37</div><div class="l">关联项目</div></div>
+</div>
+
+<div class="nav-tabs">
+  <button class="active" data-tab="internal">内部人选关系</button>
+  <button data-tab="orglines">组织条线</button>
+  <button data-tab="overview">总览</button>
+  <button data-tab="talent">人才流向</button>
+  <button data-tab="funnel">项目漏斗</button>
+  <button data-tab="time">时间雷达</button>
+</div>
+
+<!-- ===== 内部人选关系（核心） ===== -->
+<div id="internal" class="section active">
+  <div class="panel">
+    <div class="panel-title">大疆内部人选关系网络（笔记拼接 · 非官方架构）</div>
+    <div class="panel-desc">
+      实线=汇报/隶属 · 虚线=平级协作/跨条线配合 · 拖拽节点可调整布局。
+      人选节点来自真实履历+笔记；管理节点（灰色）为笔记中提及的上级/负责人。
+    </div>
+    <div id="internalNetwork" class="chart chart-xl"></div>
+    <div class="legend-row">
+      <span><i class="dot" style="background:#3b82f6"></i>大疆雇主</span>
+      <span><i class="dot" style="background:#818cf8"></i>组织条线</span>
+      <span><i class="dot" style="background:#34d399"></i>内部人选</span>
+      <span><i class="dot" style="background:#94a3b8"></i>笔记提及负责人</span>
+      <span><i class="dot" style="background:#fbbf24"></i>平级协作节点</span>
+      <span>— 实线汇报 · - - 虚线协作</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">HR 条线内部连接</div>
+      <div class="panel-desc">三支柱模式：COE · HRBP（研发/非研发分组）· SSC · 招聘运营（文思/Wendy-Ni）</div>
+      <div id="hrCluster" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">销售/渠道条线内部连接</div>
+      <div class="panel-desc">欧洲区域：法国总经理 · 北欧渠道 · KA · GTM 管培轮岗路径</div>
+      <div id="salesCluster" class="chart chart-md"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">跨条线协作关系</div>
+      <div class="panel-desc">不同职能人选之间的笔记交叉验证连接（招聘↔BP、渠道↔市场、售后平级组）</div>
+      <div id="crossLink" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">内部人 × 项目岗位匹配</div>
+      <div class="panel-desc">既有大疆履历、又出现在大疆项目推荐中的高价值知情源（节选）</div>
+      <div id="insiderProject" class="chart chart-md"></div>
+    </div>
+  </div>
+
+  <div class="insight-cards">
+    <div class="insight"><strong>HR 情报密度最高</strong>笔记中 300+ HR（含外包）支持总部数千人；赵夏蕾、刘涛、赵鑫等笔记含完整汇报链与团队规模，是内部 mapping 核心源。</div>
+    <div class="insight"><strong>渠道体系层级清晰</strong>蔡晓岚（北欧）、沈悦（法国 KA）笔记交叉验证欧洲销售负责人 → 区域总经理 → 一线 KA/渠道的层级与平行分工。</div>
+    <div class="insight"><strong>平级协作可串联</strong>钟晓威笔记明确电商客服与商城/400/增值服务/舆情为平级，均向售后运营经理汇报——可还原跨组协作网络。</div>
+  </div>
+</div>
+
+<!-- ===== 组织条线 ===== -->
+<div id="orglines" class="section">
+  <div class="grid-3">
+    <div class="panel">
+      <div class="panel-title">组织认知树（笔记拼接）</div>
+      <div class="panel-desc">六大职能条线及其在笔记中的情报热度。</div>
+      <div id="orgTree" class="chart chart-lg"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">客户需求岗位 Top</div>
+      <div id="jobDemand" class="chart chart-lg"></div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">履历校友职能分布（818 人）</div>
+      <div id="workRoles" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">笔记情报主题雷达</div>
+      <div id="themeRadar" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 总览 ===== -->
+<div id="overview" class="section">
+  <div class="panel">
+    <div class="panel-title">核心知识图谱 · 公司 × 数据 × 职能</div>
+    <div id="mainGraph" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">三层数据覆盖对比</div>
+      <div id="dataCoverage" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">上游人才来源 Top</div>
+      <div id="inboundBar" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 人才流向 ===== -->
+<div id="talent" class="section">
+  <div class="panel">
+    <div class="panel-title">人才外流图谱 · 大疆校友 → 下一站</div>
+    <div id="outflowGraph" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">人才来源桑基图</div>
+      <div id="inboundSankey" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">人才去向桑基图</div>
+      <div id="outboundSankey" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 漏斗 ===== -->
+<div id="funnel" class="section">
+  <div class="panel">
+    <div class="panel-title">项目交付桑基图 · 6,802 人次</div>
+    <div id="sankey" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">漏斗各阶段</div>
+      <div id="funnelBar" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">状态分布</div>
+      <div id="statusPie" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 时间 ===== -->
+<div id="time" class="section">
+  <div class="panel">
+    <div class="panel-title">情报热度时间轴</div>
+    <div class="panel-desc">2025–2026 笔记提及大疆爆发式增长，与组织补位、高级岗位外放猎头相关。</div>
+    <div id="timeline" class="chart chart-lg"></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-title">2025 年月度热度</div>
+      <div id="monthly2025" class="chart chart-md"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">关键事件时间线</div>
+      <div id="eventTimeline" class="chart chart-md"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  大疆人才情报交互图谱 · HiBole 厦门云略 · 2026-06-05 · 内部关系由顾问笔记交叉验证拼接，非官方组织架构
+</footer>
+</div>
+
+<script>
+const charts = [];
+const C = {
+  blue: '#3b82f6', cyan: '#22d3ee', indigo: '#818cf8',
+  green: '#34d399', amber: '#fbbf24', rose: '#fb7185',
+  slate: '#94a3b8', muted: '#64748b'
+};
+
+function initChart(id, option) {
+  const el = document.getElementById(id);
+  const c = echarts.init(el, null, { renderer: 'canvas' });
+  c.setOption(option);
+  charts.push(c);
+  return c;
+}
+
+function activateTab(tab) {
+  const target = document.querySelector(`.nav-tabs button[data-tab="${tab}"]`);
+  if (!target || !document.getElementById(tab)) return;
+    document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  target.classList.add('active');
+  document.getElementById(tab).classList.add('active');
+    setTimeout(() => charts.forEach(c => c.resize()), 80);
+}
+
+document.querySelectorAll('.nav-tabs button').forEach(btn => {
+  btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+});
+window.addEventListener('resize', () => charts.forEach(c => c.resize()));
+
+function graphOpt(nodes, links, categories, extra = {}) {
+  return {
+    tooltip: {
+      trigger: 'item', backgroundColor: '#1e293b', borderColor: '#475569',
+      formatter: p => {
+        if (p.dataType === 'edge') {
+          const t = p.data.lineStyle?.type === 'dashed' ? '（平级/协作）' : '（汇报/隶属）';
+          return `${p.data.source} → ${p.data.target}${t}`;
+        }
+        return `<b>${p.name.replace(/\\n/g, ' ')}</b>${p.data.tip ? '<br/>' + p.data.tip : ''}`;
+      }
+    },
+    series: [{
+      type: 'graph',
+      layout: extra.layout || 'none',
+      roam: true,
+      draggable: true,
+      force: extra.force,
+      categories: categories.map(n => ({ name: n })),
+      data: nodes.map(n => ({
+        id: n.id, name: n.name, x: n.x, y: n.y,
+        symbolSize: n.sz || 28, category: n.cat,
+        itemStyle: { color: n.color || [C.blue, C.indigo, C.green, C.slate, C.amber][n.cat], borderColor: '#fff', borderWidth: n.cat === 0 ? 2 : 1 },
+        label: { show: true, color: '#e8edf7', fontSize: n.fs || 9, lineHeight: 13 },
+        tip: n.tip
+      })),
+      links: links.map(l => ({
+        source: l.s, target: l.t,
+        lineStyle: {
+          color: l.dash ? 'rgba(251,191,36,.65)' : 'rgba(148,163,184,.5)',
+          width: l.w || (l.dash ? 1.5 : 2),
+          type: l.dash ? 'dashed' : 'solid',
+          curveness: l.dash ? 0.2 : 0.05
+        }
+      })),
+      edgeSymbol: ['none', 'arrow'], edgeSymbolSize: 6,
+      emphasis: { focus: 'adjacency', lineStyle: { width: 4 } },
+      lineStyle: { opacity: 0.85 }
+    }]
+  };
+}
+
+// ─── 1. 内部人选关系主图 ───
+const internalNodes = [
+  { id: 'dji', name: '大疆创新\n(DJI)', x: 480, y: 380, cat: 0, sz: 72, tip: '雇主核心 · 笔记4431条' },
+
+  // 组织条线
+  { id: 'dept_hr', name: 'HR三支柱\n300+人', x: 200, y: 120, cat: 1, sz: 46 },
+  { id: 'dept_sales', name: '销售/渠道\n全球区域', x: 200, y: 380, cat: 1, sz: 46 },
+  { id: 'dept_sc', name: '供应链\n百旺基地', x: 200, y: 560, cat: 1, sz: 42 },
+  { id: 'dept_mkt', name: '市场部\nKOL/品牌', x: 760, y: 120, cat: 1, sz: 42 },
+  { id: 'dept_as', name: '售后客服\n电商全渠道', x: 760, y: 380, cat: 1, sz: 42 },
+  { id: 'dept_rd', name: '研发产研\n硬件大类', x: 760, y: 560, cat: 1, sz: 42 },
+  { id: 'dept_train', name: '培训零售\n体验店', x: 480, y: 620, cat: 1, sz: 38 },
+
+  // 管理节点
+  { id: 'mgr_wensi', name: '文思\n招聘负责人', x: 80, y: 60, cat: 3, sz: 32, tip: '招聘运营组汇报对象' },
+  { id: 'mgr_wendy', name: 'Wendy-Ni\n校招负责人', x: 200, y: 40, cat: 3, sz: 30, tip: '校招生·10年+内部晋升' },
+  { id: 'mgr_hrvp', name: 'HRVP\n研发线', x: 340, y: 80, cat: 3, sz: 30 },
+  { id: 'mgr_europe', name: '欧洲销售\n负责人', x: 80, y: 340, cat: 3, sz: 30 },
+  { id: 'mgr_france', name: '法国\n总经理', x: 80, y: 420, cat: 3, sz: 28 },
+  { id: 'mgr_as', name: '售后运营\n经理', x: 920, y: 340, cat: 3, sz: 28 },
+  { id: 'mgr_rd_rec', name: '研发侧\n招聘负责人', x: 340, y: 180, cat: 3, sz: 28 },
+
+  // HR 人选
+  { id: 'p_zxl', name: '赵夏蕾\nHRBP组负责人', x: 340, y: 140, cat: 2, sz: 34, tip: '硬件大类·20个BP分组·现金80-90W' },
+  { id: 'p_lt', name: '刘涛\nHRBP产研', x: 340, y: 220, cat: 2, sz: 32, tip: '产研400人·直属HRVP·年包63W' },
+  { id: 'p_ha', name: '华安\n高级HRBP', x: 120, y: 200, cat: 2, sz: 30, tip: '农业产品200+人·联创13号员工项目' },
+  { id: 'p_zx', name: '赵鑫\n高级招聘', x: 260, y: 180, cat: 2, sz: 30, tip: '研发部门招聘·汇报研发侧负责人' },
+  { id: 'p_sss', name: '苏珊珊\n校招华南', x: 120, y: 100, cat: 2, sz: 28, tip: '了解文思/Fiona团队结构' },
+  { id: 'p_zyj', name: '钟耀将\n招聘HR', x: 260, y: 100, cat: 2, sz: 28, tip: 'Star笔记·HR架构一手情报' },
+  { id: 'p_wang_zp', name: '王先生\n百旺招聘负责人', x: 120, y: 260, cat: 2, sz: 28, tip: '供应链社招·带4-5人·同级80名负责人' },
+
+  // 销售/渠道
+  { id: 'p_cxl', name: '蔡晓岚\n北欧渠道', x: 260, y: 360, cat: 2, sz: 34, tip: '管培轮岗·北欧YOY+47%·几个亿体量' },
+  { id: 'p_sy', name: '沈悦\n法国KA', x: 260, y: 440, cat: 2, sz: 30, tip: '汇报法国总经理·年销1-2千万美金' },
+  { id: 'p_lj', name: '林德君\n大区总监', x: 340, y: 400, cat: 2, sz: 30 },
+  { id: 'p_sdr', name: '宋道瑞\n销售主管', x: 340, y: 460, cat: 2, sz: 28, tip: '2014-2020大疆' },
+  { id: 'p_ypz', name: '杨沛哲\n欧洲渠道', x: 260, y: 500, cat: 2, sz: 28, tip: '汇报欧洲GTM·年包100W+' },
+  { id: 'p_snow', name: 'snow\nCostco销售', x: 340, y: 520, cat: 2, sz: 26, tip: '管培生·美国KA·年包75W' },
+
+  // 供应链
+  { id: 'p_hhb', name: '郝宏波\n供应链VP', x: 120, y: 540, cat: 2, sz: 32 },
+  { id: 'p_yyh', name: '叶晏宏\n供应链总监', x: 200, y: 600, cat: 2, sz: 28 },
+  { id: 'p_xmc', name: '修明成\n生产采购总监', x: 280, y: 580, cat: 2, sz: 30, tip: '华为背景·签字费190万' },
+
+  // 市场
+  { id: 'p_huang', name: '黄女士\nKOL项目', x: 680, y: 80, cat: 2, sz: 30, tip: 'pocket+action+nano三线' },
+  { id: 'p_lix', name: '李先生\n亚太区GM', x: 840, y: 80, cat: 2, sz: 28, tip: '品牌运营→亚太总经理' },
+
+  // 售后
+  { id: 'p_zxw', name: '钟晓威\n电商客服主管', x: 840, y: 360, cat: 2, sz: 32, tip: '团队40人·天猫京东全渠道' },
+  { id: 'peer_as', name: '平级协作组\n商城/400/增值/舆情', x: 920, y: 420, cat: 4, sz: 36, tip: '均向售后运营经理汇报' },
+
+  // 研发
+  { id: 'p_chen', name: '陈进\n算法工程师', x: 840, y: 540, cat: 2, sz: 30, tip: '已离职→小鹏·世界模型' },
+
+  // 培训
+  { id: 'p_ljj', name: '刘建军\n培训专家', x: 480, y: 700, cat: 2, sz: 28, tip: '大疆5年·腾讯10年' },
+  { id: 'p_wcw', name: '王传武\n零售培训师', x: 560, y: 700, cat: 2, sz: 26, tip: 'Apple7年+大疆1.5年' },
+];
+
+const internalLinks = [
+  // 条线 → 雇主
+  { s: 'dept_hr', t: 'dji' }, { s: 'dept_sales', t: 'dji' }, { s: 'dept_sc', t: 'dji' },
+  { s: 'dept_mkt', t: 'dji' }, { s: 'dept_as', t: 'dji' }, { s: 'dept_rd', t: 'dji' }, { s: 'dept_train', t: 'dji' },
+
+  // HR 汇报
+  { s: 'mgr_wensi', t: 'dept_hr' }, { s: 'mgr_wendy', t: 'dept_hr' }, { s: 'mgr_hrvp', t: 'dept_hr' },
+  { s: 'p_sss', t: 'mgr_wensi' }, { s: 'p_zyj', t: 'mgr_wensi' }, { s: 'p_sss', t: 'mgr_wendy', dash: true },
+  { s: 'p_zxl', t: 'dept_hr' }, { s: 'p_zxl', t: 'mgr_hrvp' },
+  { s: 'p_lt', t: 'mgr_hrvp' }, { s: 'p_lt', t: 'dept_rd', dash: true },
+  { s: 'p_ha', t: 'dept_hr' }, { s: 'p_zx', t: 'mgr_rd_rec' }, { s: 'mgr_rd_rec', t: 'mgr_wensi', dash: true },
+  { s: 'p_wang_zp', t: 'dept_sc', dash: true }, { s: 'p_wang_zp', t: 'dept_hr' },
+
+  // HR 内部协作
+  { s: 'p_zxl', t: 'p_lt', dash: true }, { s: 'p_zx', t: 'p_zxl', dash: true },
+  { s: 'p_zyj', t: 'p_zxl', dash: true }, { s: 'p_sss', t: 'p_zyj', dash: true },
+
+  // 销售汇报
+  { s: 'mgr_europe', t: 'dept_sales' }, { s: 'mgr_france', t: 'mgr_europe' },
+  { s: 'p_cxl', t: 'mgr_europe' }, { s: 'p_sy', t: 'mgr_france' },
+  { s: 'p_lj', t: 'dept_sales' }, { s: 'p_sdr', t: 'dept_sales' },
+  { s: 'p_ypz', t: 'mgr_europe' }, { s: 'p_snow', t: 'dept_sales' },
+
+  // 销售内部协作
+  { s: 'p_cxl', t: 'p_sy', dash: true }, { s: 'p_cxl', t: 'p_ypz', dash: true },
+  { s: 'p_sy', t: 'p_lj', dash: true },
+
+  // 供应链
+  { s: 'p_hhb', t: 'dept_sc' }, { s: 'p_yyh', t: 'p_hhb' }, { s: 'p_xmc', t: 'dept_sc' },
+  { s: 'p_wang_zp', t: 'p_xmc', dash: true },
+
+  // 市场
+  { s: 'p_huang', t: 'dept_mkt' }, { s: 'p_lix', t: 'dept_mkt' },
+  { s: 'p_huang', t: 'p_cxl', dash: true },
+
+  // 售后平级
+  { s: 'p_zxw', t: 'mgr_as' }, { s: 'mgr_as', t: 'dept_as' },
+  { s: 'p_zxw', t: 'peer_as', dash: true }, { s: 'peer_as', t: 'mgr_as' },
+
+  // 研发
+  { s: 'p_chen', t: 'dept_rd' }, { s: 'p_lt', t: 'p_chen', dash: true },
+
+  // 培训
+  { s: 'p_ljj', t: 'dept_train' }, { s: 'p_wcw', t: 'dept_train' },
+  { s: 'p_wcw', t: 'p_zxw', dash: true },
+];
+
+initChart('internalNetwork', graphOpt(internalNodes, internalLinks,
+  ['大疆雇主', '组织条线', '内部人选', '笔记负责人', '平级协作组']));
+
+// ─── 2. HR 子图 ───
+initChart('hrCluster', graphOpt([
+  { id: 'hr', name: 'HR三支柱', x: 200, y: 200, cat: 1, sz: 50 },
+  { id: 'wensi', name: '文思\n招聘', x: 80, y: 100, cat: 3, sz: 32 },
+  { id: 'wendy', name: 'Wendy-Ni\n校招', x: 200, y: 60, cat: 3, sz: 30 },
+  { id: 'hrvp', name: 'HRVP', x: 320, y: 100, cat: 3, sz: 30 },
+  { id: 'zxl', name: '赵夏蕾\nBP组负责人', x: 320, y: 200, cat: 2, sz: 34 },
+  { id: 'lt', name: '刘涛\n产研BP', x: 320, y: 280, cat: 2, sz: 30 },
+  { id: 'zx', name: '赵鑫\n研发招聘', x: 80, y: 200, cat: 2, sz: 30 },
+  { id: 'sss', name: '苏珊珊\n校招华南', x: 80, y: 280, cat: 2, sz: 28 },
+  { id: 'zyj', name: '钟耀将\n招聘HR', x: 200, y: 300, cat: 2, sz: 28 },
+  { id: 'coe', name: 'COE\n6大模块', x: 200, y: 140, cat: 4, sz: 26 },
+  { id: 'ssc', name: 'SSC', x: 260, y: 160, cat: 4, sz: 24 },
+], [
+  { s: 'wensi', t: 'hr' }, { s: 'wendy', t: 'hr' }, { s: 'hrvp', t: 'hr' },
+  { s: 'coe', t: 'hr' }, { s: 'ssc', t: 'hr' },
+  { s: 'zxl', t: 'hrvp' }, { s: 'lt', t: 'hrvp' }, { s: 'zx', t: 'wensi' },
+  { s: 'sss', t: 'wendy' }, { s: 'zyj', t: 'wensi' },
+  { s: 'zxl', t: 'lt', dash: true }, { s: 'sss', t: 'zyj', dash: true },
+  { s: 'zx', t: 'zxl', dash: true },
+], ['核心', '条线', '人选', '负责人', '模块'], { layout: 'none' }));
+
+// ─── 3. 销售子图 ───
+initChart('salesCluster', graphOpt([
+  { id: 'sales', name: '全球销售', x: 240, y: 220, cat: 1, sz: 48 },
+  { id: 'eu', name: '欧洲负责人', x: 120, y: 120, cat: 3, sz: 32 },
+  { id: 'fr', name: '法国总经理', x: 80, y: 200, cat: 3, sz: 28 },
+  { id: 'cxl', name: '蔡晓岚\n北欧', x: 200, y: 80, cat: 2, sz: 34 },
+  { id: 'sy', name: '沈悦\n法国KA', x: 80, y: 280, cat: 2, sz: 30 },
+  { id: 'ypz', name: '杨沛哲\n欧洲渠道', x: 200, y: 300, cat: 2, sz: 28 },
+  { id: 'gtm', name: 'GTM总部\n管培轮岗', x: 360, y: 120, cat: 4, sz: 28 },
+  { id: 'ka', name: '大客户\n零散客户', x: 360, y: 200, cat: 4, sz: 26 },
+  { id: 'retail', name: '零售\n代理', x: 360, y: 280, cat: 4, sz: 26 },
+  { id: 'snow', name: 'snow\nCostco', x: 120, y: 360, cat: 2, sz: 26 },
+], [
+  { s: 'eu', t: 'sales' }, { s: 'fr', t: 'eu' },
+  { s: 'cxl', t: 'eu' }, { s: 'sy', t: 'fr' }, { s: 'ypz', t: 'eu' },
+  { s: 'cxl', t: 'gtm', dash: true }, { s: 'gtm', t: 'sales' },
+  { s: 'ka', t: 'sales' }, { s: 'retail', t: 'sales' },
+  { s: 'sy', t: 'ka', dash: true }, { s: 'sy', t: 'retail', dash: true },
+  { s: 'cxl', t: 'sy', dash: true }, { s: 'snow', t: 'sales' },
+], ['核心', '条线', '人选', '负责人', '子模块']));
+
+// ─── 4. 跨条线协作 ───
+initChart('crossLink', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'graph', layout: 'force', roam: true,
+    force: { repulsion: 320, edgeLength: [80, 160], gravity: 0.08 },
+    label: { show: true, fontSize: 10, color: '#e8edf7' },
+    data: [
+      { name: '赵夏蕾\nHRBP', symbolSize: 38, itemStyle: { color: C.green } },
+      { name: '刘涛\nHRBP', symbolSize: 34, itemStyle: { color: C.green } },
+      { name: '赵鑫\n招聘', symbolSize: 32, itemStyle: { color: C.green } },
+      { name: '蔡晓岚\n渠道', symbolSize: 34, itemStyle: { color: C.green } },
+      { name: '黄女士\nKOL', symbolSize: 30, itemStyle: { color: C.green } },
+      { name: '钟晓威\n客服', symbolSize: 32, itemStyle: { color: C.green } },
+      { name: '修明成\n采购', symbolSize: 30, itemStyle: { color: C.green } },
+      { name: '陈进\n算法', symbolSize: 30, itemStyle: { color: C.green } },
+      { name: '王传武\n培训', symbolSize: 28, itemStyle: { color: C.green } },
+      { name: '苏珊珊\n校招', symbolSize: 28, itemStyle: { color: C.green } },
+      { name: '钟耀将\n招聘', symbolSize: 28, itemStyle: { color: C.green } },
+    ],
+    links: [
+      { source: '赵夏蕾\nHRBP', target: '刘涛\nHRBP', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '赵鑫\n招聘', target: '赵夏蕾\nHRBP', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '赵鑫\n招聘', target: '陈进\n算法', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '刘涛\nHRBP', target: '陈进\n算法', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '蔡晓岚\n渠道', target: '黄女士\nKOL', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '钟晓威\n客服', target: '王传武\n培训', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '修明成\n采购', target: '赵鑫\n招聘', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '苏珊珊\n校招', target: '钟耀将\n招聘', lineStyle: { type: 'dashed', color: C.amber } },
+      { source: '钟耀将\n招聘', target: '赵夏蕾\nHRBP', lineStyle: { type: 'dashed', color: C.amber } },
+    ],
+    emphasis: { focus: 'adjacency' },
+    lineStyle: { width: 2 }
+  }]
+});
+
+// ─── 5. 内部人项目匹配 ───
+initChart('insiderProject', graphOpt([
+  { id: 'dji2', name: '大疆\n(雇主)', x: 300, y: 200, cat: 0, sz: 55 },
+  { id: 'pr_hrbp', name: '项目:HRBP', x: 500, y: 80, cat: 4, sz: 30 },
+  { id: 'pr_zp', name: '项目:招聘', x: 500, y: 160, cat: 4, sz: 30 },
+  { id: 'pr_gtm', name: '项目:GTM', x: 500, y: 240, cat: 4, sz: 28 },
+  { id: 'pr_od', name: '项目:OD&TD', x: 500, y: 320, cat: 4, sz: 28 },
+  { id: 'i_zxl', name: '赵夏蕾', x: 120, y: 80, cat: 2, sz: 30 },
+  { id: 'i_lt', name: '刘涛', x: 120, y: 160, cat: 2, sz: 28 },
+  { id: 'i_cxl', name: '蔡晓岚', x: 120, y: 240, cat: 2, sz: 28 },
+  { id: 'i_hhb', name: '郝宏波', x: 120, y: 320, cat: 2, sz: 28 },
+  { id: 'i_zyj', name: '钟耀将', x: 120, y: 400, cat: 2, sz: 26 },
+], [
+  { s: 'i_zxl', t: 'dji2' }, { s: 'i_lt', t: 'dji2' }, { s: 'i_cxl', t: 'dji2' },
+  { s: 'i_hhb', t: 'dji2' }, { s: 'i_zyj', t: 'dji2' },
+  { s: 'i_zxl', t: 'pr_hrbp', dash: true }, { s: 'i_lt', t: 'pr_hrbp', dash: true },
+  { s: 'i_zyj', t: 'pr_zp', dash: true }, { s: 'i_cxl', t: 'pr_gtm', dash: true },
+  { s: 'i_lt', t: 'pr_od', dash: true },
+], ['雇主', '条线', '内部人', '负责人', '项目岗']));
+
+// ─── 6. 组织树 ───
+initChart('orgTree', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'tree', orient: 'LR', roam: true,
+    top: '5%', left: '12%', bottom: '5%', right: '18%',
+    symbolSize: 10,
+    label: { color: '#e8edf7', fontSize: 11 },
+    lineStyle: { color: 'rgba(34,211,238,.4)', width: 2 },
+    data: [{
+      name: '大疆创新', children: [
+        { name: 'HR (300+)', children: [
+          { name: 'COE' }, { name: 'HRBP·研发' }, { name: 'HRBP·非研发×2' },
+          { name: 'SSC·6模块' }, { name: '招聘运营·文思' }, { name: '校招·Wendy-Ni' }
+        ]},
+        { name: '销售/渠道', children: [
+          { name: '欧洲·Woelfer/Gan' }, { name: '法国总经理' }, { name: '北欧渠道' },
+          { name: '北美·Costco/KA' }, { name: 'GTM总部' }, { name: '零售/代理' }
+        ]},
+        { name: '供应链·百旺', children: [{ name: '生产采购' }, { name: '供应链VP' }] },
+        { name: '市场部', children: [{ name: 'KOL·pocket/action/nano' }, { name: '品牌/亚太' }] },
+        { name: '售后', children: [{ name: '电商客服40人' }, { name: '商城/400/增值/舆情' }] },
+        { name: '研发产研', children: [{ name: '硬件大类' }, { name: '算法/自动驾驶' }] },
+      ]
+    }]
+  }]
+});
+
+initChart('jobDemand', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 120, right: 30, top: 10, bottom: 20 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  yAxis: {
+    type: 'category',
+    data: ['财务BP','线上品类运营','mapping(美的)','HRBP','招聘岗','区域电商合伙人','招聘管理','薪酬BP','区域销售合伙人','float','线下品类运营','OD&TD','GTM'],
+    axisLabel: { color: '#e8edf7', fontSize: 10 }
+  },
+  series: [{
+    type: 'bar', data: [909,724,612,469,397,353,353,311,307,287,258,256,186],
+    itemStyle: { color: new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:'#1d4ed8'},{offset:1,color:'#22d3ee'}]), borderRadius: [0,4,4,0] }
+  }]
+});
+
+initChart('workRoles', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'pie', radius: ['38%','68%'], center: ['50%','55%'],
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { value: 27, name: '产品经理' }, { value: 18, name: 'HRBP' },
+      { value: 12, name: '销售经理' }, { value: 11, name: '区域销售经理' },
+      { value: 10, name: '销售' }, { value: 10, name: '项目经理' },
+      { value: 8, name: '电商运营' }, { value: 8, name: '海外销售经理' },
+      { value: 7, name: '销售总监' }, { value: 7, name: '采购经理' },
+      { value: 50, name: '其他职能' }
+    ],
+    color: ['#3b82f6','#22d3ee','#818cf8','#34d399','#fbbf24','#fb7185','#a78bfa','#64748b','#94a3b8','#60a5fa','#475569']
+  }]
+});
+
+initChart('themeRadar', {
+  radar: {
+    indicator: [
+      { name: '汇报关系', max: 500 }, { name: '部门团队', max: 800 },
+      { name: '离职原因', max: 600 }, { name: '薪酬职级', max: 700 },
+      { name: '组织架构', max: 400 }, { name: '竞业协议', max: 300 }
+    ],
+    axisName: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } },
+    splitArea: { areaStyle: { color: ['rgba(59,130,246,.04)','rgba(59,130,246,.08)'] } }
+  },
+  series: [{
+    type: 'radar',
+    data: [{ value: [463, 680, 420, 550, 310, 180], name: '笔记关键词命中' }],
+    areaStyle: { color: 'rgba(34,211,238,.25)' },
+    lineStyle: { color: C.cyan, width: 2 }, itemStyle: { color: C.cyan }
+  }]
+});
+
+// ─── 总览 ───
+initChart('mainGraph', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'graph', layout: 'force', roam: true,
+    force: { repulsion: 400, edgeLength: [100, 180] },
+    label: { show: true, fontSize: 10, color: '#e8edf7' },
+    data: [
+      { name: '大疆创新', symbolSize: 65, itemStyle: { color: C.blue } },
+      { name: '笔记层\n4431条', symbolSize: 42, itemStyle: { color: C.cyan } },
+      { name: '项目层\n6802人', symbolSize: 40, itemStyle: { color: C.indigo } },
+      { name: '履历层\n818人', symbolSize: 32, itemStyle: { color: C.slate } },
+      { name: 'HR条线', symbolSize: 36, itemStyle: { color: C.green } },
+      { name: '销售渠道', symbolSize: 36, itemStyle: { color: C.green } },
+      { name: '供应链', symbolSize: 32, itemStyle: { color: C.green } },
+      { name: '研发产研', symbolSize: 32, itemStyle: { color: C.green } },
+      { name: '内部关系\n463条汇报笔记', symbolSize: 38, itemStyle: { color: C.amber } },
+    ],
+    links: [
+      { source: '笔记层\n4431条', target: '大疆创新' },
+      { source: '项目层\n6802人', target: '大疆创新' },
+      { source: '履历层\n818人', target: '大疆创新' },
+      { source: '内部关系\n463条汇报笔记', target: '笔记层\n4431条' },
+      { source: 'HR条线', target: '大疆创新' }, { source: '销售渠道', target: '大疆创新' },
+      { source: '供应链', target: '大疆创新' }, { source: '研发产研', target: '大疆创新' },
+      { source: 'HR条线', target: '内部关系\n463条汇报笔记' },
+      { source: '销售渠道', target: '内部关系\n463条汇报笔记' },
+    ],
+    lineStyle: { color: 'rgba(148,163,184,.45)', width: 2 },
+    emphasis: { focus: 'adjacency' }
+  }]
+});
+
+initChart('dataCoverage', {
+  tooltip: { trigger: 'axis' },
+  legend: { data: ['人数'], textStyle: { color: '#8b9bb4' } },
+  grid: { left: 50, right: 20, top: 30, bottom: 30 },
+  xAxis: { type: 'category', data: ['履历校友','笔记人选','项目人选'], axisLabel: { color: '#8b9bb4' } },
+  yAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  series: [{
+    type: 'bar', data: [818, 3605, 6802],
+    itemStyle: { color: C.cyan, borderRadius: [6,6,0,0] },
+    label: { show: true, position: 'top', color: '#e8edf7' }
+  }]
+});
+
+initChart('inboundBar', {
+  tooltip: { trigger: 'axis' },
+  grid: { left: 100, right: 20, top: 10, bottom: 20 },
+  xAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  yAxis: {
+    type: 'category',
+    data: ['OPPO','字节跳动','追觅','正浩创新','影石','安克','小米','美团','荣耀'],
+    axisLabel: { color: '#e8edf7', fontSize: 10 }
+  },
+  series: [{
+    type: 'bar', data: [14, 12, 10, 9, 8, 7, 5, 5, 5],
+    itemStyle: { color: C.indigo, borderRadius: [0,4,4,0] }
+  }]
+});
+
+// ─── 人才流向 ───
+initChart('outflowGraph', {
+  tooltip: { trigger: 'item' },
+  series: [{
+    type: 'graph', layout: 'force', roam: true,
+    force: { repulsion: 280, edgeLength: [80, 140] },
+    label: { show: true, fontSize: 10, color: '#e8edf7' },
+    data: [
+      { name: '大疆创新', symbolSize: 58, itemStyle: { color: C.blue } },
+      { name: '华为\n(36人)', symbolSize: 40, itemStyle: { color: C.rose } },
+      { name: '普联\n(8人)', symbolSize: 28, itemStyle: { color: C.slate } },
+      { name: '海能达\n(7人)', symbolSize: 28, itemStyle: { color: C.slate } },
+      { name: '中兴\n(6人)', symbolSize: 26, itemStyle: { color: C.slate } },
+      { name: 'OPPO\n(5人)', symbolSize: 26, itemStyle: { color: C.slate } },
+      { name: '韶音\n(5人)', symbolSize: 26, itemStyle: { color: C.slate } },
+      { name: '大华\n(5人)', symbolSize: 26, itemStyle: { color: C.slate } },
+      { name: '小鹏\n陈进等', symbolSize: 30, itemStyle: { color: C.green } },
+      { name: '影石/安克\n智能硬件', symbolSize: 32, itemStyle: { color: C.amber } },
+    ],
+    links: [
+      { source: '大疆创新', target: '华为\n(36人)' }, { source: '大疆创新', target: '普联\n(8人)' },
+      { source: '大疆创新', target: '海能达\n(7人)' }, { source: '大疆创新', target: '中兴\n(6人)' },
+      { source: '大疆创新', target: 'OPPO\n(5人)' }, { source: '大疆创新', target: '韶音\n(5人)' },
+      { source: '大疆创新', target: '大华\n(5人)' },
+      { source: '大疆创新', target: '小鹏\n陈进等' },
+      { source: '大疆创新', target: '影石/安克\n智能硬件' },
+    ],
+    lineStyle: { color: 'rgba(251,113,133,.5)', width: 2 },
+    emphasis: { focus: 'adjacency' }
+  }]
+});
+
+initChart('inboundSankey', {
+  series: [{
+    type: 'sankey', nodeGap: 10, lineStyle: { color: 'gradient', opacity: 0.5 },
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { name: 'OPPO/字节', itemStyle: { color: '#64748b' } },
+      { name: '追觅/影石/安克', itemStyle: { color: '#64748b' } },
+      { name: '正浩/小米/美团', itemStyle: { color: '#64748b' } },
+      { name: '其他上游', itemStyle: { color: '#475569' } },
+      { name: '大疆创新', itemStyle: { color: '#3b82f6' } },
+    ],
+    links: [
+      { source: 'OPPO/字节', target: '大疆创新', value: 26 },
+      { source: '追觅/影石/安克', value: 25, target: '大疆创新' },
+      { source: '正浩/小米/美团', target: '大疆创新', value: 19 },
+      { source: '其他上游', target: '大疆创新', value: 30 },
+    ]
+  }]
+});
+
+initChart('outboundSankey', {
+  series: [{
+    type: 'sankey', nodeGap: 10, lineStyle: { color: 'gradient', opacity: 0.5 },
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { name: '大疆创新', itemStyle: { color: '#3b82f6' } },
+      { name: '华为系\n36人', itemStyle: { color: '#fb7185' } },
+      { name: '通信/安防\n海能达/大华', itemStyle: { color: '#60a5fa' } },
+      { name: '智能硬件\n小鹏/影石/安克', itemStyle: { color: '#34d399' } },
+      { name: '其他去向', itemStyle: { color: '#475569' } },
+    ],
+    links: [
+      { source: '大疆创新', target: '华为系\n36人', value: 36 },
+      { source: '大疆创新', target: '通信/安防\n海能达/大华', value: 12 },
+      { source: '大疆创新', target: '智能硬件\n小鹏/影石/安克', value: 15 },
+      { source: '大疆创新', target: '其他去向', value: 25 },
+    ]
+  }]
+});
+
+// ─── 漏斗 ───
+initChart('sankey', {
+  series: [{
+    type: 'sankey', nodeGap: 12, lineStyle: { color: 'gradient', opacity: 0.45 },
+    label: { color: '#e8edf7', fontSize: 11 },
+    data: [
+      { name: '项目人选\n6802' }, { name: '正在联络\n4712' },
+      { name: '淘汰/不合适\n1958' }, { name: '推荐面试\n242' },
+      { name: '复试/终面\n132' }, { name: '录用\n90' },
+    ],
+    links: [
+      { source: '项目人选\n6802', target: '正在联络\n4712', value: 4712 },
+      { source: '项目人选\n6802', target: '淘汰/不合适\n1958', value: 1958 },
+      { source: '正在联络\n4712', target: '推荐面试\n242', value: 242 },
+      { source: '推荐面试\n242', target: '复试/终面\n132', value: 132 },
+      { source: '复试/终面\n132', target: '录用\n90', value: 90 },
+    ]
+  }]
+});
+
+initChart('funnelBar', {
+  series: [{
+    type: 'funnel', left: '10%', width: '80%', sort: 'descending', gap: 4,
+    label: { color: '#e8edf7', fontSize: 12 },
+    data: [
+      { value: 6802, name: '项目人选', itemStyle: { color: '#3b82f6' } },
+      { value: 4712, name: '正在联络', itemStyle: { color: '#475569' } },
+      { value: 242, name: '推荐面试', itemStyle: { color: '#22d3ee' } },
+      { value: 132, name: '复试终面', itemStyle: { color: '#34d399' } },
+      { value: 90, name: '录用', itemStyle: { color: '#fbbf24' } },
+    ]
+  }]
+});
+
+initChart('statusPie', {
+  series: [{
+    type: 'pie', radius: '65%', center: ['50%','55%'],
+    label: { color: '#e8edf7', fontSize: 10 },
+    data: [
+      { value: 4712, name: '正在联络' }, { value: 955, name: '状态90' },
+      { value: 783, name: '状态92' }, { value: 242, name: '推荐(4)' },
+      { value: 90, name: '录用(5)' },
+    ],
+    color: ['#3b82f6','#fb7185','#fbbf24','#22d3ee','#34d399']
+  }]
+});
+
+// ─── 时间 ───
+initChart('timeline', {
+  tooltip: { trigger: 'axis' },
+  legend: { data: ['笔记条数','涉及人选'], textStyle: { color: '#8b9bb4' } },
+  grid: { left: 50, right: 30, top: 40, bottom: 40 },
+  xAxis: { type: 'category', data: ['2022','2023','2024','2025','2026'], axisLabel: { color: '#8b9bb4' } },
+  yAxis: [
+    { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+    { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { show: false } }
+  ],
+  series: [
+    { name: '笔记条数', type: 'bar', data: [54,92,152,521,3471], itemStyle: { color: C.blue, borderRadius: [4,4,0,0] } },
+    { name: '涉及人选', type: 'line', yAxisIndex: 1, smooth: true, data: [50,71,125,448,2911],
+      lineStyle: { color: C.cyan, width: 3 }, areaStyle: { color: 'rgba(34,211,238,.12)' } }
+  ]
+});
+
+initChart('monthly2025', {
+  grid: { left: 40, right: 20, top: 20, bottom: 30 },
+  xAxis: { type: 'category', data: ['1','2','3','4','5','6','7','8','9','10','11','12'], axisLabel: { color: '#8b9bb4' } },
+  yAxis: { type: 'value', axisLabel: { color: '#8b9bb4' }, splitLine: { lineStyle: { color: '#1e293b' } } },
+  series: [{
+    type: 'line', smooth: true,
+    data: [28,32,45,38,42,35,48,55,62,58,44,36],
+    lineStyle: { color: C.cyan, width: 3 },
+    areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'rgba(34,211,238,.3)'},{offset:1,color:'transparent'}]) }
+  }]
+});
+
+initChart('eventTimeline', {
+  series: [{
+    type: 'graph', layout: 'none', symbolSize: 14,
+    label: { show: true, position: 'bottom', color: '#93c5fd', fontSize: 9, width: 110, overflow: 'break' },
+    data: [
+      { name: '2024\n组织动荡', x: 60, y: 180, itemStyle: { color: C.amber } },
+      { name: '2025.08\nHR架构笔记\nStar/钟耀将', x: 200, y: 100, itemStyle: { color: C.cyan } },
+      { name: '2025.09\n百旺招聘\n王先生', x: 340, y: 180, itemStyle: { color: C.indigo } },
+      { name: '2026.03\nKOL离职\n黄女士', x: 480, y: 100, itemStyle: { color: C.rose } },
+      { name: '2026.04\n采购总监\n修明成/邹卓', x: 620, y: 180, itemStyle: { color: C.green } },
+      { name: '2026.04\n算法离职\n陈进→小鹏', x: 760, y: 100, symbolSize: 20, itemStyle: { color: C.blue } },
+    ],
+    links: [
+      { source: '2024\n组织动荡', target: '2025.08\nHR架构笔记\nStar/钟耀将' },
+      { source: '2025.08\nHR架构笔记\nStar/钟耀将', target: '2025.09\n百旺招聘\n王先生' },
+      { source: '2025.09\n百旺招聘\n王先生', target: '2026.03\nKOL离职\n黄女士' },
+      { source: '2026.03\nKOL离职\n黄女士', target: '2026.04\n采购总监\n修明成/邹卓' },
+      { source: '2026.04\n采购总监\n修明成/邹卓', target: '2026.04\n算法离职\n陈进→小鹏' },
+    ],
+    lineStyle: { color: 'rgba(59,130,246,.55)', width: 2, curveness: 0.1 },
+    edgeSymbol: ['none','arrow'], edgeSymbolSize: 8
+  }]
+});
+
+const initialTab = new URLSearchParams(window.location.search).get('tab');
+if (initialTab) activateTab(initialTab);
+</script>
+</body>
+</html>
