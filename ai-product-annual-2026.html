@@ -143,15 +143,15 @@
       margin: 0 auto;
     }
 
-    .hero {
+    section.hero {
       min-height: 100vh;
       display: grid;
       align-items: center;
       background:
         linear-gradient(110deg, rgba(16,24,40,.96) 0%, rgba(16,24,40,.92) 46%, rgba(8,145,178,.18) 100%),
         radial-gradient(circle at 70% 35%, rgba(5,150,105,.22), transparent 36%),
-        #101828;
-      color: #fff;
+        #101828 !important;
+      color: #fff !important;
       position: relative;
       overflow: hidden;
     }
@@ -190,14 +190,14 @@
       margin-bottom: 22px;
     }
 
-    .intro {
+    section.intro {
       min-height: 100vh;
       display: grid;
       align-items: center;
       background:
         linear-gradient(110deg, rgba(16,24,40,.98) 0%, rgba(16,24,40,.94) 55%, rgba(8,145,178,.18) 100%),
-        #101828;
-      color: #fff;
+        #101828 !important;
+      color: #fff !important;
       position: relative;
       overflow: hidden;
     }
@@ -220,13 +220,18 @@
     }
 
     .intro-quote {
-      max-width: 1080px;
+      max-width: 1280px;
       padding-left: 28px;
       border-left: 5px solid #67e8f9;
       color: #fff;
-      font-size: clamp(38px, 5vw, 82px);
+      font-size: clamp(32px, 4vw, 62px);
       font-weight: 900;
-      line-height: 1.22;
+      line-height: 1.28;
+    }
+
+    .intro-quote span {
+      display: block;
+      white-space: nowrap;
     }
 
     .intro-note {
@@ -893,7 +898,8 @@
         <div class="section-inner">
           <div class="eyebrow">引言</div>
           <div class="intro-quote">
-            不管是个人还是民族，发展主要来自不断的探索，而不是事先一揽子的设计。
+            <span>不管是个人还是民族，发展主要来自不断的探索，</span>
+            <span>而不是事先一揽子的设计。</span>
           </div>
           <div class="intro-note">这也是我们今天讨论 AI 与产品的起点。</div>
         </div>
