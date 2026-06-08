@@ -190,25 +190,50 @@
       margin-bottom: 22px;
     }
 
-    .hero-quote {
-      max-width: 820px;
-      margin-bottom: 24px;
-      padding: 18px 20px;
-      border-left: 4px solid #67e8f9;
-      background: rgba(255,255,255,.08);
-      color: #f8fafc;
-      border-radius: 0 8px 8px 0;
-      font-size: clamp(20px, 2.2vw, 30px);
-      font-weight: 800;
-      line-height: 1.45;
+    .intro {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      background:
+        linear-gradient(110deg, rgba(16,24,40,.98) 0%, rgba(16,24,40,.94) 55%, rgba(8,145,178,.18) 100%),
+        #101828;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
     }
 
-    .hero-quote small {
-      display: block;
-      margin-top: 8px;
+    .intro::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: .55;
+      pointer-events: none;
+    }
+
+    .intro .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .intro-quote {
+      max-width: 1080px;
+      padding-left: 28px;
+      border-left: 5px solid #67e8f9;
+      color: #fff;
+      font-size: clamp(38px, 5vw, 82px);
+      font-weight: 900;
+      line-height: 1.22;
+    }
+
+    .intro-note {
+      margin-top: 28px;
       color: #98a2b3;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 18px;
+      font-weight: 700;
     }
 
     h1, h2, h3 {
@@ -831,6 +856,7 @@
       <nav aria-label="演讲目录">
         <div class="nav-section">
           <div class="nav-title">开场</div>
+          <a href="#intro">一句话引言</a>
           <a href="#cover">开场主线</a>
           <a href="#map">整体结构</a>
         </div>
@@ -863,14 +889,20 @@
     </aside>
 
     <main>
+      <section id="intro" class="intro">
+        <div class="section-inner">
+          <div class="eyebrow">引言</div>
+          <div class="intro-quote">
+            不管是个人还是民族，发展主要来自不断的探索，而不是事先一揽子的设计。
+          </div>
+          <div class="intro-note">这也是我们今天讨论 AI 与产品的起点。</div>
+        </div>
+      </section>
+
       <section id="cover" class="hero">
         <div class="section-inner">
           <div>
             <div class="eyebrow">从系统替换到能力重构</div>
-            <div class="hero-quote">
-              不管是个人还是民族，发展主要来自不断的探索，而不是事先揽子的设计。
-              <small>这也是我们今天讨论 AI 与产品的起点。</small>
-            </div>
             <h1><span>AI 如何成为</span><span>云略下一代产品</span><span>与经营基础设施</span></h1>
             <p>
               品聘替换不是换一个系统，Echo 也不是做一个聊天机器人。
