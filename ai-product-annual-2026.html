@@ -655,11 +655,11 @@
     }
 
     .roadmap-card {
-      background: #fff;
-      border: 1px solid var(--line);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
       border-radius: 8px;
       padding: 22px;
-      box-shadow: 0 12px 32px rgba(16, 24, 40, .06);
+      box-shadow: none;
     }
 
     .roadmap-card h3 {
@@ -674,12 +674,12 @@
 
     .roadmap-step {
       display: grid;
-      grid-template-columns: 86px 1fr;
+      grid-template-columns: 110px 1fr;
       gap: 14px;
       align-items: start;
       padding: 14px;
-      background: #f9fafb;
-      border: 1px solid #edf1f7;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.12);
       border-radius: 8px;
     }
 
@@ -702,14 +702,34 @@
 
     .roadmap-step b {
       display: block;
-      color: var(--ink);
+      color: #fff;
       margin-bottom: 3px;
     }
 
     .roadmap-step span {
       display: block;
-      color: var(--muted);
+      color: #d0d5dd;
       font-size: 14px;
+    }
+
+    .roadmap-section {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      background:
+        linear-gradient(110deg, rgba(16,24,40,.98) 0%, rgba(16,24,40,.94) 55%, rgba(8,145,178,.18) 100%),
+        #101828;
+      color: #fff;
+    }
+
+    .roadmap-section h2,
+    .roadmap-section h3 {
+      color: #fff;
+    }
+
+    .roadmap-section .lead {
+      color: #d0d5dd;
+      max-width: 980px;
     }
 
     .closing {
@@ -752,6 +772,7 @@
       .grid-3,
       .grid-4,
       .talk-grid,
+      .roadmap,
       .graph-head {
         grid-template-columns: 1fr;
       }
@@ -763,7 +784,8 @@
       .hero .section-inner { gap: 28px; }
       .signal-row,
       .layer,
-      .step {
+      .step,
+      .roadmap-step {
         grid-template-columns: 1fr;
       }
       .compare { grid-template-columns: 1fr; }
@@ -788,7 +810,6 @@
           <div class="nav-title">开场</div>
           <a href="#cover">开场主线</a>
           <a href="#map">整体结构</a>
-          <a href="#roadmap">推进节奏</a>
         </div>
         <div class="nav-section">
           <div class="nav-title">模块一：品聘替换与内部 AI 系统</div>
@@ -812,6 +833,7 @@
         <div class="nav-section">
           <div class="nav-title">收束</div>
           <a href="#flywheel">产品飞轮</a>
+          <a href="#roadmap">推进节奏</a>
           <a href="#closing">结束语</a>
         </div>
       </nav>
@@ -886,69 +908,6 @@
               <span class="tag">模块二</span>
               <h3>Echo</h3>
               <p>从低防备对话还原真实能力与职业处境。</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="roadmap">
-        <div class="section-inner">
-          <div class="module-label">Roadmap</div>
-          <h2>两件事情并行推进，但节奏不同。</h2>
-          <p class="lead">
-            品聘替换是内部系统工程，重点是稳妥迁移、试用反馈和持续优化。
-            Echo MVP1 是产品验证工程，重点是先验证用户愿不愿意讲真话，以及发现卡是否足够准确。
-          </p>
-          <div class="roadmap">
-            <div class="roadmap-card">
-              <h3>品聘替换：从系统开发到经营优化</h3>
-              <div class="roadmap-steps">
-                <div class="roadmap-step">
-                  <div class="phase">阶段 1</div>
-                  <div><b>核心开发</b><span>先完成可承接业务的核心模块：人才、项目、客户、Pipeline、权限和基础数据迁移。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 2</div>
-                  <div><b>小范围试用</b><span>选择部分团队和项目双轨试用，验证录入、搜索、推进、客户维护和看板流程。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 3</div>
-                  <div><b>反馈优化</b><span>围绕顾问日常动作优化体验，补齐数据治理、字段标准、去重合并和权限边界。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 4</div>
-                  <div><b>AI 深度接入</b><span>逐步上线 AI 搜索、推荐报告、客户情报卡、顾问复盘和经营看板。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 5</div>
-                  <div><b>正式切换与持续迭代</b><span>完成主流程切换后，把系统从业务记录工具持续升级为经营判断系统。</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="roadmap-card echo">
-              <h3>Echo MVP1：从对话验证到能力星图</h3>
-              <div class="roadmap-steps">
-                <div class="roadmap-step">
-                  <div class="phase">阶段 1</div>
-                  <div><b>底层框架搭建</b><span>先搭完整 AI 思考框架：结构库、因果库、动态目的库、自然表达库和回应策略库。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 2</div>
-                  <div><b>对话与发现卡打样</b><span>围绕低防备开场、事件还原、轻追问和发现卡，完成核心体验闭环。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 3</div>
-                  <div><b>种子用户内测</b><span>用 50-100 个真实用户测试首次完成率、对话轮次、故事提交率和发现卡满意度。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 4</div>
-                  <div><b>样本标注与模型校准</b><span>把用户反馈和顾问高质量笔记结合，校准结构、因果、动态目的和回应策略。</span></div>
-                </div>
-                <div class="roadmap-step">
-                  <div class="phase">阶段 5</div>
-                  <div><b>进入 MVP2 判断</b><span>当“愿意讲真话”和“觉得被懂”成立后，再扩展能力星图、面试预演和岗位矩阵连接。</span></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1378,6 +1337,69 @@
             <span class="pill">C 端低防备表达</span>
             <span class="pill">B 端岗位能力矩阵</span>
             <span class="pill">AI 产品化闭环</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap" class="roadmap-section">
+        <div class="section-inner">
+          <div class="module-label">Roadmap</div>
+          <h2>两件事情并行推进，但节奏不同。</h2>
+          <p class="lead">
+            品聘替换是内部系统工程，重点是稳妥迁移、试用反馈和持续优化。
+            Echo MVP1 是产品验证工程，重点是先验证用户愿不愿意讲真话，以及发现卡是否足够准确。
+          </p>
+          <div class="roadmap">
+            <div class="roadmap-card">
+              <h3>品聘替换：从系统开发到经营优化</h3>
+              <div class="roadmap-steps">
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q2</div>
+                  <div><b>核心开发</b><span>完成可承接业务的核心模块：人才、项目、客户、Pipeline、权限和基础数据迁移。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q3</div>
+                  <div><b>小范围试用</b><span>选择部分团队和项目双轨试用，验证录入、搜索、推进、客户维护和看板流程。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q3-Q4</div>
+                  <div><b>反馈优化</b><span>围绕顾问日常动作优化体验，补齐数据治理、字段标准、去重合并和权限边界。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q4</div>
+                  <div><b>AI 深度接入</b><span>逐步上线 AI 搜索、推荐报告、客户情报卡、顾问复盘和经营看板。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2027 H1</div>
+                  <div><b>正式切换与持续迭代</b><span>完成主流程切换后，把系统从业务记录工具持续升级为经营判断系统。</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="roadmap-card echo">
+              <h3>Echo MVP1：从对话验证到能力星图</h3>
+              <div class="roadmap-steps">
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q2</div>
+                  <div><b>底层框架搭建</b><span>搭完整 AI 思考框架：结构库、因果库、动态目的库、自然表达库和回应策略库。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q3</div>
+                  <div><b>对话与发现卡打样</b><span>围绕低防备开场、事件还原、轻追问和发现卡，完成核心体验闭环。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q3-Q4</div>
+                  <div><b>种子用户内测</b><span>用 50-100 个真实用户测试首次完成率、对话轮次、故事提交率和发现卡满意度。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2026 Q4</div>
+                  <div><b>样本标注与模型校准</b><span>把用户反馈和顾问高质量笔记结合，校准结构、因果、动态目的和回应策略。</span></div>
+                </div>
+                <div class="roadmap-step">
+                  <div class="phase">2027 H1</div>
+                  <div><b>进入 MVP2 判断</b><span>当“愿意讲真话”和“觉得被懂”成立后，再扩展能力星图、面试预演和岗位矩阵连接。</span></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
