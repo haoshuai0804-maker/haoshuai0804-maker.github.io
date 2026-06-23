@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Echo Interview｜只站在被面试者一边的 AI 面试精灵</title>
-  <meta name="description" content="Echo Interview 是一个只服务 C 端被面试者的 AI 面试精灵：基于真实简历、目标岗位、面试轮次和真实面试录音，生成面试作战图、进行语音模拟面试，并输出可执行的改进方案。">
+  <meta name="description" content="Echo Interview 是一个只服务 C 端被面试者的 AI 面试精灵：结合真实简历、目标岗位、面试轮次、真实面试复盘和云略招聘服务经验，生成面试作战图、进行语音模拟面试，并输出可执行的改进方案。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -578,12 +578,14 @@
       <a href="#stance">立场边界</a>
       <a href="#users">目标用户</a>
       <a href="#flow">任务流程</a>
+      <a href="#pull">用户吸引力</a>
       <a href="#method">核心方法</a>
       <a href="#features">功能模块</a>
       <a href="#cards">核心产出</a>
       <a href="#loop">前中后闭环</a>
       <a href="#agents">AI 架构</a>
       <a href="#knowledge">知识库</a>
+      <a href="#yunlue">云略资产</a>
       <a href="#business">商业模式</a>
       <a href="#roadmap">路线图</a>
       <a href="#collab">合作与愿景</a>
@@ -595,23 +597,23 @@
     <section class="hero">
       <div>
         <span class="eyebrow">产品定位 · 一期 V0.1</span>
-        <h1>面试前，把最危险的问题<em>先练掉</em>。</h1>
+        <h1>面试前，把最危险的问题<em>先练掉</em></h1>
         <p class="hero-lead">
-          Echo Interview 帮你在面试前看清面试官会怎么问、你哪里会被追问，以及怎么把真实经历讲得更有胜算。它不是题库，也不是模板答案，而是基于你真实简历的面试作战系统。
+          Echo Interview 帮你在面试前看清面试官会怎么判断你、你哪里会被追问，以及怎么把真实经历讲得更有胜算。它不是题库，也不是模板答案，而是帮你找到“面试官脑子里的那把尺”。
         </p>
         <div class="hero-meta">
           <span>服务对象：<b>C 端被面试者</b></span>
           <span>核心场景：<b>综合面 / 主管面 / HR 面 / 二面终面</b></span>
-          <span>形态：<b>AI + 真实顾问</b></span>
+          <span>形态：<b>AI + 数字顾问 + 真实顾问</b></span>
         </div>
       </div>
 
       <aside class="hero-card" aria-label="能力转译闭环">
         <h3>从经历到可信表达</h3>
-        <p class="sub">Echo 把简历、目标岗位、行业标准与真实面试录音，连接成一个可训练、可复盘的闭环。</p>
+        <p class="sub">Echo 把简历、目标岗位、行业标准、云略招聘服务经验、数字顾问沟通记录与真实面试录音，连接成一个可训练、可复盘的闭环。</p>
         <div class="pipe">
           <div class="pipe-step"><span class="n">1</span><div><b>识别真实能力</b><span>从简历还原能力证据，而不是抽字段</span></div></div>
-          <div class="pipe-step"><span class="n">2</span><div><b>推演用人标准</b><span>行业、岗位族、公司类型的真实考察点</span></div></div>
+          <div class="pipe-step"><span class="n">2</span><div><b>推演判断逻辑</b><span>行业、岗位族、公司类型与真实面试场景</span></div></div>
           <div class="pipe-step"><span class="n">3</span><div><b>模拟动态追问</b><span>像真实面试官一样持续追问</span></div></div>
           <div class="pipe-step"><span class="n">4</span><div><b>复盘真实表现</b><span>面试后用录音和记录校准下一轮</span></div></div>
         </div>
@@ -624,7 +626,7 @@
         <span class="eyebrow">为什么一期聚焦面试</span>
         <h2>面试是年轻人最痛、最可训练、也最容易形成数据闭环的职业场景</h2>
         <p>Echo 一期不做泛职场陪伴，也不做双边招聘平台，而是聚焦一个高痛点、高频、强付费、可传播、可交付的尖刀场景。产品的第一性原理不是“模拟面试”，而是在面试压力下还原用户真实能力，并把它转译成能被面试官识别、追问时站得住、且更有胜率的表达。</p>
-        <div class="quote teal">面试比“泛职场困惑”更容易商业化，因为用户不是在模糊地“想变好”，而是在具体地“想过这一轮”。</div>
+        <div class="quote teal">面试比“泛职场困惑”更容易商业化，因为用户不是在模糊地“想变好”，而是在具体地“想过这一轮”。用户不是来找题的，是来找面试官脑子里的那把尺。</div>
       </div>
 
       <div class="grid g3 mt14" style="margin-bottom:14px">
@@ -643,6 +645,7 @@
             <li>输入岗位，生成一批常见问题。</li>
             <li>给出模板答案，越练越像背稿。</li>
             <li>不解释面试官为什么会追问。</li>
+            <li>不知道这类公司到底怎么判断人。</li>
             <li>无法从真实面试录音里复盘下一轮风险。</li>
           </ul>
         </div>
@@ -651,7 +654,7 @@
           <ul class="list mt14">
             <li>先识别候选人真实能力，再生成训练路径。</li>
             <li>把经历还原成因果链、证据链和可追问表达。</li>
-            <li>推演行业、岗位族和公司类型的用人标准。</li>
+            <li>推演行业、岗位族、公司类型和轮次的判断逻辑。</li>
             <li>面试后基于录音和记录复盘真实表现。</li>
           </ul>
         </div>
@@ -664,6 +667,7 @@
         <span class="eyebrow alt">产品立场与边界</span>
         <h2>立场清晰，才能赢得用户信任</h2>
         <p>早期产品需要尖锐，不需要均衡。Echo Interview 用三条不可妥协的原则定义自己，也用清晰的“不做清单”守住信任底线。</p>
+        <div class="quote">Echo Interview 一期只站在被面试者这一边。用户敢上传简历、失败复盘和真实焦虑，是因为这些内容不会变成企业筛选他的材料。</div>
       </div>
 
       <div class="grid g3" style="margin-bottom:14px">
@@ -703,8 +707,10 @@
           <ul class="list green mt14">
             <li>简历数据明确授权，默认脱敏存储。</li>
             <li>录音上传前确认已获必要同意；默认只保留转写与结构化摘要，原始录音可一键删除。</li>
+            <li>录音、录屏和视觉分析均需用户主动授权，可随时暂停和删除。</li>
             <li>现场辅助默认以记录和复盘为主，不默认开启实时提示。</li>
             <li>对公司信息只做公开信息与经验推演，不宣称命中特定题库。</li>
+            <li>视觉分析只做表达训练辅助，不做测谎、不做录用判断、不面向企业输出。</li>
             <li>专设安全合规 Agent，拦截造假、泄题、作弊与隐私风险。</li>
           </ul>
         </div>
@@ -740,6 +746,8 @@
           <ul class="list mt14">
             <li>自我介绍、简历深挖、项目经历讲述</li>
             <li>行为面试、主管面、HR 面、二面 / 终面</li>
+            <li>指定行业 / 岗位族用人标准推演</li>
+            <li>指定公司类型面试风格推演</li>
             <li>离职原因、职业动机、薪资预期表达</li>
             <li>反问面试官、面试后复盘</li>
           </ul>
@@ -747,10 +755,9 @@
         <div class="card">
           <h3><span class="tag gold">一期谨慎做</span></h3>
           <ul class="list gold mt14">
-            <li>指定行业 / 岗位族用人标准推演</li>
-            <li>指定公司类型面试风格推演</li>
             <li>薪资谈判、Offer 比较、入职前准备</li>
-            <li class="highlight">需人工审核与专家参与，作为高价服务</li>
+            <li>具体公司级深度校准与个性化辅导</li>
+            <li class="highlight">需要人工审核与专家参与，作为高价服务</li>
           </ul>
         </div>
         <div class="card">
@@ -780,7 +787,7 @@
         <div class="card alt"><b class="highlight">04 我哪里危险</b><p class="mt8">识别简历、经历、表达和动机中的高风险追问。</p></div>
         <div class="card alt"><b class="highlight">05 我怎么回答</b><p class="mt8">形成真实、有结构、有证据的表达。</p></div>
         <div class="card alt"><b class="highlight">06 我怎么练熟</b><p class="mt8">通过模拟面试和复盘，把答案变成现场表现。</p></div>
-        <div class="card alt"><b class="highlight">07 我真实表现如何</b><p class="mt8">通过面试录音或现场记录，识别真实问题与失分点。</p></div>
+        <div class="card alt"><b class="highlight">07 我真实表现如何</b><p class="mt8">通过面试录音、录屏或现场记录，识别真实问题、表达状态与失分点。</p></div>
       </div>
 
       <h3 class="mt8" style="margin-bottom:12px">产品主流程</h3>
@@ -822,13 +829,37 @@
       </div>
     </section>
 
+    <!-- ============ 06 PULL ============ -->
+    <section class="section" id="pull">
+      <div class="sec-head">
+        <span class="eyebrow">C 端为什么会来</span>
+        <h2>吸引力不是 AI 陪练，而是面试前的“内幕级判断感”</h2>
+        <p>用户最焦虑的不是没有题，而是不知道自己会在哪里被怀疑。Echo 要让用户第一次站到面试官脑子里看自己：这类公司怎么判断人，我这份简历哪里危险，我该怎么证明自己。</p>
+        <div class="quote teal">不是找题，是找判断逻辑。不是背答案，是把真实经历训练到能接住追问。</div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:24px">
+        <div class="card"><span class="tag red">强钩子</span><h3 class="mt8">面试高风险地图</h3><p>告诉用户“你会死在哪里”：项目像参与者、结果归因不清、离职原因有抱怨感、转岗逻辑不闭环、自我介绍卖点太散。</p></div>
+        <div class="card"><span class="tag teal">强壁垒</span><h3 class="mt8">行业与公司类型判断逻辑</h3><p>不告诉用户某家公司明天问哪道题，而是告诉他这类公司为什么这样问、想排除什么风险、喜欢什么候选人气质。</p></div>
+        <div class="card"><span class="tag gold">强体感</span><h3 class="mt8">面试官会怎么想</h3><p>用户说一句回答，Echo 翻译成面试官可能形成的判断：是真 owner 还是执行者？结果是不是包装？动机稳不稳？</p></div>
+        <div class="card"><span class="tag green">强痛点</span><h3 class="mt8">失败面试复盘</h3><p>用户挂掉以后最痛的是“不知道为什么”。Echo 帮他还原哪个问题开始失分、哪个追问说明对方不信、下一轮必须补什么。</p></div>
+      </div>
+
+      <div class="grid g4">
+        <div class="card alt"><h3>24 小时临场冲刺</h3><p>面试倒计时越近，付费意愿越强。用户不需要大课，只需要今晚先练稳 3 个必问、2 个高危追问和 1 段自我介绍。</p></div>
+        <div class="card alt"><h3>真实经历重构</h3><p>普通 AI 给模板答案，Echo 保留真实经历，补背景、角色、关键判断、行动、结果和复盘，让回答听起来是真的做过。</p></div>
+        <div class="card alt"><h3>个人面试素材库</h3><p>每练一次，沉淀自我介绍、核心项目、离职原因、职业动机、失败复盘、薪资预期和反问问题，形成个人长期资产。</p></div>
+        <div class="card alt"><h3>只服务 C 端的安全感</h3><p>用户愿意讲失败、焦虑和短板，是因为 Echo 不把他当候选人评估对象，而是把他当需要被支持的被面试者。</p></div>
+      </div>
+    </section>
+
     <!-- ============ 06 METHOD ============ -->
     <section class="section" id="method">
       <div class="sec-head">
         <span class="eyebrow alt">核心方法论</span>
         <h2>Echo 的亮点不是题库，是面试语境下的认知转译</h2>
         <p>普通工具是“输入岗位 → 生成问题 → 给参考答案”。Echo 的逻辑是把用户的“我做过什么”，转译成“面试官为什么应该相信我能胜任”。这需要五层能力协同工作。</p>
-        <div class="quote">普通面试工具帮你准备问题，Echo 帮你理解自己、理解标准、理解面试官为什么会追问。</div>
+        <div class="quote">普通面试工具帮你准备问题，Echo 帮你理解自己、理解标准、理解面试官为什么会追问。我们卖的不是题目，而是面试官的判断逻辑。</div>
       </div>
 
       <div class="grid g2" style="margin-bottom:24px">
@@ -847,8 +878,8 @@
         <div class="matrix-row"><b>能力本质</b><span>不是“做过运营动作”，而是在资源有限时，用用户反馈和数据变化快速调整执行方案。</span></div>
       </div>
 
-      <h3 style="margin-bottom:12px">行业用人标准转译（对外最独特的能力）</h3>
-      <p class="lead-sub">不宣称“某家公司精准辅导”，但能讲清不同行业、岗位族和公司类型的面试标准。</p>
+      <h3 style="margin-bottom:12px">行业与公司类型判断模型（对外最独特的能力）</h3>
+      <p class="lead-sub">不宣称“某家公司精准押题”，但能讲清不同行业、岗位族、公司类型和面试轮次的判断系统。</p>
       <div class="tbl-wrap">
         <table class="tbl">
           <thead><tr><th>行业 / 类型</th><th>面试重点可能不同</th></tr></thead>
@@ -869,7 +900,7 @@
     <section class="section" id="features">
       <div class="sec-head">
         <span class="eyebrow">核心功能模块</span>
-        <h2>十个模块，覆盖面试前、面试中、面试后</h2>
+        <h2>十二个模块，覆盖面试前、面试中、面试后</h2>
         <p>每个模块都不是孤立功能，而是围绕“理解候选人 + 推演用人标准 + 训练真实表达”这条主线协同。</p>
       </div>
 
@@ -901,7 +932,9 @@
         <div class="card"><h4>7 · 面试复盘报告</h4><p>像“教练报告”，不像考试判卷。用信号等级代替分数：已经能打 / 还需补证据 / 容易被追问击穿 / 暂不建议这样讲。</p></div>
         <div class="card"><h4>8 · 面试表达素材库</h4><p>帮用户沉淀自己的素材而非一次性训练：自我介绍版本、3 段核心项目故事、失败复盘、离职原因、职业动机、反问问题等，每段标注适用岗位与追问点。</p></div>
         <div class="card"><h4>9 · 面试情绪陪跑</h4><p>只围绕面试焦虑，不做泛情绪入口。处理方式：先承接焦虑 → 再定位焦虑来源 → 最后转成可训练动作。</p></div>
-        <div class="card"><h4>10 · 真实面试录音复盘</h4><p>解决模拟与真实之间的断层。用户面试后上传录音、转写或记录，Echo 分析真实问答、预测命中率、追问压力点和下一轮该补什么。</p><p class="mt8"><span class="tag gold">价值</span> 让用户知道真实表现 · 校准预测 · 形成数据飞轮</p></div>
+        <div class="card"><h4>10 · 真实面试录音/录屏复盘</h4><p>解决模拟与真实之间的断层。用户面试后上传录音、录屏、转写或记录，Echo 分析真实问答、预测命中率、追问压力点和下一轮该补什么。</p><p class="mt8"><span class="tag gold">价值</span> 让用户知道真实表现 · 校准预测 · 形成数据飞轮</p></div>
+        <div class="card"><h4>11 · 数字顾问深度沟通</h4><p>将云略顾问经验产品化为数字顾问，先创造安全、低压、可反复练习的沟通场景，对用户经历做深度追问、澄清和复盘。沟通记录由 AI 结构化分析，再交给真实顾问做重点辅助。</p></div>
+        <div class="card"><h4>12 · 多模态表达分析</h4><p>在用户授权下，结合语气、停顿、表情和肢体动作，辅助判断回答的表达稳定性、紧张点和证据一致性。它不是测谎，也不判断人品，只帮助用户发现“哪里听起来不够可信”。</p></div>
       </div>
     </section>
 
@@ -973,8 +1006,8 @@
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center"><h3>面试后</h3><span class="tag green">复盘</span></div>
-          <p class="mt8">上传录音、转写或手动记录，系统分析真实表现并生成下一轮训练计划。</p>
-          <ul class="list green mt8"><li>预测命中率</li><li>追问压力点</li><li>下一轮补强项</li></ul>
+          <p class="mt8">上传录音、录屏、转写或手动记录，系统分析真实表现并生成下一轮训练计划。</p>
+          <ul class="list green mt8"><li>预测命中率</li><li>追问压力点</li><li>表达稳定性</li><li>下一轮补强项</li></ul>
         </div>
       </div>
 
@@ -984,15 +1017,17 @@
           <thead><tr><th>层级</th><th>形态</th><th>一期建议</th></tr></thead>
           <tbody>
             <tr><td>低风险形态</td><td>用户打开记录模式，Echo 只做问题识别、节奏标记和事后复盘</td><td>可做</td></tr>
+            <tr><td>沟通训练形态</td><td>数字顾问与用户进行安全沟通、深度追问和录屏复盘，真实顾问随后辅助总结</td><td>可做</td></tr>
+            <tr><td>多模态辅助</td><td>用户授权后分析语气、停顿、表情和肢体动作，只用于表达训练与复盘</td><td>可灰度</td></tr>
             <tr><td>高风险形态</td><td>Echo 现场边听边给用户实时提示</td><td>谨慎灰度</td></tr>
-            <tr><td>明确不做</td><td>实时代答、生成虚假答案、未授权录音、技术题作弊</td><td>不做</td></tr>
+            <tr><td>明确不做</td><td>实时代答、生成虚假答案、未授权录音/录屏、技术题作弊、把视觉分析当测谎</td><td>不做</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="card dark">
         <h3>数据飞轮：预测问题 vs 真实问题</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.75)">真实面试录音复盘有三重价值：让用户知道自己真实表现如何（而不是凭感觉复盘）；让 Echo 校准“预测问题”和“真实问题”的差距；让产品形成高质量面试数据飞轮，成为最重要的长期资产。</p>
+        <p class="mt8" style="color:rgba(255,253,248,0.75)">真实面试录音、录屏和数字顾问沟通复盘有三重价值：让用户知道自己真实表现如何（而不是凭感觉复盘）；让 Echo 校准“预测问题”和“真实问题”的差距；让产品形成高质量面试数据飞轮，成为最重要的长期资产。</p>
       </div>
     </section>
 
@@ -1000,8 +1035,8 @@
     <section class="section" id="agents">
       <div class="sec-head">
         <span class="eyebrow alt">AI 能力架构</span>
-        <h2>八个核心 Agent，加上真实顾问</h2>
-        <p>系统不是一个大模型直接回答，而是把面试准备拆成职责清晰的 Agent 协作，再由真实顾问承接高阶判断。</p>
+        <h2>十个核心 Agent，加上数字顾问和真实顾问</h2>
+        <p>系统不是一个大模型直接回答，而是把面试准备拆成职责清晰的 Agent 协作。数字顾问负责创造安全沟通场景和深度追问，真实顾问承接高阶判断与最后总结。</p>
       </div>
 
       <div class="grid g4" style="margin-bottom:24px">
@@ -1011,7 +1046,9 @@
         <div class="card alt"><h4>模拟面试 Agent</h4><p>扮演面试官并动态追问。</p></div>
         <div class="card alt"><h4>回答诊断 Agent</h4><p>判断回答的具体度、可信度和风险。</p></div>
         <div class="card alt"><h4>答案重构 Agent</h4><p>把真实经历重构成更好的表达。</p></div>
-        <div class="card alt"><h4>录音复盘 Agent</h4><p>分析真实录音、转写文本和现场记录。</p></div>
+        <div class="card alt"><h4>录音/录屏复盘 Agent</h4><p>分析真实录音、录屏、转写文本和现场记录。</p></div>
+        <div class="card alt"><h4>数字顾问 Agent</h4><p>基于云略顾问经验进行安全沟通、深度追问和阶段总结。</p></div>
+        <div class="card alt"><h4>多模态表达分析 Agent</h4><p>分析语气、停顿、表情和肢体动作，输出表达稳定性与证据一致性提示。</p></div>
         <div class="card alt"><h4>安全合规 Agent</h4><p>拦截造假、泄题、作弊、隐私风险。</p></div>
       </div>
 
@@ -1060,14 +1097,14 @@
         <span class="eyebrow">知识库建设</span>
         <h2>对外说行业辅导，对内沉淀更细颗粒度的校准能力</h2>
         <p>一期不求全，先求可用。不承诺押中特定公司题目，但能帮用户理解这个行业通常怎么筛人、看重什么、哪些表达容易失分。</p>
-        <div class="quote teal">我们不承诺押中特定公司题目，但我们能帮你理解这个行业通常怎么筛人、看重什么、哪些表达容易失分。</div>
+        <div class="quote teal">我们不承诺押中特定公司题目，但我们能帮你理解这个行业通常怎么筛人、看重什么、哪些表达容易失分。知识库沉淀的是“面试判断模型”，不是题库。</div>
       </div>
 
       <div class="grid g4" style="margin-bottom:24px">
         <div class="card"><span class="num">1</span><h4 class="mt8">岗位类型库</h4><p>运营、产品、市场、销售、HR、财务、咨询管培、客服客成、新媒体、数据分析等 10 类高频岗位。</p></div>
         <div class="card"><span class="num">2</span><h4 class="mt8">行业用人标准库</h4><p>互联网/AI、快消零售、B2B 服务、咨询、金融科技、制造供应链、教育本地生活、医疗健康 8 大行业。</p></div>
         <div class="card"><span class="num">3</span><h4 class="mt8">公司类型库</h4><p>大厂、外企、国企、成长型民企、创业公司、咨询、快消、制造、AI 科技等类型化标准。</p></div>
-        <div class="card"><span class="num">4</span><h4 class="mt8">面试问题与追问库</h4><p>真实问题、动态追问路径、扣分信号与好答案信号。</p></div>
+        <div class="card"><span class="num">4</span><h4 class="mt8">轮次与追问库</h4><p>一面、主管面、HR 面、终面分别在看什么；真实问题、动态追问路径、扣分信号与好答案信号。</p></div>
       </div>
 
       <div class="compare">
@@ -1090,74 +1127,155 @@
       </div>
     </section>
 
+    <!-- ============ 12 YUNLUE ============ -->
+    <section class="section" id="yunlue">
+      <div class="sec-head">
+        <span class="eyebrow alt">云略为什么能提供这些</span>
+        <h2>云略的资产不是题库，而是真实招聘服务现场里的判断样本</h2>
+        <p>云略本身做过企业招聘咨询、候选人推荐和面试反馈沟通，接触到的不只是 JD，而是企业真实用人语境：岗位背后的业务问题、每轮面试在看什么、业务主管如何追问、HR 担心什么、候选人通常在哪里失分。</p>
+        <div class="quote">Echo 要做的不是把云略资源直接卖给 C 端，而是把这些资源脱敏、归纳、结构化，转译成 C 端能用的面试判断能力。</div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:24px">
+        <div class="card">
+          <span class="num">1</span>
+          <h3 class="mt8">岗位真实需求</h3>
+          <p>企业给云略的往往不只是 JD，还包括这个岗位补什么短板、老板真正担心什么、团队现在缺哪类人、之前为什么招错。</p>
+        </div>
+        <div class="card">
+          <span class="num">2</span>
+          <h3 class="mt8">真实面试场景</h3>
+          <p>部分公司云略实际参与过招聘咨询和推荐，知道谁来面、每轮看什么、主管怎么追问、HR 最担心哪些风险。</p>
+        </div>
+        <div class="card">
+          <span class="num">3</span>
+          <h3 class="mt8">候选人失分样本</h3>
+          <p>哪些表达像包装，哪些经历像真的 owner，哪些离职原因危险，哪些薪资表达会减分，这些都来自真实服务反馈。</p>
+        </div>
+        <div class="card">
+          <span class="num">4</span>
+          <h3 class="mt8">顾问判断经验</h3>
+          <p>资深猎头长期在企业和候选人之间做翻译，知道企业的真实判断语言，也知道候选人该如何把经历讲得可信。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:12px">三层知识来源</h3>
+      <div class="grid g3" style="margin-bottom:24px">
+        <div class="card alt"><span class="tag teal">公开层</span><h3 class="mt8">公开 JD、公开面经、行业资料</h3><p>用于建立基础行业、岗位族、公司类型和轮次判断框架。</p></div>
+        <div class="card alt"><span class="tag gold">经验层</span><h3 class="mt8">云略招聘咨询与推荐反馈</h3><p>用于校准岗位背后的真实业务问题、企业偏好、候选人失分点和面试追问逻辑。</p></div>
+        <div class="card alt"><span class="tag green">反馈层</span><h3 class="mt8">Echo 用户真实面试复盘</h3><p>用于校准预测问题和真实问题的差距，持续更新高风险表达库与训练策略。</p></div>
+      </div>
+
+      <div class="card dark">
+        <h3>知识飞轮</h3>
+        <p class="mt8" style="color:rgba(255,253,248,0.78)">云略经验 → Echo 标准库 → C 端训练 → 真实面试复盘 → 标准库更准。这个飞轮的核心不是信息差，而是判断力。</p>
+      </div>
+    </section>
+
     <!-- ============ 12 BUSINESS ============ -->
     <section class="section" id="business">
       <div class="sec-head">
         <span class="eyebrow alt">商业模式</span>
-        <h2>四层定价：免费感知风险，付费完成训练，高端接入真人</h2>
-        <p>免费只给“风险感知”，不给完整训练；通用档验证普通付费；精准档验证行业深度付费；高端档用真实顾问承接最高价值环节。</p>
+        <h2>四层定价：低门槛引流，训练付费，高端接入真人</h2>
+        <p>定价策略不是一开始榨取高客单，而是先用免费作战图和早鸟训练包建立信任，再用抵扣真人顾问时间的方式，把高意向用户自然导向高端服务。</p>
+      </div>
+
+      <div class="grid g3" style="margin-bottom:24px">
+        <div class="card alt">
+          <span class="tag teal">首 1000 名种子用户</span>
+          <h3 class="mt8">早鸟价先验证转化</h3>
+          <p>通用训练包先用 ¥99 验证首次付费，精准作战包先用 ¥299 验证高意向用户。早期重点不是利润最大化，而是拿到真实使用、真实复盘和真实转介绍。</p>
+        </div>
+        <div class="card alt">
+          <span class="tag gold">付费可抵扣</span>
+          <h3 class="mt8">训练包变成顾问券</h3>
+          <p>用户购买通用或精准包后，如升级真实顾问辅导，可抵扣 15-30 分钟专家诊断费用。这样低价产品不是一次性收入，而是高端服务的入口。</p>
+        </div>
+        <div class="card alt">
+          <span class="tag green">裂变引流</span>
+          <h3 class="mt8">复盘带来下一批用户</h3>
+          <p>分享面试作战图、完成真实面试复盘、邀请同学或同事，都可解锁模拟次数或顾问抵扣券。引流路径围绕“面试前焦虑”和“面试后复盘”两个高传播时刻设计。</p>
+        </div>
       </div>
 
       <div class="pricing">
         <div class="price">
           <h3>免费层</h3>
           <div class="amt">¥0</div>
-          <p class="fit">让用户感到“它看懂我了”。</p>
+          <p class="fit">让用户感到“它看懂我了”，完成第一次信任建立。</p>
           <ul class="list mt8">
             <li>1 次简历风险扫描</li>
             <li>1 张面试作战图</li>
             <li>3 个高风险追问</li>
             <li>1 次 5 分钟快速模拟</li>
             <li>1 次面试后文字复盘</li>
-            <li>分享后增加一次模拟</li>
+            <li>首 1000 名可解锁 1 次数字顾问预沟通</li>
+            <li>分享后增加一次模拟或顾问抵扣券</li>
           </ul>
         </div>
         <div class="price feature">
           <h3>通用训练包</h3>
-          <div class="amt">¥199<small> – 299</small></div>
-          <p class="fit">普通岗位面试，主要训练表达。</p>
+          <div class="amt">¥99<small> 早鸟 / 原价 ¥199-299</small></div>
+          <p class="fit">普通岗位面试，主要训练表达；首 1000 名用于验证首次付费。</p>
           <ul class="list mt8">
             <li>完整简历解析</li>
             <li>目标岗位标准卡</li>
             <li>20-30 分钟模拟面试</li>
+            <li>数字顾问深度沟通记录总结</li>
             <li>复盘报告</li>
-            <li>1 次真实面试录音复盘</li>
+            <li>1 次真实面试录音/录屏复盘</li>
             <li>3 段核心答案重构</li>
             <li>7 天内 3 次训练</li>
+            <li>可抵扣真实顾问 15 分钟诊断</li>
           </ul>
         </div>
         <div class="price">
           <h3>精准作战包</h3>
-          <div class="amt">¥499<small> – 699</small></div>
-          <p class="fit">指定行业 / 岗位族 / 公司类型，重要二面终面。</p>
+          <div class="amt">¥299<small> 早鸟 / 原价 ¥499-699</small></div>
+          <p class="fit">指定行业 / 岗位族 / 公司类型，重要二面终面，需要更接近真实面试场景。</p>
           <ul class="list mt8">
             <li>行业 / 岗位族用人标准推演</li>
             <li>公司类型面试风格分析</li>
             <li>简历深度风险分析</li>
             <li>1 次完整模拟 + 1 次单题深挖</li>
-            <li>1 次真实录音深度复盘</li>
+            <li>1 次真实录音/录屏深度复盘</li>
+            <li>表达稳定性与证据一致性提示</li>
             <li>1 份面试作战报告</li>
             <li>可选人工顾问审核</li>
+            <li>可抵扣真实顾问 30 分钟诊断</li>
           </ul>
         </div>
         <div class="price">
           <h3>高端人工辅导包</h3>
-          <div class="amt">¥999<small> 起</small></div>
-          <p class="fit">重要 offer、留学生、转岗、高薪岗位、多次失败用户。</p>
+          <div class="amt">¥699<small> 早鸟起 / 原价 ¥999 起</small></div>
+          <p class="fit">重要 offer、留学生、转岗、高薪岗位、多次失败用户。训练包用户升级时可直接抵扣。</p>
           <ul class="list mt8">
             <li>AI 初筛报告</li>
+            <li>数字顾问预沟通与深度追问</li>
             <li>真实顾问简历与经历 review</li>
             <li>真实顾问 1v1 策略会</li>
             <li>预约制模拟面试 + 逐题复盘</li>
             <li>面试前 24 小时冲刺</li>
-            <li>面试后录音复盘</li>
+            <li>面试后录音/录屏复盘与总结</li>
           </ul>
         </div>
       </div>
 
+      <div class="tbl-wrap mt20">
+        <table class="tbl">
+          <thead><tr><th>引流节点</th><th>用户动作</th><th>产品给什么</th><th>下一步转化</th></tr></thead>
+          <tbody>
+            <tr><td>面试前 24-72 小时</td><td>上传简历和目标岗位</td><td>免费作战图 + 高风险追问</td><td>引导 ¥99 临场训练</td></tr>
+            <tr><td>模拟后发现风险</td><td>练一次自我介绍或项目深挖</td><td>复盘报告 + 答案重构</td><td>引导 ¥299 精准作战</td></tr>
+            <tr><td>真实面试后</td><td>上传录音/录屏或手动复盘</td><td>真实失分点 + 下一轮训练计划</td><td>引导顾问 1v1 总结</td></tr>
+            <tr><td>分享与邀请</td><td>分享作战图、邀请同学同事</td><td>模拟次数、复盘次数或顾问抵扣券</td><td>降低获客成本</td></tr>
+          </tbody>
+        </table>
+      </div>
+
       <div class="card dark mt20">
         <h3>高端档的核心卖点不是“AI 更高级”</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.78)">而是：AI 先完成结构化分析和训练底稿（约 70% 初稿），真实顾问再基于行业经验、面试判断和表达细节做最后一公里指导。一期先用真实顾问承接最高档，既保证服务质量，也能把顾问经验持续反哺给 AI 知识库。</p>
+        <p class="mt8" style="color:rgba(255,253,248,0.78)">而是：数字顾问先创造安全沟通场景，完成深度追问、沟通记录和训练底稿（约 70% 初稿）；AI 再分析录音、录屏、转写与表达状态；云略真实顾问最后基于行业经验、企业招聘咨询经验、面试判断和表达细节做最后一公里指导。一期先用真实顾问承接最高档，既保证服务质量，也能把顾问经验持续反哺给 AI 知识库。</p>
       </div>
     </section>
 
@@ -1166,14 +1284,68 @@
       <div class="sec-head">
         <span class="eyebrow">MVP 与推进计划</span>
         <h2>8 周做出可测试闭环，先用小样本验证方法是否成立</h2>
-        <p>第一个版本只需跑通：上传简历+输入岗位 → 生成作战图 → 模拟面试 → 复盘报告 → 真实面试后上传录音 → 真实复盘 → 引导付费继续训练。</p>
+        <p>第一个版本只需跑通：上传简历+输入岗位 → 生成作战图 → 数字顾问深度沟通 → 模拟面试 → 复盘报告 → 真实面试后上传录音/录屏 → 真实复盘 → 真实顾问辅助总结 → 引导付费继续训练。云略顾问先人工校准标准库，产品再逐步自动化。</p>
       </div>
 
       <div class="timeline" style="margin-bottom:24px">
-        <div class="phase"><b>第 1-2 周</b><h4>产品与样本</h4><p>定义 5 个高频岗位，收集 100 份简历、100 条面试问题，设计三张核心卡与 20 条模拟样本，产出 Prompt V0 与评估标准 V0。</p></div>
-        <div class="phase"><b>第 3-4 周</b><h4>MVP 开发</h4><p>搭建 Web 端，完成简历解析、岗位输入、作战图、文本模拟与复盘报告，接入支付与人工审核后台，20 人种子测试。</p></div>
-        <div class="phase"><b>第 5-6 周</b><h4>语音与质量</h4><p>接入语音输入/输出，优化动态追问与回答重构，增加单题深挖，建立人工复核流程与付费服务 SOP。</p></div>
-        <div class="phase"><b>第 7-8 周</b><h4>商业验证</h4><p>招募 100-300 名种子用户，上线免费作战图，测试 199 / 499 定价，跑通真实顾问高端辅导，记录面试结果反馈。</p></div>
+        <div class="phase"><b>第 1-2 周</b><h4>产品与样本</h4><p>定义 5 个高频岗位族、3-5 个重点行业和 4 类公司类型，收集 100 份简历、100 条面试问题，整理云略 50-100 个脱敏招聘咨询与面试反馈案例，产出 Prompt V0 与评估标准 V0。</p></div>
+        <div class="phase"><b>第 3-4 周</b><h4>MVP 开发</h4><p>搭建 Web 端，完成简历解析、岗位输入、行业/岗位族用人标准推演、公司类型面试风格推演、作战图、文本模拟与复盘报告，接入支付与人工审核后台，20 人种子测试。</p></div>
+        <div class="phase"><b>第 5-6 周</b><h4>语音与质量</h4><p>接入语音输入/输出，完成数字顾问深度沟通、沟通记录结构化、录音/录屏复盘和表达稳定性提示灰度，建立人工复核流程与付费服务 SOP。</p></div>
+        <div class="phase"><b>第 7-8 周</b><h4>商业验证</h4><p>招募 100-300 名种子用户，上线免费作战图，测试 99 / 299 早鸟定价，跑通数字顾问预沟通 + 云略真实顾问辅助总结，记录面试结果反馈。</p></div>
+      </div>
+
+      <h3 style="margin-bottom:12px">8 周 MVP 资源投入</h3>
+      <div class="grid g4" style="margin-bottom:24px">
+        <div class="metric"><b>6-8 人</b><span>小团队启动：产品、工程、AI 应用、增长运营，加云略真实顾问兼职参与。</span></div>
+        <div class="metric"><b>36-84 万</b><span>8 周现金预算区间，不含创始人全职投入的机会成本。</span></div>
+        <div class="metric"><b>8-20 万</b><span>投流与种子用户激励预算，用于验证获客成本和首单转化。</span></div>
+        <div class="metric"><b>1000 人</b><span>首批种子用户目标，重点看上传简历、完成模拟、付费和复盘反馈。</span></div>
+      </div>
+
+      <div class="tbl-wrap" style="margin-bottom:24px">
+        <table class="tbl">
+          <thead><tr><th>投入项</th><th>配置建议</th><th>8 周预算</th><th>主要产出</th></tr></thead>
+          <tbody>
+            <tr><td>产品与项目</td><td>产品负责人 1 人，全程推动需求、交互、测试和节奏</td><td>0-8 万</td><td>定义 MVP 范围、用户路径、付费转化和验收标准</td></tr>
+            <tr><td>技术开发</td><td>全栈/前端 1 人，后端/AI 应用 1-2 人</td><td>16-30 万</td><td>Web 端、简历解析、模拟面试、支付、后台和基础日志</td></tr>
+            <tr><td>AI 与语音服务</td><td>模型调用、语音输入输出、转写、录音/录屏存储</td><td>2-5 万</td><td>文本/语音模拟、数字顾问沟通、真实面试复盘</td></tr>
+            <tr><td>云略顾问标注</td><td>2-3 名真实顾问兼职，参与标准库、案例标注和高端服务</td><td>5-10 万</td><td>行业/岗位族判断样本、公司类型面试风格、人工复核 SOP</td></tr>
+            <tr><td>设计与内容运营</td><td>设计 0.5 人，增长/社群运营 1 人</td><td>3-6 万</td><td>页面、作战图模板、种子用户运营、内容发布和用户访谈</td></tr>
+            <tr><td>投流与激励</td><td>小红书/抖音/B 站测试，校园社群/KOC，早鸟券和顾问抵扣券</td><td>8-20 万</td><td>获得首批 1000 用户，验证免费作战图和 ¥99 / ¥299 转化</td></tr>
+            <tr><td>合规与杂项</td><td>隐私授权、支付配置、基础法务、数据备份和机动预算</td><td>2-5 万</td><td>降低录音/录屏、视觉分析、支付和用户数据风险</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid g3" style="margin-bottom:24px">
+        <div class="card">
+          <span class="tag teal">核心团队</span>
+          <h3 class="mt8">先轻团队，不重组织</h3>
+          <p>前 8 周不需要完整公司化团队。关键是 1 个产品负责人、2-3 个技术人员、1 个增长运营，再把云略顾问作为兼职专家池接入。</p>
+        </div>
+        <div class="card">
+          <span class="tag gold">投流原则</span>
+          <h3 class="mt8">先小额测试，再放大胜出渠道</h3>
+          <p>投流不追求声量，先测“面试前 24-72 小时焦虑”“面试挂了不知道原因”“二面终面冲刺”三类钩子，找到转化最高的内容后再加预算。</p>
+        </div>
+        <div class="card">
+          <span class="tag green">预算目标</span>
+          <h3 class="mt8">钱主要买验证，不买规模</h3>
+          <p>这笔预算要验证四件事：用户愿意上传真实材料、愿意完成模拟、愿意为 ¥99 / ¥299 付费、愿意在关键面试前升级真实顾问。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:12px">投流验证口径</h3>
+      <div class="tbl-wrap" style="margin-bottom:24px">
+        <table class="tbl">
+          <thead><tr><th>渠道</th><th>预算建议</th><th>投放内容</th><th>观察指标</th></tr></thead>
+          <tbody>
+            <tr><td>小红书 / 抖音 / B 站</td><td>3-8 万</td><td>面试高风险地图、二面终面冲刺、失败复盘案例</td><td>免费作战图获客成本、简历上传率、收藏分享率</td></tr>
+            <tr><td>校园与求职社群</td><td>2-5 万</td><td>首 1000 名早鸟名额、模拟面试体验、顾问抵扣券</td><td>激活率、首次模拟完成率、邀请转介绍率</td></tr>
+            <tr><td>求职 KOC / 职业博主</td><td>2-5 万</td><td>真实简历改造、面试复盘直播、行业面试套路拆解</td><td>¥99 付费转化、¥299 升级转化、顾问预约线索</td></tr>
+            <tr><td>搜索与关键词</td><td>1-2 万</td><td>“面试自我介绍”“二面怎么准备”“面试复盘”等高意图词</td><td>高意图获客成本、支付转化率、顾问线索成本</td></tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="compare" style="margin-bottom:24px">
@@ -1182,17 +1354,21 @@
           <ul class="list mt14">
             <li>登录/匿名体验、简历上传或粘贴</li>
             <li>目标岗位输入、JD 粘贴、轮次选择</li>
+            <li>指定行业 / 岗位族用人标准推演</li>
+            <li>指定公司类型面试风格推演</li>
             <li>能力本质卡、用人标准卡、风险地图</li>
             <li>文本版 + 语音版模拟面试、单题深挖</li>
+            <li>数字顾问深度沟通记录与 AI 总结</li>
             <li>面试复盘报告</li>
-            <li>真实录音上传 + 真实面试复盘报告</li>
+            <li>真实录音/录屏上传 + 真实面试复盘报告</li>
+            <li>表达稳定性与证据一致性分析灰度</li>
             <li>付费入口、人工后台、基础日志与反馈</li>
           </ul>
         </div>
         <div class="card alt">
           <h3><span class="tag gold">MVP 可延后 (P1)</span></h3>
           <ul class="list gold mt14">
-            <li>视频数字人、现场记录助手、实时提示灰度版</li>
+            <li>高仿真视频数字人形象、现场记录助手、实时提示灰度版</li>
             <li>多专家圆桌、完整公司标准库</li>
             <li>移动 App、长期能力星图</li>
             <li>B 端匹配、企业后台、面试社区</li>
@@ -1201,13 +1377,14 @@
         </div>
       </div>
 
-      <h3 style="margin-bottom:12px">最小成功标准（一期只看这五件事是否成立）</h3>
+      <h3 style="margin-bottom:12px">最小成功标准（一期只看这六件事是否成立）</h3>
       <div class="grid g4">
         <div class="metric"><b>1</b><span>用户愿意上传简历和目标岗位。</span></div>
         <div class="metric"><b>2</b><span>看到作战图后觉得“它真的看懂了我的风险”。</span></div>
         <div class="metric"><b>3</b><span>用户愿意完成一次模拟面试。</span></div>
         <div class="metric"><b>4</b><span>复盘后愿意继续训练或付费。</span></div>
-        <div class="metric colspan" style="min-height:auto"><b>5</b><span>真实面试后愿意回来反馈“哪些问题真的被问到了”。</span></div>
+        <div class="metric"><b>5</b><span>真实面试后愿意回来反馈“哪些问题真的被问到了”。</span></div>
+        <div class="metric colspan" style="min-height:auto"><b>6</b><span>小额投流能带来可接受的获客成本，并验证 ¥99 / ¥299 早鸟付费转化。</span></div>
       </div>
     </section>
 
@@ -1216,7 +1393,7 @@
       <div class="sec-head">
         <span class="eyebrow alt">合作与长期愿景</span>
         <h2>Echo Interview 是 Echo 的尖刀入口，不是终点</h2>
-        <p>面试场景中的用户天然愿意暴露简历、项目、职业目标、能力短板和真实表现，这比泛聊天更容易沉淀高质量能力数据。一期先打透面试，再连接 Echo 的长期能力星图。</p>
+        <p>面试场景中的用户天然愿意暴露简历、项目、职业目标、能力短板和真实表现，这比泛聊天更容易沉淀高质量能力数据。云略提供真实招聘判断样本，Echo 提供 C 端训练闭环，一期先打透面试，再连接 Echo 的长期能力星图。</p>
       </div>
 
       <div class="flow" style="margin-bottom:24px">
@@ -1236,7 +1413,7 @@
 
       <div class="card dark">
         <h3>最终判断</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.82)">Echo 一期最应该做的，不是一个温和宽泛的职场聊天产品，而是一个足够尖锐、足够具体、足够能卖的面试作战产品。它的核心是：帮你看清这场面试的用人标准，找出你表达里的风险，并把你的真实经历训练成更有胜率的答案。</p>
+        <p class="mt8" style="color:rgba(255,253,248,0.82)">Echo 一期最应该做的，不是一个温和宽泛的职场聊天产品，而是一个足够尖锐、足够具体、足够能卖的面试作战产品。它的核心是：帮你看清这场面试的判断逻辑，找出你表达里的风险，并把你的真实经历训练成更有胜率的答案。云略提供的是招聘服务现场里的判断样本，Echo 把它产品化给 C 端用户。</p>
         <div class="hero-actions mt20">
           <button class="btn" type="button" onclick="window.print()" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:#fffdf8">导出 PDF 方案</button>
         </div>
@@ -1252,7 +1429,7 @@
       </div>
       <div>
         三个核心卖点<br>
-        不背模板，基于真实简历训练 · 不只问问题，像真实面试官一样追问 · 不只给评分，帮你把回答改到能用
+        不背模板，基于真实简历训练 · 不卖题库，沉淀面试判断模型 · 不只给评分，帮你把回答改到能用
       </div>
       <div>
         建议阅读时间：20-30 分钟<br>
