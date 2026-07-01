@@ -1,1479 +1,505 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en" data-locale="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Echo Interview｜只站在被面试者一边的 AI 面试精灵</title>
-  <meta name="description" content="Echo Interview 是一个只服务 C 端被面试者的 AI 面试精灵：结合真实简历、目标岗位、面试轮次、真实面试复盘和云略招聘服务经验，生成面试作战图、进行语音模拟面试，并输出可执行的改进方案。">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #f5f1e9;
-      --surface: #fffdf8;
-      --surface-2: #eef3ef;
-      --surface-3: #f0ebe1;
-      --ink: #172126;
-      --muted: #667277;
-      --soft: #3e4a50;
-      --line: #d8d0c3;
-      --teal: #0b6b61;
-      --teal-2: #d9ece8;
-      --gold: #b36b25;
-      --gold-2: #f3dfc2;
-      --blue: #2f6383;
-      --blue-2: #dbe8ef;
-      --red: #a9473c;
-      --red-2: #efd9d4;
-      --green: #397a4a;
-      --green-2: #dfecdf;
-      --radius: 10px;
-      --shadow: 0 22px 60px rgba(23, 33, 38, 0.12);
-      --maxw: 1140px;
-      --side: 252px;
-      color: var(--ink);
-      background: var(--bg);
-      font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
-    button { font: inherit; cursor: pointer; }
-    h1, h2, h3, h4 { letter-spacing: 0; }
-    p { margin: 0; }
-
-    /* ---------- Sidebar nav ---------- */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--side);
-      height: 100vh;
-      z-index: 40;
-      background: var(--surface);
-      border-right: 1px solid var(--line);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      padding: 24px 18px;
-      overflow-y: auto;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
-    }
-    .brand-mark {
-      width: 40px;
-      height: 40px;
-      border-radius: 9px;
-      background: var(--ink);
-      color: #fffdf8;
-      display: grid;
-      place-items: center;
-      font-weight: 900;
-      font-size: 19px;
-      letter-spacing: -0.5px;
-      flex: 0 0 auto;
-    }
-    .brand-text strong { display: block; font-size: 16px; line-height: 1.1; }
-    .brand-text span { display: block; margin-top: 3px; font-size: 12px; color: var(--muted); }
-
-    .nav-label {
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-      opacity: 0.7;
-      padding: 0 4px;
-      margin-bottom: -6px;
-    }
-    .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-top: 4px;
-      counter-reset: navnum;
-    }
-    .nav-links a {
-      display: flex;
-      align-items: baseline;
-      gap: 9px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      letter-spacing: 0.2px;
-      line-height: 1.3;
-      color: var(--muted);
-      border-left: 3px solid transparent;
-      transition: color 150ms ease, background 150ms ease, border-color 150ms ease;
-    }
-    .nav-links a::before {
-      counter-increment: navnum;
-      content: counter(navnum, decimal-leading-zero);
-      font-size: 11px;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      color: var(--muted);
-      opacity: 0.55;
-      transition: color 150ms ease, opacity 150ms ease;
-    }
-    .nav-links a:hover {
-      color: var(--teal);
-      background: var(--teal-2);
-    }
-    .nav-links a.active {
-      color: var(--teal);
-      background: var(--teal-2);
-      border-left-color: var(--teal);
-      font-weight: 700;
-    }
-    .nav-links a.active::before {
-      color: var(--teal);
-      opacity: 1;
-    }
-    .nav-cta {
-      margin-top: auto;
-      text-align: center;
-      padding: 12px 14px;
-      border-radius: 9px;
-      background: var(--teal);
-      color: #fff;
-      font-weight: 800;
-      font-size: 14px;
-      border: 1px solid var(--teal);
-    }
-    .nav-cta:hover { background: #095a52; }
-    .menu-toggle { display: none; }
-
-    main, .footer { margin-left: var(--side); }
-
-    /* ---------- Layout ---------- */
-    main { display: block; }
-    .section {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: clamp(48px, 7vw, 96px) clamp(16px, 4vw, 40px);
-      scroll-margin-top: 78px;
-      border-top: 1px solid transparent;
-    }
-    .section + .section { border-top: 1px solid var(--line); }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      width: fit-content;
-      padding: 6px 12px;
-      border: 1px solid var(--teal);
-      border-radius: 7px;
-      color: var(--teal);
-      background: var(--teal-2);
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .eyebrow.alt { border-color: var(--gold); color: var(--gold); background: var(--gold-2); }
-
-    .sec-head { max-width: 880px; margin-bottom: 30px; }
-    .sec-head h2 {
-      margin: 16px 0 12px;
-      font-size: clamp(26px, 3.4vw, 44px);
-      line-height: 1.18;
-    }
-    .sec-head p {
-      color: var(--muted);
-      font-size: clamp(15px, 1.3vw, 18px);
-      line-height: 1.8;
-    }
-
-    .quote {
-      margin-top: 18px;
-      padding: 14px 18px;
-      border-left: 4px solid var(--gold);
-      background: var(--surface);
-      border-radius: 0 var(--radius) var(--radius) 0;
-      font-weight: 700;
-      line-height: 1.7;
-    }
-    .quote.teal { border-left-color: var(--teal); }
-
-    /* ---------- Hero ---------- */
-    .hero {
-      max-width: var(--maxw);
-      margin: 0 auto;
-      padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 40px) clamp(40px, 5vw, 64px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
-      gap: clamp(20px, 3vw, 40px);
-      align-items: center;
-    }
-    .hero h1 {
-      margin: 16px 0 18px;
-      font-size: clamp(34px, 5vw, 60px);
-      line-height: 1.08;
-    }
-    .hero h1 em {
-      font-style: normal;
-      color: var(--teal);
-    }
-    .hero-lead {
-      font-size: clamp(16px, 1.5vw, 21px);
-      line-height: 1.75;
-      color: var(--soft);
-      max-width: 560px;
-    }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-    .btn {
-      min-height: 46px;
-      padding: 11px 20px;
-      border-radius: 9px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      font-weight: 800;
-      font-size: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .btn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
-    .btn.primary:hover { background: #095a52; }
-    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 22px rgba(23,33,38,0.12); }
-    .hero-meta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--muted); font-size: 13px; }
-    .hero-meta b { color: var(--ink); }
-
-    .hero-card {
-      background: var(--ink);
-      color: #fffdf8;
-      border-radius: 14px;
-      padding: 22px;
-      box-shadow: var(--shadow);
-    }
-    .hero-card h3 { margin: 0 0 4px; font-size: 16px; }
-    .hero-card .sub { color: rgba(255,253,248,0.66); font-size: 13px; line-height: 1.6; }
-    .pipe {
-      margin-top: 18px;
-      display: grid;
-      gap: 9px;
-    }
-    .pipe-step {
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 9px;
-      background: rgba(255,255,255,0.05);
-      padding: 11px 13px;
-      display: grid;
-      grid-template-columns: 24px 1fr;
-      gap: 11px;
-      align-items: center;
-    }
-    .pipe-step .n {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--teal);
-      color: #fff;
-      display: grid; place-items: center;
-      font-size: 12px; font-weight: 900;
-    }
-    .pipe-step b { font-size: 14px; display: block; }
-    .pipe-step span { font-size: 12px; color: rgba(255,253,248,0.66); }
-
-    /* ---------- Grids & cards ---------- */
-    .grid { display: grid; gap: 14px; }
-    .g2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    .g3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .g4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
-
-    .card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 20px;
-    }
-    .card.alt { background: var(--surface-2); }
-    .card.dark { background: var(--ink); color: #fffdf8; border-color: rgba(255,255,255,0.12); }
-    .card.dark p, .card.dark li { color: rgba(255,253,248,0.74); }
-    .card h3 { margin: 0 0 9px; font-size: 17px; }
-    .card h4 { margin: 0 0 7px; font-size: 15px; }
-    .card p { color: var(--muted); line-height: 1.72; font-size: 14px; }
-
-    .metric {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 18px;
-      min-height: 130px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .metric b { font-size: clamp(22px, 2.4vw, 30px); line-height: 1.15; color: var(--teal); }
-    .metric span { color: var(--muted); font-size: 13px; line-height: 1.55; margin-top: 8px; }
-
-    .num {
-      display: inline-grid; place-items: center;
-      width: 30px; height: 30px;
-      border-radius: 50%;
-      background: var(--teal-2);
-      color: var(--teal);
-      font-size: 13px; font-weight: 900;
-      flex: 0 0 auto;
-    }
-
-    /* lists */
-    .list { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
-    .list li {
-      display: flex; gap: 10px; align-items: flex-start;
-      color: var(--soft); line-height: 1.6; font-size: 14px;
-    }
-    .list li:before {
-      content: ""; width: 7px; height: 7px; border-radius: 50%;
-      background: var(--teal); margin-top: 8px; flex: 0 0 auto;
-    }
-    .list.warn li:before { background: var(--red); }
-    .list.gold li:before { background: var(--gold); }
-    .list.green li:before { background: var(--green); }
-
-    .tag {
-      display: inline-flex; align-items: center;
-      padding: 3px 9px; border-radius: 999px;
-      font-size: 12px; font-weight: 800;
-      background: var(--blue-2); color: var(--blue);
-      width: fit-content;
-    }
-    .tag.gold { background: var(--gold-2); color: var(--gold); }
-    .tag.green { background: var(--green-2); color: var(--green); }
-    .tag.red { background: var(--red-2); color: var(--red); }
-    .tag.teal { background: var(--teal-2); color: var(--teal); }
-
-    /* compare */
-    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .compare h3 { display: flex; align-items: center; gap: 9px; }
-
-    /* matrix table */
-    .matrix { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
-    .matrix-row { display: grid; grid-template-columns: 170px minmax(0,1fr); border-bottom: 1px solid var(--line); }
-    .matrix-row:last-child { border-bottom: 0; }
-    .matrix-row b, .matrix-row span { padding: 12px 15px; font-size: 14px; line-height: 1.62; }
-    .matrix-row b { background: var(--surface-3); }
-    .matrix-row span { color: var(--soft); }
-
-    /* table */
-    table.tbl { width: 100%; border-collapse: collapse; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; font-size: 14px; }
-    table.tbl th, table.tbl td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); line-height: 1.6; vertical-align: top; }
-    table.tbl thead th { background: var(--surface-3); font-size: 13px; }
-    table.tbl tbody tr:last-child td { border-bottom: 0; }
-    table.tbl td:first-child { font-weight: 700; white-space: nowrap; }
-    .tbl-wrap { overflow-x: auto; border-radius: var(--radius); }
-
-    /* flow */
-    .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
-    .flow .step {
-      flex: 1 1 150px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: var(--surface);
-      padding: 13px 14px;
-      display: grid; gap: 7px; align-content: start;
-      position: relative;
-    }
-    .flow .step b { color: var(--teal); font-size: 12px; }
-    .flow .step span { font-size: 13px; line-height: 1.5; }
-
-    /* mock product cards */
-    .mock {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      overflow: hidden;
-    }
-    .mock-head {
-      padding: 13px 16px;
-      background: var(--surface-3);
-      border-bottom: 1px solid var(--line);
-      display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    }
-    .mock-head b { font-size: 14px; }
-    .mock-body { padding: 16px; display: grid; gap: 12px; }
-    .kv { display: grid; gap: 4px; }
-    .kv .k { font-size: 12px; color: var(--muted); font-weight: 700; }
-    .kv .v { font-size: 14px; line-height: 1.65; color: var(--soft); }
-    .highlight { color: var(--teal); font-weight: 700; }
-
-    /* pricing */
-    .pricing { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; align-items: stretch; }
-    .price {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      padding: 20px;
-      display: grid; gap: 14px; align-content: start;
-    }
-    .price.feature { border-color: var(--teal); box-shadow: 0 14px 40px rgba(11,107,97,0.14); position: relative; }
-    .price.feature:before {
-      content: "推荐验证"; position: absolute; top: -11px; left: 20px;
-      background: var(--teal); color: #fff; font-size: 11px; font-weight: 800;
-      padding: 3px 10px; border-radius: 999px;
-    }
-    .price h3 { margin: 0; font-size: 17px; }
-    .price .amt { font-size: clamp(20px, 2.2vw, 26px); font-weight: 900; color: var(--ink); }
-    .price .amt small { font-size: 13px; font-weight: 600; color: var(--muted); }
-    .price .fit { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-    /* code-ish block */
-    .data-block {
-      background: var(--ink);
-      color: #e8efe9;
-      border-radius: var(--radius);
-      padding: 16px 18px;
-      font-family: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
-      font-size: 12.5px;
-      line-height: 1.75;
-      overflow-x: auto;
-      white-space: pre;
-    }
-    details.fold {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
-      overflow: hidden;
-    }
-    details.fold summary {
-      padding: 14px 16px;
-      font-weight: 700;
-      font-size: 14px;
-      cursor: pointer;
-      list-style: none;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    details.fold summary:after { content: "展开 +"; color: var(--teal); font-size: 13px; font-weight: 800; }
-    details.fold[open] summary:after { content: "收起 −"; }
-    details.fold .fold-body { padding: 0 16px 16px; }
-
-    .timeline { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
-    .phase { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); padding: 18px; display: grid; gap: 10px; align-content: start; }
-    .phase b { color: var(--teal); font-size: 13px; }
-    .phase h4 { margin: 0; font-size: 16px; }
-    .phase p { color: var(--muted); font-size: 13px; line-height: 1.65; }
-
-    .standards { display: grid; gap: 9px; }
-
-    /* footer */
-    .footer {
-      border-top: 1px solid var(--line);
-      background: var(--surface);
-    }
-    .footer-inner {
-      max-width: var(--maxw); margin: 0 auto;
-      padding: 36px clamp(16px, 4vw, 40px) 48px;
-      display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-between;
-      color: var(--muted); font-size: 13px;
-    }
-    .footer-inner strong { color: var(--ink); display: block; margin-bottom: 6px; font-size: 15px; }
-
-    .mt8 { margin-top: 8px; } .mt14 { margin-top: 14px; } .mt20 { margin-top: 20px; } .mt28 { margin-top: 28px; }
-    .lead-sub { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 14px; }
-    .colspan { grid-column: 1 / -1; }
-
-    /* ---------- Responsive ---------- */
-    @media (max-width: 1240px) {
-      .hero { grid-template-columns: 1fr; }
-      .g4, .pricing, .timeline { grid-template-columns: repeat(2, minmax(0,1fr)); }
-    }
-    @media (max-width: 980px) {
-      main, .footer { margin-left: 0; }
-      .sidebar {
-        position: sticky;
-        top: 0;
-        width: auto;
-        height: auto;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 12px;
-        padding: 11px 16px;
-        border-right: 0;
-        border-bottom: 1px solid var(--line);
-        background: rgba(245, 241, 233, 0.95);
-        backdrop-filter: blur(14px);
-      }
-      .brand { margin-right: auto; order: 0; padding-bottom: 0; border-bottom: 0; }
-      .nav-label { display: none; }
-      .nav-links {
-        order: 3;
-        flex-basis: 100%;
-        display: none;
-        margin-top: 4px;
-      }
-      .nav-links.open { display: flex; }
-      .nav-cta { margin-top: 0; order: 1; padding: 8px 13px; font-size: 13px; }
-      .menu-toggle {
-        order: 2;
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 42px; height: 40px; border-radius: 8px;
-        border: 1px solid var(--line); background: var(--surface); font-size: 18px;
-      }
-    }
-    @media (max-width: 760px) {
-      .g2, .g3, .g4, .compare, .pricing, .timeline { grid-template-columns: 1fr; }
-      .matrix-row { grid-template-columns: 1fr; }
-      .matrix-row b { border-bottom: 1px solid var(--line); }
-      .hero-card { order: 2; }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #12181a;
-        --surface: #1b2426;
-        --surface-2: #20292b;
-        --surface-3: #243032;
-        --ink: #f1ece2;
-        --muted: #9aa6a4;
-        --soft: #c5cecb;
-        --line: #2f3b3d;
-        --teal: #4cc2b3;
-        --teal-2: #1d3a37;
-        --gold: #d99a52;
-        --gold-2: #3a2f1e;
-        --blue: #74b0d2;
-        --blue-2: #1f3340;
-        --red: #d98b80;
-        --red-2: #3a2522;
-        --green: #79c08c;
-        --green-2: #1f3326;
-        --shadow: 0 22px 60px rgba(0,0,0,0.4);
-      }
-      .brand-mark { background: var(--teal); color: #0c1416; }
-      .hero-card, .card.dark, .data-block { background: #0e1517; }
-      .nav-cta, .btn.primary, .price.feature:before, .pipe-step .n { color: #0c1416; }
-    }
-
-    @media print {
-      :root { --bg: #fff; --surface: #fff; --surface-2: #fff; --surface-3: #f3f3f3; }
-      .topnav, .hero-actions, .nav-cta, .menu-toggle { display: none !important; }
-      body { background: #fff; }
-      .section { page-break-inside: auto; }
-      .card, .metric, .price, .phase, .mock, .matrix, table.tbl, .hero-card { box-shadow: none; break-inside: avoid; }
-      a[href^="#"] { color: inherit; }
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title data-i18n="site.title">Arkx — Imagination, Made Real</title>
+  <meta name="description" data-i18n="site.description" content="Arkx by Arks Creative is building a Creator OS for the AI-native generation of playable, interactive digital works." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7aUUsj.ttf" as="font" type="font/ttf" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=2026062237" />
 </head>
-<body>
-  <aside class="sidebar">
-    <a class="brand" href="#top" aria-label="Echo Interview 首页">
-      <span class="brand-mark">E</span>
-      <span class="brand-text">
-        <strong>Echo Interview</strong>
-        <span>AI 面试精灵</span>
+<body class="theme-dark is-at-top">
+  <div class="page-backdrop" aria-hidden="true">
+    <div class="page-backdrop__dark"></div>
+    <div class="page-backdrop__light"></div>
+  </div>
+  <header class="site-header">
+    <a class="brand" href="#about" aria-label="Arkx home">
+      <span class="brand-lockup">
+        <svg class="brand-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="40 45 2355 760" role="img" aria-label="Arkx">
+          <path fill="currentColor" fill-rule="evenodd" d="M45 800 265 125 300 70 330 50H430L460 70L495 125L715 800H548L493 628H267L212 800ZM438 485H322L353 315H407Z M790 800H950V495Q970 390 1068 390H1110L1156 349V295L1128 267H1068Q993 267 950 322V267H790Z M1298 800V50H1458V800ZM1448 510 1645 267H1810L1590 530L1810 800H1638L1448 562Z M1864 800H2037L2392 312L2372 267H2227ZM2227 800H2372L2392 755L2037 267H1864Z"/>
+        </svg>
+        <small class="brand-tagline" data-i18n="brand.tagline">Arks Creative</small>
       </span>
     </a>
-    <button class="menu-toggle" id="menuToggle" aria-label="展开菜单" aria-expanded="false">☰</button>
-    <div class="nav-label">目录</div>
-    <nav class="nav-links" id="navLinks" aria-label="章节导航">
-      <a href="#top">产品定位</a>
-      <a href="#stance">立场边界</a>
-      <a href="#users">目标用户</a>
-      <a href="#flow">任务流程</a>
-      <a href="#pull">用户吸引力</a>
-      <a href="#method">核心方法</a>
-      <a href="#features">功能模块</a>
-      <a href="#cards">核心产出</a>
-      <a href="#loop">前中后闭环</a>
-      <a href="#agents">AI 架构</a>
-      <a href="#knowledge">知识库</a>
-      <a href="#yunlue">云略资产</a>
-      <a href="#business">商业模式</a>
-      <a href="#roadmap">路线图</a>
-      <a href="#collab">合作与愿景</a>
+
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#about" class="nav-link" data-nav="about" data-i18n="nav.about">About</a>
+      <a href="#creator-os" class="nav-link" data-nav="creator-os" data-i18n="nav.creatorOS">Creator OS</a>
+      <div class="nav-menu">
+        <a href="#products" class="nav-link" data-nav="products" data-i18n="nav.products">Products</a>
+        <div class="nav-menu-panel">
+          <a href="#xce-ai" class="nav-link" data-nav="xce-ai" data-i18n="nav.xce">XCE AI</a>
+          <a href="#ai-native-generator" class="nav-link" data-nav="ai-native-generator" data-i18n="nav.ang">AI Native Generator</a>
+        </div>
+      </div>
+      <a href="#markets" class="nav-link" data-nav="markets" data-i18n="nav.markets">Markets</a>
+      <a href="#contact" class="nav-link" data-nav="contact" data-i18n="nav.contact">Contact</a>
     </nav>
-  </aside>
 
-  <main id="top">
-    <!-- ============ 01 HERO ============ -->
-    <section class="hero">
-      <div>
-        <span class="eyebrow">产品定位 · 一期 V0.1</span>
-        <h1>面试前，把最危险的问题<em>先练掉</em></h1>
-        <p class="hero-lead">
-          Echo Interview 帮你在面试前看清面试官会怎么判断你、你哪里会被追问，以及怎么把真实经历讲得更有胜算。它不是题库，也不是模板答案，而是帮你找到“面试官脑子里的那把尺”。
-        </p>
-        <div class="hero-meta">
-          <span>服务对象：<b>C 端被面试者</b></span>
-          <span>核心场景：<b>综合面 / 主管面 / HR 面 / 二面终面</b></span>
-          <span>形态：<b>AI + 数字顾问 + 真实顾问</b></span>
-        </div>
-      </div>
+    <div class="header-actions">
+      <button class="lang-chip is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-chip" type="button" data-lang="zh">简</button>
+      <button class="lang-chip" type="button" data-lang="zh-hant">繁</button>
+      <a class="btn btn--small btn--primary" href="#xce-ai" data-i18n="nav.explore">Explore XCE AI</a>
+    </div>
+  </header>
 
-      <aside class="hero-card" aria-label="能力转译闭环">
-        <h3>从经历到可信表达</h3>
-        <p class="sub">Echo 把简历、目标岗位、行业标准、云略招聘服务经验、数字顾问沟通记录与真实面试录音，连接成一个可训练、可复盘的闭环。</p>
-        <div class="pipe">
-          <div class="pipe-step"><span class="n">1</span><div><b>识别真实能力</b><span>从简历还原能力证据，而不是抽字段</span></div></div>
-          <div class="pipe-step"><span class="n">2</span><div><b>推演判断逻辑</b><span>行业、岗位族、公司类型与真实面试场景</span></div></div>
-          <div class="pipe-step"><span class="n">3</span><div><b>模拟动态追问</b><span>像真实面试官一样持续追问</span></div></div>
-          <div class="pipe-step"><span class="n">4</span><div><b>复盘真实表现</b><span>面试后用录音和记录校准下一轮</span></div></div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- ============ 02 WHY ============ -->
-    <section class="section" id="why">
-      <div class="sec-head">
-        <span class="eyebrow">为什么一期聚焦面试</span>
-        <h2>面试是年轻人最痛、最可训练、也最容易形成数据闭环的职业场景</h2>
-        <p>Echo 一期不做泛职场陪伴，也不做双边招聘平台，而是聚焦一个高痛点、高频、强付费、可传播、可交付的尖刀场景。产品的第一性原理不是“模拟面试”，而是在面试压力下还原用户真实能力，并把它转译成能被面试官识别、追问时站得住、且更有胜率的表达。</p>
-        <div class="quote teal">面试比“泛职场困惑”更容易商业化，因为用户不是在模糊地“想变好”，而是在具体地“想过这一轮”。用户不是来找题的，是来找面试官脑子里的那把尺。</div>
-      </div>
-
-      <div class="grid g3 mt14" style="margin-bottom:14px">
-        <div class="metric"><b>痛感强</b><span>面试前天然焦虑，用户愿意为降低不确定性付费。</span></div>
-        <div class="metric"><b>时间近</b><span>面试有明确日期，决策周期短，付费触发快。</span></div>
-        <div class="metric"><b>结果明确</b><span>是否进入下一轮、是否拿到 offer，效果可感知。</span></div>
-        <div class="metric"><b>需求集中</b><span>自我介绍、项目讲述、追问应对、离职原因高度集中。</span></div>
-        <div class="metric"><b>可训练</b><span>不是知识考试，而是能力表达、动机解释和风险消除的训练。</span></div>
-        <div class="metric"><b>可传播</b><span>学生与年轻求职者愿意分享“面试神器”“免费模拟”。</span></div>
-      </div>
-
-      <div class="compare mt20">
-        <div class="card">
-          <h3><span class="tag red">普通面试工具</span></h3>
-          <ul class="list warn mt14">
-            <li>输入岗位，生成一批常见问题。</li>
-            <li>给出模板答案，越练越像背稿。</li>
-            <li>不解释面试官为什么会追问。</li>
-            <li>不知道这类公司到底怎么判断人。</li>
-            <li>无法从真实面试录音里复盘下一轮风险。</li>
-          </ul>
-        </div>
-        <div class="card alt">
-          <h3><span class="tag teal">Echo Interview</span></h3>
-          <ul class="list mt14">
-            <li>先识别候选人真实能力，再生成训练路径。</li>
-            <li>把经历还原成因果链、证据链和可追问表达。</li>
-            <li>推演行业、岗位族、公司类型和轮次的判断逻辑。</li>
-            <li>面试后基于录音和记录复盘真实表现。</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 03 STANCE ============ -->
-    <section class="section" id="stance">
-      <div class="sec-head">
-        <span class="eyebrow alt">产品立场与边界</span>
-        <h2>立场清晰，才能赢得用户信任</h2>
-        <p>早期产品需要尖锐，不需要均衡。Echo Interview 用三条不可妥协的原则定义自己，也用清晰的“不做清单”守住信任底线。</p>
-        <div class="quote">Echo Interview 一期只站在被面试者这一边。用户敢上传简历、失败复盘和真实焦虑，是因为这些内容不会变成企业筛选他的材料。</div>
-      </div>
-
-      <div class="grid g3" style="margin-bottom:14px">
-        <div class="card">
-          <span class="num">1</span>
-          <h3 class="mt8">只服务被面试者</h3>
-          <p>一期只服务 C 端，不服务企业端，不同时做候选人评估和企业筛选。面试辅导和企业筛选天然存在利益冲突。</p>
-          <p class="mt8 highlight">“不替企业筛人，只帮你更好地面对面试。”</p>
-        </div>
-        <div class="card">
-          <span class="num">2</span>
-          <h3 class="mt8">只优化真实表达</h3>
-          <p>帮用户理解岗位看重什么、哪些经历最有价值、哪些表达会被质疑，但绝不制造经历。</p>
-          <p class="mt8 highlight">“可以优化真实经历的表达，不能制造不存在的经历。”</p>
-        </div>
-        <div class="card">
-          <span class="num">3</span>
-          <h3 class="mt8">不装真人，要真标准</h3>
-          <p>模拟面试不需要伪装真人。用户买单的是问题像真面试、追问像真面试、反馈能指出真实风险。</p>
-          <p class="mt8 highlight">“改完以后，表达真的更有胜算。”</p>
-        </div>
-      </div>
-
-      <div class="compare mt20">
-        <div class="card alt">
-          <h3><span class="tag red">明确不做</span></h3>
-          <ul class="list warn mt14">
-            <li>编造项目经历、伪造工作成果。</li>
-            <li>泄露企业题库、买卖内部真题。</li>
-            <li>鼓励背诵虚假答案、规避背景调查。</li>
-            <li>技术题、笔试题、在线测评的实时作弊代答。</li>
-            <li>同时面向企业做候选人筛选。</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3><span class="tag green">合规处理</span></h3>
-          <ul class="list green mt14">
-            <li>简历数据明确授权，默认脱敏存储。</li>
-            <li>录音上传前确认已获必要同意；默认只保留转写与结构化摘要，原始录音可一键删除。</li>
-            <li>录音、录屏和视觉分析均需用户主动授权，可随时暂停和删除。</li>
-            <li>现场辅助默认以记录和复盘为主，不默认开启实时提示。</li>
-            <li>对公司信息只做公开信息与经验推演，不宣称命中特定题库。</li>
-            <li>视觉分析只做表达训练辅助，不做测谎、不做录用判断、不面向企业输出。</li>
-            <li>专设安全合规 Agent，拦截造假、泄题、作弊与隐私风险。</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 04 USERS ============ -->
-    <section class="section" id="users">
-      <div class="sec-head">
-        <span class="eyebrow">目标用户与场景边界</span>
-        <h2>锁定正在准备一场具体面试的年轻求职者</h2>
-        <p>一期锁定应届生、准应届生、1-3 年经验的年轻白领中，正在准备综合面、主管面、HR 面、二面或终面的求职者。优先服务痛感强、时间近、付费意愿高的人群。</p>
-      </div>
-
-      <div class="tbl-wrap" style="margin-bottom:24px">
-        <table class="tbl">
-          <thead>
-            <tr><th>用户类型</th><th>典型状态</th><th>核心痛点</th><th>付费可能</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>应届生</td><td>校招、实习转正、第一份工作</td><td>不知道面试官到底想听什么</td><td>中</td></tr>
-            <tr><td>留学生 / 转专业学生</td><td>经历多但表达散</td><td>不会把经历讲成岗位匹配</td><td>中高</td></tr>
-            <tr><td>1-3 年职场新人</td><td>跳槽或换方向</td><td>项目讲不深，离职原因难讲</td><td>高</td></tr>
-            <tr><td>面试受挫者</td><td>多次一面或二面失败</td><td>不知道自己哪里失分</td><td>高</td></tr>
-            <tr><td>临近重要面试用户</td><td>24-72 小时内面试</td><td>需要快速演练和信心恢复</td><td>高</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid g3">
-        <div class="card">
-          <h3><span class="tag teal">一期重点做</span></h3>
-          <ul class="list mt14">
-            <li>自我介绍、简历深挖、项目经历讲述</li>
-            <li>行为面试、主管面、HR 面、二面 / 终面</li>
-            <li>指定行业 / 岗位族用人标准推演</li>
-            <li>指定公司类型面试风格推演</li>
-            <li>离职原因、职业动机、薪资预期表达</li>
-            <li>反问面试官、面试后复盘</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3><span class="tag gold">一期谨慎做</span></h3>
-          <ul class="list gold mt14">
-            <li>薪资谈判、Offer 比较、入职前准备</li>
-            <li>具体公司级深度校准与个性化辅导</li>
-            <li class="highlight">需要人工审核与专家参与，作为高价服务</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3><span class="tag red">一期不做</span></h3>
-          <ul class="list warn mt14">
-            <li>技术编程题刷题、案例题答案泄露</li>
-            <li>企业真实题库买卖、面试实时监听代答</li>
-            <li>简历造假、背景调查规避</li>
-            <li>面向企业筛选、开放式心理咨询</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 05 FLOW ============ -->
-    <section class="section" id="flow">
-      <div class="sec-head">
-        <span class="eyebrow">用户任务与主流程</span>
-        <h2>用户来 Echo，不是为了聊天，而是为了完成七个任务</h2>
-        <p>这七个任务构成产品主流程：从“我是谁”到“我真实表现如何”，每一步都对应一个可交付的产出。</p>
-      </div>
-
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="card alt"><b class="highlight">01 我是谁</b><p class="mt8">把自己的经历和能力讲清楚。</p></div>
-        <div class="card alt"><b class="highlight">02 对方要什么</b><p class="mt8">理解目标岗位和公司可能看重什么。</p></div>
-        <div class="card alt"><b class="highlight">03 我怎么匹配</b><p class="mt8">找到自己与目标岗位之间的强匹配点。</p></div>
-        <div class="card alt"><b class="highlight">04 我哪里危险</b><p class="mt8">识别简历、经历、表达和动机中的高风险追问。</p></div>
-        <div class="card alt"><b class="highlight">05 我怎么回答</b><p class="mt8">形成真实、有结构、有证据的表达。</p></div>
-        <div class="card alt"><b class="highlight">06 我怎么练熟</b><p class="mt8">通过模拟面试和复盘，把答案变成现场表现。</p></div>
-        <div class="card alt"><b class="highlight">07 我真实表现如何</b><p class="mt8">通过面试录音、录屏或现场记录，识别真实问题、表达状态与失分点。</p></div>
-      </div>
-
-      <h3 class="mt8" style="margin-bottom:12px">产品主流程</h3>
-      <div class="flow" style="margin-bottom:24px">
-        <div class="step"><b>STEP 01</b><span>选择面试状态</span></div>
-        <div class="step"><b>STEP 02</b><span>上传简历 / 粘贴经历</span></div>
-        <div class="step"><b>STEP 03</b><span>输入公司、岗位、JD、轮次</span></div>
-        <div class="step"><b>STEP 04</b><span>生成候选人能力本质卡</span></div>
-        <div class="step"><b>STEP 05</b><span>生成目标岗位用人标准卡</span></div>
-        <div class="step"><b>STEP 06</b><span>生成面试风险地图</span></div>
-        <div class="step"><b>STEP 07</b><span>语音模拟面试 + 动态追问</span></div>
-        <div class="step"><b>STEP 08</b><span>生成面试复盘报告</span></div>
-        <div class="step"><b>STEP 09</b><span>输出下一轮训练计划</span></div>
-        <div class="step"><b>STEP 10</b><span>继续训练 / 人工辅导 / 分享</span></div>
-      </div>
-
-      <div class="compare">
-        <div class="card">
-          <h3>首次体验：只问四个问题</h3>
-          <p class="lead-sub mt8">第一次进入不让用户填复杂档案。入口文案只有一句：“你现在要准备哪一场面试？”</p>
-          <ul class="list">
-            <li>我面试什么岗位？</li>
-            <li>面试到哪一轮？</li>
-            <li>离面试还有多久？</li>
-            <li>上传简历或粘贴一段经历。</li>
-          </ul>
-        </div>
-        <div class="card dark">
-          <h3>免费核心产出：面试作战图</h3>
-          <p class="lead-sub mt8" style="color:rgba(255,253,248,0.7)">让用户一眼觉得“它真的看懂了我的简历和这场面试”。</p>
-          <ul class="list">
-            <li>你最该讲清楚的 3 个能力点</li>
-            <li>面试官最可能追问的 5 个问题</li>
-            <li>你简历里最容易被质疑的 2 个风险</li>
-            <li>你现在最需要练的一段回答</li>
-            <li>建议训练模式：快速过 / 深度模拟 / 临场冲刺</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ 06 PULL ============ -->
-    <section class="section" id="pull">
-      <div class="sec-head">
-        <span class="eyebrow">C 端为什么会来</span>
-        <h2>吸引力不是 AI 陪练，而是面试前的“内幕级判断感”</h2>
-        <p>用户最焦虑的不是没有题，而是不知道自己会在哪里被怀疑。Echo 要让用户第一次站到面试官脑子里看自己：这类公司怎么判断人，我这份简历哪里危险，我该怎么证明自己。</p>
-        <div class="quote teal">不是找题，是找判断逻辑。不是背答案，是把真实经历训练到能接住追问。</div>
-      </div>
-
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="card"><span class="tag red">强钩子</span><h3 class="mt8">面试高风险地图</h3><p>告诉用户“你会死在哪里”：项目像参与者、结果归因不清、离职原因有抱怨感、转岗逻辑不闭环、自我介绍卖点太散。</p></div>
-        <div class="card"><span class="tag teal">强壁垒</span><h3 class="mt8">行业与公司类型判断逻辑</h3><p>不告诉用户某家公司明天问哪道题，而是告诉他这类公司为什么这样问、想排除什么风险、喜欢什么候选人气质。</p></div>
-        <div class="card"><span class="tag gold">强体感</span><h3 class="mt8">面试官会怎么想</h3><p>用户说一句回答，Echo 翻译成面试官可能形成的判断：是真 owner 还是执行者？结果是不是包装？动机稳不稳？</p></div>
-        <div class="card"><span class="tag green">强痛点</span><h3 class="mt8">失败面试复盘</h3><p>用户挂掉以后最痛的是“不知道为什么”。Echo 帮他还原哪个问题开始失分、哪个追问说明对方不信、下一轮必须补什么。</p></div>
-      </div>
-
-      <div class="grid g4">
-        <div class="card alt"><h3>24 小时临场冲刺</h3><p>面试倒计时越近，付费意愿越强。用户不需要大课，只需要今晚先练稳 3 个必问、2 个高危追问和 1 段自我介绍。</p></div>
-        <div class="card alt"><h3>真实经历重构</h3><p>普通 AI 给模板答案，Echo 保留真实经历，补背景、角色、关键判断、行动、结果和复盘，让回答听起来是真的做过。</p></div>
-        <div class="card alt"><h3>个人面试素材库</h3><p>每练一次，沉淀自我介绍、核心项目、离职原因、职业动机、失败复盘、薪资预期和反问问题，形成个人长期资产。</p></div>
-        <div class="card alt"><h3>只服务 C 端的安全感</h3><p>用户愿意讲失败、焦虑和短板，是因为 Echo 不把他当候选人评估对象，而是把他当需要被支持的被面试者。</p></div>
-      </div>
-    </section>
-
-    <!-- ============ 06 METHOD ============ -->
-    <section class="section" id="method">
-      <div class="sec-head">
-        <span class="eyebrow alt">核心方法论</span>
-        <h2>Echo 的亮点不是题库，是面试语境下的认知转译</h2>
-        <p>普通工具是“输入岗位 → 生成问题 → 给参考答案”。Echo 的逻辑是把用户的“我做过什么”，转译成“面试官为什么应该相信我能胜任”。这需要五层能力协同工作。</p>
-        <div class="quote">普通面试工具帮你准备问题，Echo 帮你理解自己、理解标准、理解面试官为什么会追问。我们卖的不是题目，而是面试官的判断逻辑。</div>
-      </div>
-
-      <div class="grid g2" style="margin-bottom:24px">
-        <div class="card"><div style="display:flex;gap:12px;align-items:flex-start"><span class="num">1</span><div><h4>结构识别：先判断这个人在哪里</h4><p>判断用户阶段、目标岗位族、面试轮次、目标行业、公司类型和当前最大风险。同一个问题在不同结构下含义完全不同。</p></div></div></div>
-        <div class="card"><div style="display:flex;gap:12px;align-items:flex-start"><span class="num">2</span><div><h4>因果还原：把经历还原成可信故事</h4><p>把一段经历拆成面试可验证的因果链：业务背景 → 问题触发 → 用户角色 → 关键判断 → 行动选择 → 结果变化 → 复盘认知。</p></div></div></div>
-        <div class="card"><div style="display:flex;gap:12px;align-items:flex-start"><span class="num">3</span><div><h4>动态假设：模拟面试官真正怀疑什么</h4><p>提前替用户看见隐形怀疑：是真 owner 还是执行者？结果是否被包装？能否迁移到新岗位？再告诉用户该补哪一句。</p></div></div></div>
-        <div class="card"><div style="display:flex;gap:12px;align-items:flex-start"><span class="num">4</span><div><h4>最小本质压缩：找到最该被记住的卖点</h4><p>从多段散乱经历里压缩出一个最小能力本质，同时解释“做过什么、为什么适合、哪些经历最值得讲”。</p></div></div></div>
-        <div class="card colspan"><div style="display:flex;gap:12px;align-items:flex-start"><span class="num">5</span><div><h4>自然回应：先稳住人，再推进训练</h4><p>面试准备不是纯理性任务。很多用户卡住不是不会答，而是怕被否定、怕经历不够。Echo 先承接焦虑，再指出具体风险，最后给一个可训练动作，比直接评分更容易让用户继续练。</p></div></div></div>
-      </div>
-
-      <h3 style="margin-bottom:12px">示例：从普通表达到能力证据链</h3>
-      <div class="matrix" style="margin-bottom:24px">
-        <div class="matrix-row"><b>用户原话</b><span>我参与过一个用户增长项目，转化率提升了 20%。</span></div>
-        <div class="matrix-row"><b>面试官疑问</b><span>你到底负责哪部分？这个结果能归因到你吗？你只是执行，还是做了独立判断？</span></div>
-        <div class="matrix-row"><b>Echo 重构</b><span>当时转化卡在首单环节，我负责拆用户流失点，发现新用户对权益理解不足，于是把首屏文案和触达节奏做了两轮 A/B 调整，最终首单转化提升。最关键的是问题诊断和快速迭代。</span></div>
-        <div class="matrix-row"><b>能力本质</b><span>不是“做过运营动作”，而是在资源有限时，用用户反馈和数据变化快速调整执行方案。</span></div>
-      </div>
-
-      <h3 style="margin-bottom:12px">行业与公司类型判断模型（对外最独特的能力）</h3>
-      <p class="lead-sub">不宣称“某家公司精准押题”，但能讲清不同行业、岗位族、公司类型和面试轮次的判断系统。</p>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th>行业 / 类型</th><th>面试重点可能不同</th></tr></thead>
-          <tbody>
-            <tr><td>互联网运营</td><td>数据意识、增长逻辑、迭代速度、用户理解</td></tr>
-            <tr><td>快消市场</td><td>消费者洞察、品牌理解、渠道协同、项目落地</td></tr>
-            <tr><td>咨询 / 管培</td><td>结构化思维、表达清晰度、学习速度、抗压</td></tr>
-            <tr><td>B2B 销售</td><td>客户理解、线索推进、成单逻辑、韧性</td></tr>
-            <tr><td>大厂</td><td>逻辑清晰、岗位匹配、协作边界、结果归因</td></tr>
-            <tr><td>创业公司</td><td>主动性、抗压、模糊环境执行、补位能力</td></tr>
-            <tr><td>外企</td><td>沟通规范、职业化、跨文化表达、稳定动机</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ============ 07 FEATURES ============ -->
-    <section class="section" id="features">
-      <div class="sec-head">
-        <span class="eyebrow">核心功能模块</span>
-        <h2>十二个模块，覆盖面试前、面试中、面试后</h2>
-        <p>每个模块都不是孤立功能，而是围绕“理解候选人 + 推演用人标准 + 训练真实表达”这条主线协同。</p>
-      </div>
-
-      <div class="grid g2">
-        <div class="card"><h4>1 · 简历与经历解析</h4><p>目标不是抽字段，而是还原候选人的能力证据：角色范围、行动细节、结果指标、能力信号、表达缺口与包装风险。</p><p class="mt8"><span class="tag teal">产出</span> 能力本质卡 · 简历风险点 · 经历可讲性排序 · 项目深挖问题</p></div>
-        <div class="card"><h4>2 · 候选人能力本质卡</h4><p>继承 Echo 的“最小本质压缩”，不是标签，而是一句话能力假设，附最有含金量的经历、可被相信的证据、最弱的表达环节。</p></div>
-        <div class="card"><h4>3 · 目标岗位用人标准卡</h4><p>根据岗位、JD、行业、公司类型和轮次，推演这个岗位“表面招什么 vs 真正要解决什么问题”，区分门槛能力、加分项与扣分风险。</p></div>
-        <div class="card"><h4>4 · 面试风险地图</h4><p>付费意愿的重要触发点。每个风险给出：风险描述、面试官为什么在意、可能被怎么追问、该如何补证据、推荐训练题。</p></div>
-        <div class="card"><h4>5 · AI 语音模拟面试</h4><p>产品付费核心。AI 面试官根据回答动态追问，区分回答是空泛、具体、跑题还是过度包装，必要时提高压力。</p>
-          <div class="tbl-wrap mt8"><table class="tbl"><thead><tr><th>模式</th><th>用途</th><th>时长</th></tr></thead><tbody>
-            <tr><td>快速热身</td><td>自我介绍、基础问题</td><td>5-8 分钟</td></tr>
-            <tr><td>单题深挖</td><td>针对一个高风险问题反复追问</td><td>8-12 分钟</td></tr>
-            <tr><td>全流程模拟</td><td>按轮次模拟真实面试</td><td>20-30 分钟</td></tr>
-            <tr><td>临场冲刺</td><td>面试前 24 小时快速校准</td><td>10-15 分钟</td></tr>
-          </tbody></table></div>
-        </div>
-        <div class="card"><h4>6 · 回答重构器</h4><p>不直接给标准答案，而是帮用户重构自己的真实答案：保留真实经历，补足背景，明确角色，讲出关键行动与判断逻辑，给出结果与复盘。</p>
-          <details class="fold mt8"><summary>查看输出格式</summary><div class="fold-body"><div class="data-block">你原来的回答：
-...
-面试官可能听到的风险：
-...
-建议改成：
-...
-为什么这样更好：
-...
-下一轮追问可能是：
-...</div></div></details>
-        </div>
-        <div class="card"><h4>7 · 面试复盘报告</h4><p>像“教练报告”，不像考试判卷。用信号等级代替分数：已经能打 / 还需补证据 / 容易被追问击穿 / 暂不建议这样讲。</p></div>
-        <div class="card"><h4>8 · 面试表达素材库</h4><p>帮用户沉淀自己的素材而非一次性训练：自我介绍版本、3 段核心项目故事、失败复盘、离职原因、职业动机、反问问题等，每段标注适用岗位与追问点。</p></div>
-        <div class="card"><h4>9 · 面试情绪陪跑</h4><p>只围绕面试焦虑，不做泛情绪入口。处理方式：先承接焦虑 → 再定位焦虑来源 → 最后转成可训练动作。</p></div>
-        <div class="card"><h4>10 · 真实面试录音/录屏复盘</h4><p>解决模拟与真实之间的断层。用户面试后上传录音、录屏、转写或记录，Echo 分析真实问答、预测命中率、追问压力点和下一轮该补什么。</p><p class="mt8"><span class="tag gold">价值</span> 让用户知道真实表现 · 校准预测 · 形成数据飞轮</p></div>
-        <div class="card"><h4>11 · 数字顾问深度沟通</h4><p>将云略顾问经验产品化为数字顾问，先创造安全、低压、可反复练习的沟通场景，对用户经历做深度追问、澄清和复盘。沟通记录由 AI 结构化分析，再交给真实顾问做重点辅助。</p></div>
-        <div class="card"><h4>12 · 多模态表达分析</h4><p>在用户授权下，结合语气、停顿、表情和肢体动作，辅助判断回答的表达稳定性、紧张点和证据一致性。它不是测谎，也不判断人品，只帮助用户发现“哪里听起来不够可信”。</p></div>
-      </div>
-    </section>
-
-    <!-- ============ 08 CARDS ============ -->
-    <section class="section" id="cards">
-      <div class="sec-head">
-        <span class="eyebrow alt">核心产出示例</span>
-        <h2>用户拿到的，是看得懂、用得上的结构化结果</h2>
-        <p>下面是三张核心卡与面试作战图的真实样例，全部基于用户真实经历生成，不堆通用模板。</p>
-      </div>
-
-      <div class="grid g2">
-        <div class="mock">
-          <div class="mock-head"><b>候选人能力本质卡</b><span class="tag teal">运营岗示例</span></div>
-          <div class="mock-body">
-            <div class="kv"><span class="k">一句话能力本质</span><span class="v">你最有价值的能力，不是“参与过运营项目”，而是能在信息不完整时，把用户反馈、数据和执行动作连起来，推动一个小项目跑出结果。</span></div>
-            <div class="kv"><span class="k">最有含金量的经历</span><span class="v">资源有限下的用户增长项目，独立完成流失点诊断与两轮 A/B 迭代。</span></div>
-            <div class="kv"><span class="k">目前最弱的表达环节</span><span class="v">对业务结果的归因表达——容易把团队成果讲成个人贡献，或讲不清自己的关键判断。</span></div>
+  <main>
+    <section class="hero-act section section--dark" id="about" data-section="about" data-theme="dark">
+      <div class="hero-fixed" id="hero-fixed">
+        <div class="hero-laptop-wrap" id="hero-laptop-wrap">
+          <div class="hero-laptop" id="hero-laptop">
+            <div class="laptop-shell laptop-shell--3d">
+              <div class="laptop-lid">
+                <div class="laptop-bezel">
+                  <div class="laptop-screen">
+                    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="img/hero-creator-os.webp" data-src-desktop="video/XGE_AI_mobile.mp4" data-src-mobile="video/XGE_AI_mobile.mp4">
+                      <source src="video/XGE_AI_mobile.mp4" type="video/mp4" />
+                    </video>
+                    <div class="laptop-screen-scrim"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="laptop-hinge" aria-hidden="true"></div>
+              <div class="laptop-deck" aria-hidden="true">
+                <div class="laptop-keyboard"></div>
+                <div class="laptop-trackpad"></div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="mock">
-          <div class="mock-head"><b>目标岗位用人标准卡</b><span class="tag gold">用增运营</span></div>
-          <div class="mock-body">
-            <div class="kv"><span class="k">表面上招什么</span><span class="v">用户增长。</span></div>
-            <div class="kv"><span class="k">真正考察什么</span><span class="v">你能不能从执行任务升级到问题诊断。面试官不会只听你做了多少活动，而会追问你为什么这么做、怎么判断有效、结果是否可归因。</span></div>
-            <div class="kv"><span class="k">门槛 vs 加分</span><span class="v"><span class="highlight">门槛：</span>数据意识、执行落地。<span class="highlight">加分：</span>问题诊断、增长归因。</span></div>
+      <div class="hero-runway" id="hero-runway" aria-hidden="true"></div>
+
+      <div class="hero-foreground">
+        <div class="hero-scroll-window" aria-hidden="true">
+          <div class="hero-slogan">
+            <h1 data-i18n="hero.title">Imagination, Made Real</h1>
+            <p class="hero-scroll-hint" data-i18n="hero.scrollHint">Scroll to explore</p>
           </div>
         </div>
-
-        <div class="mock">
-          <div class="mock-head"><b>面试风险地图</b><span class="tag red">高风险追问</span></div>
-          <div class="mock-body">
-            <div class="kv"><span class="k">风险 1 · 项目像参与者不像 owner</span><span class="v">追问“这个决定是谁拍的板？” → 补一句你独立做了什么判断、如何影响后续动作。</span></div>
-            <div class="kv"><span class="k">风险 2 · 结果有数字但归因不清</span><span class="v">追问“20% 提升里你的贡献是多少？” → 拆清自己负责的环节与可量化结果。</span></div>
-            <div class="kv"><span class="k">风险 3 · 离职原因易显抱怨</span><span class="v">追问“为什么离开上一家？” → 转成对成长和岗位匹配的主动选择。</span></div>
+        <div class="hero-details section-light-panel section-full-bleed">
+          <div class="section-shell">
+          <span class="eyebrow" data-i18n="hero.eyebrow">AI-Native Creation Technology · Founded 2025</span>
+          <p class="hero-lede" data-i18n="hero.lede">Arkx is building a Creator OS for a new generation of AI-era creators — a lighter, faster way to turn stories, characters, scenes, gameplay and emotions into interactive digital works.</p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="#products" data-i18n="hero.cta.primary">Enter the Creator OS</a>
+            <a class="btn btn--ghost" href="#creator-os" data-i18n="hero.cta.secondary">See the thesis</a>
           </div>
-        </div>
-
-        <div class="mock">
-          <div class="mock-head"><b>面试作战图</b><span class="tag teal">免费体验产出</span></div>
-          <div class="mock-body">
-            <div class="kv"><span class="k">最该讲清的 3 个能力点</span><span class="v">问题诊断 · 数据驱动迭代 · 资源有限下的落地。</span></div>
-            <div class="kv"><span class="k">最可能追问的 5 个问题</span><span class="v">项目归因、独立判断、离职原因、为什么来、反问准备。</span></div>
-            <div class="kv"><span class="k">最该先练的一段回答</span><span class="v">把增长项目讲成一条因果链，而不是活动流水账。</span></div>
+          <div class="metric-row" aria-label="Arkx positioning metrics">
+            <div class="metric-card reveal-card">
+              <strong data-i18n="metric.1.value">2025</strong>
+              <span data-i18n="metric.1.label">Founded for the AI creation era</span>
+            </div>
+            <div class="metric-card reveal-card">
+              <strong>4×</strong>
+              <span data-i18n="metric.2.label">Input modes: text, image, voice, context</span>
+            </div>
+            <div class="metric-card reveal-card">
+              <strong>1</strong>
+              <span data-i18n="metric.3.label">Path from prompt to playable project</span>
+            </div>
+          </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ 09 LOOP ============ -->
-    <section class="section" id="loop">
-      <div class="sec-head">
-        <span class="eyebrow">面试前 · 中 · 后闭环</span>
-        <h2>面试前练，面试中记，面试后复盘</h2>
-        <p>这个闭环让产品不止是一次性工具。每一次真实面试都会反哺用户的训练计划，也会反哺系统对行业问题和追问逻辑的理解。</p>
+    <section class="section section--light section-full-bleed split-section section-scroll-over" id="creator-os" data-section="creator-os" data-theme="light">
+      <div class="section-shell">
+      <div class="section-kicker" data-animate="up" data-i18n="creatorOS.kicker">Creator OS</div>
+      <div class="split-copy" data-animate="up">
+        <h2 data-i18n="creatorOS.title">Past creators published content. Future creators build experiences.</h2>
+        <p data-i18n="creatorOS.text">For years, turning an idea into a digital work required complex tools, specialist teams, asset budgets and long production cycles. AI changes the route. Generation, composition, interaction and publishing can now become lighter, faster and more open.</p>
       </div>
-
-      <div class="grid g3" style="margin-bottom:24px">
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center"><h3>面试前</h3><span class="tag teal">准备</span></div>
-          <p class="mt8">面试作战图、风险地图、核心经历重构、单题深挖和语音模拟。</p>
-          <ul class="list mt8"><li>最该讲清楚的 3 个能力点</li><li>最可能追问的 5 个问题</li><li>最危险的 2 个表达漏洞</li></ul>
-        </div>
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center"><h3>面试中</h3><span class="tag gold">记录</span></div>
-          <p class="mt8">低风险形态优先：记录问题类型、回答节奏和面试官兴趣点。叫“面试现场记录与复盘助手”，不叫“作弊神器”。</p>
-          <ul class="list gold mt8"><li>不替用户回答</li><li>不绕过面试规则</li><li>用于事后复盘</li></ul>
-        </div>
-        <div class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center"><h3>面试后</h3><span class="tag green">复盘</span></div>
-          <p class="mt8">上传录音、录屏、转写或手动记录，系统分析真实表现并生成下一轮训练计划。</p>
-          <ul class="list green mt8"><li>预测命中率</li><li>追问压力点</li><li>表达稳定性</li><li>下一轮补强项</li></ul>
-        </div>
+      <div class="thesis-grid">
+        <article class="card" data-animate="up">
+          <span class="card-index">01</span>
+          <h3 data-i18n="creatorOS.card1.title">Ideas become systems</h3>
+          <p data-i18n="creatorOS.card1.text">A story no longer has to stop at text. A character no longer has to stay inside an image. Emotion, relationship and inspiration can become interactive works.</p>
+        </article>
+        <article class="card" data-animate="up">
+          <span class="card-index">02</span>
+          <h3 data-i18n="creatorOS.card2.title">Creation becomes iterative</h3>
+          <p data-i18n="creatorOS.card2.text">Creators can prototype fast, publish into real ecosystems, read feedback, then continue growing the work instead of starting over.</p>
+        </article>
+        <article class="card" data-animate="up">
+          <span class="card-index">03</span>
+          <h3 data-i18n="creatorOS.card3.title">Tools follow imagination</h3>
+          <p data-i18n="creatorOS.card3.text">Arkx does not decide what creators should make. It helps them cross the first gap from idea to playable, editable, publishable project.</p>
+        </article>
       </div>
-
-      <h3 style="margin-bottom:12px">现场辅助的产品边界</h3>
-      <div class="tbl-wrap" style="margin-bottom:24px">
-        <table class="tbl">
-          <thead><tr><th>层级</th><th>形态</th><th>一期建议</th></tr></thead>
-          <tbody>
-            <tr><td>低风险形态</td><td>用户打开记录模式，Echo 只做问题识别、节奏标记和事后复盘</td><td>可做</td></tr>
-            <tr><td>沟通训练形态</td><td>数字顾问与用户进行安全沟通、深度追问和录屏复盘，真实顾问随后辅助总结</td><td>可做</td></tr>
-            <tr><td>多模态辅助</td><td>用户授权后分析语气、停顿、表情和肢体动作，只用于表达训练与复盘</td><td>可灰度</td></tr>
-            <tr><td>高风险形态</td><td>Echo 现场边听边给用户实时提示</td><td>谨慎灰度</td></tr>
-            <tr><td>明确不做</td><td>实时代答、生成虚假答案、未授权录音/录屏、技术题作弊、把视觉分析当测谎</td><td>不做</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card dark">
-        <h3>数据飞轮：预测问题 vs 真实问题</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.75)">真实面试录音、录屏和数字顾问沟通复盘有三重价值：让用户知道自己真实表现如何（而不是凭感觉复盘）；让 Echo 校准“预测问题”和“真实问题”的差距；让产品形成高质量面试数据飞轮，成为最重要的长期资产。</p>
       </div>
     </section>
 
-    <!-- ============ 10 AGENTS ============ -->
-    <section class="section" id="agents">
-      <div class="sec-head">
-        <span class="eyebrow alt">AI 能力架构</span>
-        <h2>十个核心 Agent，加上数字顾问和真实顾问</h2>
-        <p>系统不是一个大模型直接回答，而是把面试准备拆成职责清晰的 Agent 协作。数字顾问负责创造安全沟通场景和深度追问，真实顾问承接高阶判断与最后总结。</p>
+    <section class="section section--light section-full-bleed advantage-section section-scroll-over" id="why" data-section="why" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="why.kicker">Why Arkx</span>
+        <h2 data-i18n="why.title">Lightweight, open, composable.</h2>
+        <p data-i18n="why.text">AI-native creation tools should not build higher walls. They should make more capabilities usable by more creators.</p>
       </div>
-
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="card alt"><h4>简历解析 Agent</h4><p>识别经历、能力证据、风险点。</p></div>
-        <div class="card alt"><h4>岗位标准 Agent</h4><p>根据 JD、公司、岗位推演用人标准。</p></div>
-        <div class="card alt"><h4>面试策略 Agent</h4><p>生成本场面试的作战重点。</p></div>
-        <div class="card alt"><h4>模拟面试 Agent</h4><p>扮演面试官并动态追问。</p></div>
-        <div class="card alt"><h4>回答诊断 Agent</h4><p>判断回答的具体度、可信度和风险。</p></div>
-        <div class="card alt"><h4>答案重构 Agent</h4><p>把真实经历重构成更好的表达。</p></div>
-        <div class="card alt"><h4>录音/录屏复盘 Agent</h4><p>分析真实录音、录屏、转写文本和现场记录。</p></div>
-        <div class="card alt"><h4>数字顾问 Agent</h4><p>基于云略顾问经验进行安全沟通、深度追问和阶段总结。</p></div>
-        <div class="card alt"><h4>多模态表达分析 Agent</h4><p>分析语气、停顿、表情和肢体动作，输出表达稳定性与证据一致性提示。</p></div>
-        <div class="card alt"><h4>安全合规 Agent</h4><p>拦截造假、泄题、作弊、隐私风险。</p></div>
+      <div class="advantage-matrix" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Arkx advantages">
+          <button class="tab-button is-active" type="button" data-tab="speed" data-i18n="why.tab.speed">Speed</button>
+          <button class="tab-button" type="button" data-tab="access" data-i18n="why.tab.access">Access</button>
+          <button class="tab-button" type="button" data-tab="context" data-i18n="why.tab.context">Context</button>
+          <button class="tab-button" type="button" data-tab="publish" data-i18n="why.tab.publish">Publish</button>
+        </div>
+        <div class="tab-panels">
+          <article class="tab-panel is-active" data-panel="speed">
+            <h3 data-i18n="why.speed.title">Start fast. Build fast. Validate fast.</h3>
+            <p data-i18n="why.speed.text">Creators do not need heavier workflows for early validation. XCE AI is designed for shorter paths from idea to demo, vertical slice and shareable build.</p>
+          </article>
+          <article class="tab-panel" data-panel="access">
+            <h3 data-i18n="why.access.title">Lower the production threshold.</h3>
+            <p data-i18n="why.access.text">AI helps users generate and organize 2D/3D assets, scenes, UI, effects, voices and music, while the editor keeps everything editable.</p>
+          </article>
+          <article class="tab-panel" data-panel="context">
+            <h3 data-i18n="why.context.title">AI understands the project, not just the prompt.</h3>
+            <p data-i18n="why.context.text">The system can read project structure, assets, scripts and scene objects, then continue generation or modification from the current context.</p>
+          </article>
+          <article class="tab-panel" data-panel="publish">
+            <h3 data-i18n="why.publish.title">Build inside real ecosystems.</h3>
+            <p data-i18n="why.publish.text">XCE AI supports visual editing, multi-platform export, independent publishing, community assets and ongoing iteration after user feedback.</p>
+          </article>
+        </div>
       </div>
-
-      <h3 style="margin-bottom:12px">关键结构化数据</h3>
-      <div class="grid g3">
-        <details class="fold"><summary>候选人画像</summary><div class="fold-body"><div class="data-block">{
-  "candidate_stage": "应届生 | 1-3年 | 转岗 | 跳槽",
-  "target_role": "目标岗位",
-  "core_experiences": [],
-  "capability_signals": [],
-  "evidence_strength": {
-    "strong": [], "medium": [],
-    "weak": [], "missing": []
-  },
-  "interview_risks": [],
-  "communication_style": "",
-  "anxiety_source": ""
-}</div></div></details>
-        <details class="fold"><summary>面试任务</summary><div class="fold-body"><div class="data-block">{
-  "company": "",
-  "role": "",
-  "interview_round": "一面 | 二面 | 终面 | HR面 | 主管面",
-  "time_to_interview": "",
-  "job_requirements": [],
-  "must_prepare_questions": [],
-  "high_risk_questions": [],
-  "training_plan": []
-}</div></div></details>
-        <details class="fold"><summary>回答评估</summary><div class="fold-body"><div class="data-block">{
-  "question": "",
-  "answer_summary": "",
-  "specificity": "high | medium | low",
-  "evidence_strength": "strong | medium | weak",
-  "role_clarity": "clear | unclear",
-  "logic_quality": "clear | scattered",
-  "risk_points": [],
-  "recommended_rewrite": "",
-  "follow_up_questions": []
-}</div></div></details>
       </div>
     </section>
 
-    <!-- ============ 11 KNOWLEDGE ============ -->
-    <section class="section" id="knowledge">
-      <div class="sec-head">
-        <span class="eyebrow">知识库建设</span>
-        <h2>对外说行业辅导，对内沉淀更细颗粒度的校准能力</h2>
-        <p>一期不求全，先求可用。不承诺押中特定公司题目，但能帮用户理解这个行业通常怎么筛人、看重什么、哪些表达容易失分。</p>
-        <div class="quote teal">我们不承诺押中特定公司题目，但我们能帮你理解这个行业通常怎么筛人、看重什么、哪些表达容易失分。知识库沉淀的是“面试判断模型”，不是题库。</div>
+    <section class="section section--light section-full-bleed product-strip" id="products" data-section="products" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="products.kicker">Products</span>
+        <h2 class="heading-serif" data-i18n="products.title">Two entrances into AI-native creation.</h2>
+        <p data-i18n="products.text">XCE AI gives creators a lightweight interactive creation workspace. AI Native Generator extends it into interactive AI short dramas and playable narrative content.</p>
       </div>
-
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="card"><span class="num">1</span><h4 class="mt8">岗位类型库</h4><p>运营、产品、市场、销售、HR、财务、咨询管培、客服客成、新媒体、数据分析等 10 类高频岗位。</p></div>
-        <div class="card"><span class="num">2</span><h4 class="mt8">行业用人标准库</h4><p>互联网/AI、快消零售、B2B 服务、咨询、金融科技、制造供应链、教育本地生活、医疗健康 8 大行业。</p></div>
-        <div class="card"><span class="num">3</span><h4 class="mt8">公司类型库</h4><p>大厂、外企、国企、成长型民企、创业公司、咨询、快消、制造、AI 科技等类型化标准。</p></div>
-        <div class="card"><span class="num">4</span><h4 class="mt8">轮次与追问库</h4><p>一面、主管面、HR 面、终面分别在看什么；真实问题、动态追问路径、扣分信号与好答案信号。</p></div>
-      </div>
-
-      <div class="compare">
-        <div class="card">
-          <h3><span class="tag teal">对外口径</span></h3>
-          <ul class="list mt14">
-            <li>行业面试辅导</li>
-            <li>岗位族用人标准推演</li>
-            <li>公司类型面试风格分析</li>
-          </ul>
+      <div class="product-intro" data-animate="up">
+        <div class="product-intro-copy">
+          <span class="eyebrow" data-i18n="phero.eyebrow">Arkx Product System</span>
+          <p class="intro-lede" data-i18n="phero.lede">XCE AI is an AI-native creation system that embeds AI into the core production chain of games and interactive short dramas.</p>
         </div>
-        <div class="card alt">
-          <h3><span class="tag gold">内部公司级校准库（不对外宣传）</span></h3>
-          <p class="lead-sub mt8">数据来源：公开 JD、公开面经、前员工访谈、猎头专家经验、已服务用户复盘、专家人工标注。</p>
-          <ul class="list warn">
-            <li>不沉淀泄密题、不售卖内部未公开题库</li>
-            <li>不宣称 100% 命中、不承诺“某家公司保过”或“精准押题”</li>
-          </ul>
+        <div class="console-card">
+          <div class="console-topbar">
+            <span></span><span></span><span></span>
+            <strong data-i18n="console.title">XCE AI / Build Console</strong>
+          </div>
+          <div class="console-body">
+            <p><span>creator.prompt</span> <span data-i18n="console.line1">"Create an interactive cyber-school mystery with 3 endings."</span></p>
+            <p><span>ai.pipeline</span> <span data-i18n="console.line2">assets → scenes → dialogue → events → tests → publish</span></p>
+            <p><span>build.status</span> <span data-i18n="console.line3">playable project generated · editable in workspace</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="product-showcase">
+        <a class="product-tile" href="#xce-ai" data-animate="up">
+          <div class="tile-media media-slot media-slot--editor-shot">
+            <img src="img/showcase/s1.webp" alt="XCE AI editor screenshot" width="1920" height="942" />
+          </div>
+          <div class="tile-body">
+            <span data-i18n="products.xce.label">Xrafts Contents Editor</span>
+            <h3 data-i18n="products.xce.title">XCE AI</h3>
+            <p data-i18n="products.xce.text">Prompt to playable game project — assets, scenes, logic, testing and publishing in one editable production chain.</p>
+          </div>
+        </a>
+        <a class="product-tile" href="#ai-native-generator" data-animate="up">
+          <div class="tile-media media-slot media-slot--editor-shot">
+            <img src="img/showcase/s2.webp" alt="AI Native Generator screenshot" width="1920" height="942" />
+          </div>
+          <div class="tile-body">
+            <span data-i18n="products.ang.label">Interactive AI Drama</span>
+            <h3 data-i18n="products.ang.title">AI Native Generator</h3>
+            <p data-i18n="products.ang.text">Generate characters, scenes, video, voice, choices, relationship states and multi-ending interactive stories.</p>
+          </div>
+        </a>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed product-demo" id="product-demo" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head" data-animate="up">
+          <span class="section-kicker" data-i18n="demo.kicker">Product Demo</span>
+          <h2 class="heading-serif" data-i18n="demo.title">See XCE AI in action</h2>
+          <p data-i18n="demo.text">From map to playable scene — watch the creation flow.</p>
+        </div>
+        <div class="demo-video-wrap media-slot media-slot--demo" data-animate="up">
+          <video class="demo-video" controls playsinline preload="metadata"
+            poster="img/showcase/xrafts-mapshow-poster.webp"
+            data-src-desktop="video/xrafts_mapshow_720p.mp4"
+            data-src-mobile="video/xrafts_mapshow_mobile.mp4">
+            <source src="video/xrafts_mapshow_720p.mp4" type="video/mp4" />
+          </video>
         </div>
       </div>
     </section>
 
-    <!-- ============ 12 YUNLUE ============ -->
-    <section class="section" id="yunlue">
-      <div class="sec-head">
-        <span class="eyebrow alt">云略为什么能提供这些</span>
-        <h2>云略的资产不是题库，而是真实招聘服务现场里的判断样本</h2>
-        <p>云略本身做过企业招聘咨询、候选人推荐和面试反馈沟通，接触到的不只是 JD，而是企业真实用人语境：岗位背后的业务问题、每轮面试在看什么、业务主管如何追问、HR 担心什么、候选人通常在哪里失分。</p>
-        <div class="quote">Echo 要做的不是把云略资源直接卖给 C 端，而是把这些资源脱敏、归纳、结构化，转译成 C 端能用的面试判断能力。</div>
+    <section class="section section--light section-full-bleed product-deep" id="xce-ai" data-section="xce-ai" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="xce.kicker">Xrafts Contents Editor</span>
+        <h2 class="heading-serif" data-i18n="xce.title">XCE AI — the AI-native workspace for playable content.</h2>
+        <p data-i18n="xce.text">It is not a traditional game editor, not a single-format generation tool, and not another traffic-heavy closed platform. It is a lightweight interactive creation workbench for turning stories, characters, scenes, gameplay and expression into playable, publishable and continuously iterated digital works.</p>
       </div>
-
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="card">
-          <span class="num">1</span>
-          <h3 class="mt8">岗位真实需求</h3>
-          <p>企业给云略的往往不只是 JD，还包括这个岗位补什么短板、老板真正担心什么、团队现在缺哪类人、之前为什么招错。</p>
+      <div class="feature-split">
+        <div class="media-stack" data-animate="up">
+          <div class="media-slot media-slot--screen">
+            <img src="img/showcase/s3.webp" alt="XCE AI editor screenshot" width="1920" height="942" />
+          </div>
+          <p class="feature-note" data-i18n="xce.panelText">C++ editor · no-code · visual events · TypeScript API · multi-platform publishing</p>
         </div>
-        <div class="card">
-          <span class="num">2</span>
-          <h3 class="mt8">真实面试场景</h3>
-          <p>部分公司云略实际参与过招聘咨询和推荐，知道谁来面、每轮看什么、主管怎么追问、HR 最担心哪些风险。</p>
-        </div>
-        <div class="card">
-          <span class="num">3</span>
-          <h3 class="mt8">候选人失分样本</h3>
-          <p>哪些表达像包装，哪些经历像真的 owner，哪些离职原因危险，哪些薪资表达会减分，这些都来自真实服务反馈。</p>
-        </div>
-        <div class="card">
-          <span class="num">4</span>
-          <h3 class="mt8">顾问判断经验</h3>
-          <p>资深猎头长期在企业和候选人之间做翻译，知道企业的真实判断语言，也知道候选人该如何把经历讲得可信。</p>
+        <div class="feature-copy" data-animate="up">
+          <h3 data-i18n="xce.subtitle">AI is not bolted on. It is inside the creation chain.</h3>
+          <p data-i18n="xce.subtext">XCE AI uses AI to generate and organize 2D/3D assets, characters, actions, CG animation, effects, music, voice, game logic, automated tests, tuning suggestions and feedback analysis.</p>
+          <ul class="check-list">
+            <li data-i18n="xce.list1">Generate editable assets into the project asset system.</li>
+            <li data-i18n="xce.list2">Transform natural language into XCE AI DSL, events and components.</li>
+            <li data-i18n="xce.list3">Use AI player agents to test flows, interactions and balance.</li>
+            <li data-i18n="xce.list4">Ship playable works instead of disconnected generated files.</li>
+          </ul>
         </div>
       </div>
 
-      <h3 style="margin-bottom:12px">三层知识来源</h3>
-      <div class="grid g3" style="margin-bottom:24px">
-        <div class="card alt"><span class="tag teal">公开层</span><h3 class="mt8">公开 JD、公开面经、行业资料</h3><p>用于建立基础行业、岗位族、公司类型和轮次判断框架。</p></div>
-        <div class="card alt"><span class="tag gold">经验层</span><h3 class="mt8">云略招聘咨询与推荐反馈</h3><p>用于校准岗位背后的真实业务问题、企业偏好、候选人失分点和面试追问逻辑。</p></div>
-        <div class="card alt"><span class="tag green">反馈层</span><h3 class="mt8">Echo 用户真实面试复盘</h3><p>用于校准预测问题和真实问题的差距，持续更新高风险表达库与训练策略。</p></div>
+      <div class="showcase-gallery-wrap" data-animate="up">
+        <div class="section-head compact">
+          <span class="section-kicker" data-i18n="showcase.kicker">Inside the workspace</span>
+          <h2 class="heading-serif" data-i18n="showcase.title">Editor interface highlights</h2>
+        </div>
+        <div class="showcase-gallery">
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s4.webp" alt="XCE AI workspace screenshot 4" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s4.title">Scene viewport</h3>
+              <p data-i18n="showcase.s4.text">Compose large-scale environments in the live editor — navigate scenes, place objects and iterate layouts in real time.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s5.webp" alt="XCE AI workspace screenshot 5" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s5.title">Map &amp; placement</h3>
+              <p data-i18n="showcase.s5.text">Top-down editing for terrain, buildings and scene layout with precise placement tools and instant visual feedback.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s6.webp" alt="XCE AI workspace screenshot 6" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s6.title">Stylized worlds</h3>
+              <p data-i18n="showcase.s6.text">Build colorful, character-driven scenes across 2D and 3D styles from a unified workspace.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s7.webp" alt="XCE AI workspace screenshot 7" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s7.title">Interactive sequences</h3>
+              <p data-i18n="showcase.s7.text">Author action flows, combat beats and narrative triggers inside playable scenes.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s8.webp" alt="XCE AI workspace screenshot 8" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s8.title">Lighting &amp; atmosphere</h3>
+              <p data-i18n="showcase.s8.text">Tune mood, lighting and environment details for immersive nighttime worlds.</p>
+            </div>
+          </article>
+        </div>
       </div>
-
-      <div class="card dark">
-        <h3>知识飞轮</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.78)">云略经验 → Echo 标准库 → C 端训练 → 真实面试复盘 → 标准库更准。这个飞轮的核心不是信息差，而是判断力。</p>
       </div>
     </section>
 
-    <!-- ============ 12 BUSINESS ============ -->
-    <section class="section" id="business">
-      <div class="sec-head">
-        <span class="eyebrow alt">商业模式</span>
-        <h2>四层定价：低门槛引流，训练付费，高端接入真人</h2>
-        <p>定价策略不是一开始榨取高客单，而是先用免费作战图和早鸟训练包建立信任，再用抵扣真人顾问时间的方式，把高意向用户自然导向高端服务。</p>
+    <section class="section section--light section-full-bleed pipeline-section" id="product-core" data-section="xce-ai" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="core.kicker">Product Core</span>
+        <h2 class="heading-serif" data-i18n="core.title">One connected loop: express, generate, organize, test, modify, publish.</h2>
       </div>
-
-      <div class="grid g3" style="margin-bottom:24px">
-        <div class="card alt">
-          <span class="tag teal">首 1000 名种子用户</span>
-          <h3 class="mt8">早鸟价先验证转化</h3>
-          <p>通用训练包先用 ¥99 验证首次付费，精准作战包先用 ¥299 验证高意向用户。早期重点不是利润最大化，而是拿到真实使用、真实复盘和真实转介绍。</p>
-        </div>
-        <div class="card alt">
-          <span class="tag gold">付费可抵扣</span>
-          <h3 class="mt8">训练包变成顾问券</h3>
-          <p>用户购买通用或精准包后，如升级真实顾问辅导，可抵扣 15-30 分钟专家诊断费用。这样低价产品不是一次性收入，而是高端服务的入口。</p>
-        </div>
-        <div class="card alt">
-          <span class="tag green">裂变引流</span>
-          <h3 class="mt8">复盘带来下一批用户</h3>
-          <p>分享面试作战图、完成真实面试复盘、邀请同学或同事，都可解锁模拟次数或顾问抵扣券。引流路径围绕“面试前焦虑”和“面试后复盘”两个高传播时刻设计。</p>
-        </div>
+      <div class="pipeline" aria-label="XCE AI production pipeline">
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-prompt.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.1.title">Creative Input</h3>
+          <p data-i18n="pipeline.1.text">Text, reference images, voice and project context are transformed into clear production tasks.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-asset.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.2.title">Asset Generation</h3>
+          <p data-i18n="pipeline.2.text">2D/3D assets, UI, characters, scenes, actions, effects, music, sound and voice enter the project asset system.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-logic.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.3.title">Logic Engineering</h3>
+          <p data-i18n="pipeline.3.text">AI generates XCE AI DSL, visual events, components, dialogue nodes, conditions, variables and endings.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-test.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.4.title">AI Testing</h3>
+          <p data-i18n="pipeline.4.text">AI player agents check branches, reachability, interaction flows and numeric balance, then return practical fixes.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-publish.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.5.title">Publish &amp; Iterate</h3>
+          <p data-i18n="pipeline.5.text">Playable projects can be exported, tested with users and improved through feedback-driven iteration.</p>
+        </article>
       </div>
-
-      <div class="pricing">
-        <div class="price">
-          <h3>免费层</h3>
-          <div class="amt">¥0</div>
-          <p class="fit">让用户感到“它看懂我了”，完成第一次信任建立。</p>
-          <ul class="list mt8">
-            <li>1 次简历风险扫描</li>
-            <li>1 张面试作战图</li>
-            <li>3 个高风险追问</li>
-            <li>1 次 5 分钟快速模拟</li>
-            <li>1 次面试后文字复盘</li>
-            <li>首 1000 名可解锁 1 次数字顾问预沟通</li>
-            <li>分享后增加一次模拟或顾问抵扣券</li>
-          </ul>
-        </div>
-        <div class="price feature">
-          <h3>通用训练包</h3>
-          <div class="amt">¥99<small> 早鸟 / 原价 ¥199-299</small></div>
-          <p class="fit">普通岗位面试，主要训练表达；首 1000 名用于验证首次付费。</p>
-          <ul class="list mt8">
-            <li>完整简历解析</li>
-            <li>目标岗位标准卡</li>
-            <li>20-30 分钟模拟面试</li>
-            <li>数字顾问深度沟通记录总结</li>
-            <li>复盘报告</li>
-            <li>1 次真实面试录音/录屏复盘</li>
-            <li>3 段核心答案重构</li>
-            <li>7 天内 3 次训练</li>
-            <li>可抵扣真实顾问 15 分钟诊断</li>
-          </ul>
-        </div>
-        <div class="price">
-          <h3>精准作战包</h3>
-          <div class="amt">¥299<small> 早鸟 / 原价 ¥499-699</small></div>
-          <p class="fit">指定行业 / 岗位族 / 公司类型，重要二面终面，需要更接近真实面试场景。</p>
-          <ul class="list mt8">
-            <li>行业 / 岗位族用人标准推演</li>
-            <li>公司类型面试风格分析</li>
-            <li>简历深度风险分析</li>
-            <li>1 次完整模拟 + 1 次单题深挖</li>
-            <li>1 次真实录音/录屏深度复盘</li>
-            <li>表达稳定性与证据一致性提示</li>
-            <li>1 份面试作战报告</li>
-            <li>可选人工顾问审核</li>
-            <li>可抵扣真实顾问 30 分钟诊断</li>
-          </ul>
-        </div>
-        <div class="price">
-          <h3>高端人工辅导包</h3>
-          <div class="amt">¥699<small> 早鸟起 / 原价 ¥999 起</small></div>
-          <p class="fit">重要 offer、留学生、转岗、高薪岗位、多次失败用户。训练包用户升级时可直接抵扣。</p>
-          <ul class="list mt8">
-            <li>AI 初筛报告</li>
-            <li>数字顾问预沟通与深度追问</li>
-            <li>真实顾问简历与经历 review</li>
-            <li>真实顾问 1v1 策略会</li>
-            <li>预约制模拟面试 + 逐题复盘</li>
-            <li>面试前 24 小时冲刺</li>
-            <li>面试后录音/录屏复盘与总结</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tbl-wrap mt20">
-        <table class="tbl">
-          <thead><tr><th>引流节点</th><th>用户动作</th><th>产品给什么</th><th>下一步转化</th></tr></thead>
-          <tbody>
-            <tr><td>面试前 24-72 小时</td><td>上传简历和目标岗位</td><td>免费作战图 + 高风险追问</td><td>引导 ¥99 临场训练</td></tr>
-            <tr><td>模拟后发现风险</td><td>练一次自我介绍或项目深挖</td><td>复盘报告 + 答案重构</td><td>引导 ¥299 精准作战</td></tr>
-            <tr><td>真实面试后</td><td>上传录音/录屏或手动复盘</td><td>真实失分点 + 下一轮训练计划</td><td>引导顾问 1v1 总结</td></tr>
-            <tr><td>分享与邀请</td><td>分享作战图、邀请同学同事</td><td>模拟次数、复盘次数或顾问抵扣券</td><td>降低获客成本</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="card dark mt20">
-        <h3>高端档的核心卖点不是“AI 更高级”</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.78)">而是：数字顾问先创造安全沟通场景，完成深度追问、沟通记录和训练底稿（约 70% 初稿）；AI 再分析录音、录屏、转写与表达状态；云略真实顾问最后基于行业经验、企业招聘咨询经验、面试判断和表达细节做最后一公里指导。一期先用真实顾问承接最高档，既保证服务质量，也能把顾问经验持续反哺给 AI 知识库。</p>
       </div>
     </section>
 
-    <!-- ============ 13 ROADMAP ============ -->
-    <section class="section" id="roadmap">
-      <div class="sec-head">
-        <span class="eyebrow">MVP 与推进计划</span>
-        <h2>8 周做出可测试闭环，先用小样本验证方法是否成立</h2>
-        <p>第一个版本只需跑通：上传简历+输入岗位 → 生成作战图 → 数字顾问深度沟通 → 模拟面试 → 复盘报告 → 真实面试后上传录音/录屏 → 真实复盘 → 真实顾问辅助总结 → 引导付费继续训练。云略顾问先人工校准标准库，产品再逐步自动化。</p>
+    <section class="section section--light section-full-bleed ai-generator" id="ai-native-generator" data-section="ai-native-generator" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="ang.kicker">AI Native Generator</span>
+        <h2 class="heading-serif" data-i18n="ang.title">From watching stories to participating in stories.</h2>
+        <p data-i18n="ang.text">Interactive AI short drama is the natural extension of XCE AI's game creation capability. Scripts, characters, scenes, video, voice and music become content foundations; dialogue editing, event systems, state variables and publishing become the interaction carrier.</p>
       </div>
-
-      <div class="timeline" style="margin-bottom:24px">
-        <div class="phase"><b>第 1-2 周</b><h4>产品与样本</h4><p>定义 5 个高频岗位族、3-5 个重点行业和 4 类公司类型，收集 100 份简历、100 条面试问题，整理云略 50-100 个脱敏招聘咨询与面试反馈案例，产出 Prompt V0 与评估标准 V0。</p></div>
-        <div class="phase"><b>第 3-4 周</b><h4>MVP 开发</h4><p>搭建 Web 端，完成简历解析、岗位输入、行业/岗位族用人标准推演、公司类型面试风格推演、作战图、文本模拟与复盘报告，接入支付与人工审核后台，20 人种子测试。</p></div>
-        <div class="phase"><b>第 5-6 周</b><h4>语音与质量</h4><p>接入语音输入/输出，完成数字顾问深度沟通、沟通记录结构化、录音/录屏复盘和表达稳定性提示灰度，建立人工复核流程与付费服务 SOP。</p></div>
-        <div class="phase"><b>第 7-8 周</b><h4>商业验证</h4><p>招募 100-300 名种子用户，上线免费作战图，测试 99 / 299 早鸟定价，跑通数字顾问预沟通 + 云略真实顾问辅助总结，记录面试结果反馈。</p></div>
+      <div class="generator-grid">
+        <article class="card generator-card large-card" data-animate="up">
+          <div class="media-slot media-slot--wide">
+            <img src="img/card-interactive-drama.webp" alt="Interactive AI drama visual" width="1100" height="660" />
+          </div>
+          <h3 data-i18n="ang.card1.title">Interactive formats</h3>
+          <p data-i18n="ang.card1.text">Story choices, clue exploration, relationship states, QTE moments, puzzles, resources, simple battles and AI character dialogue can all affect the following story state.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card2.title">Story Generation</h3>
+          <p data-i18n="ang.card2.text">World settings, characters, chapters, conflict, dialogue and endings enter dialogue editing and narrative projects.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card3.title">Character &amp; Scene</h3>
+          <p data-i18n="ang.card3.text">Characters, outfits, expressions, props, scenes and style references become reusable assets across shots and branches.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card4.title">Storyboard &amp; Audio</h3>
+          <p data-i18n="ang.card4.text">Keyframes, clips, voice, music and sound effects are generated and bound to scenes and story nodes.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card5.title">Logic &amp; Multi-Endings</h3>
+          <p data-i18n="ang.card5.text">Choices, conditions, variables, affection levels, items, clues and endings are configured through dialogue, events and components.</p>
+        </article>
       </div>
-
-      <h3 style="margin-bottom:12px">8 周 MVP 资源投入</h3>
-      <div class="grid g4" style="margin-bottom:24px">
-        <div class="metric"><b>6-8 人</b><span>小团队启动：产品、工程、AI 应用、增长运营，加云略真实顾问兼职参与。</span></div>
-        <div class="metric"><b>36-84 万</b><span>8 周现金预算区间，不含创始人全职投入的机会成本。</span></div>
-        <div class="metric"><b>8-20 万</b><span>投流与种子用户激励预算，用于验证获客成本和首单转化。</span></div>
-        <div class="metric"><b>1000 人</b><span>首批种子用户目标，重点看上传简历、完成模拟、付费和复盘反馈。</span></div>
-      </div>
-
-      <div class="tbl-wrap" style="margin-bottom:24px">
-        <table class="tbl">
-          <thead><tr><th>投入项</th><th>配置建议</th><th>8 周预算</th><th>主要产出</th></tr></thead>
-          <tbody>
-            <tr><td>产品与项目</td><td>产品负责人 1 人，全程推动需求、交互、测试和节奏</td><td>0-8 万</td><td>定义 MVP 范围、用户路径、付费转化和验收标准</td></tr>
-            <tr><td>技术开发</td><td>全栈/前端 1 人，后端/AI 应用 1-2 人</td><td>16-30 万</td><td>Web 端、简历解析、模拟面试、支付、后台和基础日志</td></tr>
-            <tr><td>AI 与语音服务</td><td>模型调用、语音输入输出、转写、录音/录屏存储</td><td>2-5 万</td><td>文本/语音模拟、数字顾问沟通、真实面试复盘</td></tr>
-            <tr><td>云略顾问标注</td><td>2-3 名真实顾问兼职，参与标准库、案例标注和高端服务</td><td>5-10 万</td><td>行业/岗位族判断样本、公司类型面试风格、人工复核 SOP</td></tr>
-            <tr><td>设计与内容运营</td><td>设计 0.5 人，增长/社群运营 1 人</td><td>3-6 万</td><td>页面、作战图模板、种子用户运营、内容发布和用户访谈</td></tr>
-            <tr><td>投流与激励</td><td>小红书/抖音/B 站测试，校园社群/KOC，早鸟券和顾问抵扣券</td><td>8-20 万</td><td>获得首批 1000 用户，验证免费作战图和 ¥99 / ¥299 转化</td></tr>
-            <tr><td>合规与杂项</td><td>隐私授权、支付配置、基础法务、数据备份和机动预算</td><td>2-5 万</td><td>降低录音/录屏、视觉分析、支付和用户数据风险</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="grid g3" style="margin-bottom:24px">
-        <div class="card">
-          <span class="tag teal">核心团队</span>
-          <h3 class="mt8">先轻团队，不重组织</h3>
-          <p>前 8 周不需要完整公司化团队。关键是 1 个产品负责人、2-3 个技术人员、1 个增长运营，再把云略顾问作为兼职专家池接入。</p>
-        </div>
-        <div class="card">
-          <span class="tag gold">投流原则</span>
-          <h3 class="mt8">先小额测试，再放大胜出渠道</h3>
-          <p>投流不追求声量，先测“面试前 24-72 小时焦虑”“面试挂了不知道原因”“二面终面冲刺”三类钩子，找到转化最高的内容后再加预算。</p>
-        </div>
-        <div class="card">
-          <span class="tag green">预算目标</span>
-          <h3 class="mt8">钱主要买验证，不买规模</h3>
-          <p>这笔预算要验证四件事：用户愿意上传真实材料、愿意完成模拟、愿意为 ¥99 / ¥299 付费、愿意在关键面试前升级真实顾问。</p>
-        </div>
-      </div>
-
-      <h3 style="margin-bottom:12px">投流验证口径</h3>
-      <div class="tbl-wrap" style="margin-bottom:24px">
-        <table class="tbl">
-          <thead><tr><th>渠道</th><th>预算建议</th><th>投放内容</th><th>观察指标</th></tr></thead>
-          <tbody>
-            <tr><td>小红书 / 抖音 / B 站</td><td>3-8 万</td><td>面试高风险地图、二面终面冲刺、失败复盘案例</td><td>免费作战图获客成本、简历上传率、收藏分享率</td></tr>
-            <tr><td>校园与求职社群</td><td>2-5 万</td><td>首 1000 名早鸟名额、模拟面试体验、顾问抵扣券</td><td>激活率、首次模拟完成率、邀请转介绍率</td></tr>
-            <tr><td>求职 KOC / 职业博主</td><td>2-5 万</td><td>真实简历改造、面试复盘直播、行业面试套路拆解</td><td>¥99 付费转化、¥299 升级转化、顾问预约线索</td></tr>
-            <tr><td>搜索与关键词</td><td>1-2 万</td><td>“面试自我介绍”“二面怎么准备”“面试复盘”等高意图词</td><td>高意图获客成本、支付转化率、顾问线索成本</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="compare" style="margin-bottom:24px">
-        <div class="card">
-          <h3><span class="tag teal">MVP 必做 (P0)</span></h3>
-          <ul class="list mt14">
-            <li>登录/匿名体验、简历上传或粘贴</li>
-            <li>目标岗位输入、JD 粘贴、轮次选择</li>
-            <li>指定行业 / 岗位族用人标准推演</li>
-            <li>指定公司类型面试风格推演</li>
-            <li>能力本质卡、用人标准卡、风险地图</li>
-            <li>文本版 + 语音版模拟面试、单题深挖</li>
-            <li>数字顾问深度沟通记录与 AI 总结</li>
-            <li>面试复盘报告</li>
-            <li>真实录音/录屏上传 + 真实面试复盘报告</li>
-            <li>表达稳定性与证据一致性分析灰度</li>
-            <li>付费入口、人工后台、基础日志与反馈</li>
-          </ul>
-        </div>
-        <div class="card alt">
-          <h3><span class="tag gold">MVP 可延后 (P1)</span></h3>
-          <ul class="list gold mt14">
-            <li>高仿真视频数字人形象、现场记录助手、实时提示灰度版</li>
-            <li>多专家圆桌、完整公司标准库</li>
-            <li>移动 App、长期能力星图</li>
-            <li>B 端匹配、企业后台、面试社区</li>
-            <li>复杂会员体系</li>
-          </ul>
-        </div>
-      </div>
-
-      <h3 style="margin-bottom:12px">最小成功标准（一期只看这六件事是否成立）</h3>
-      <div class="grid g4">
-        <div class="metric"><b>1</b><span>用户愿意上传简历和目标岗位。</span></div>
-        <div class="metric"><b>2</b><span>看到作战图后觉得“它真的看懂了我的风险”。</span></div>
-        <div class="metric"><b>3</b><span>用户愿意完成一次模拟面试。</span></div>
-        <div class="metric"><b>4</b><span>复盘后愿意继续训练或付费。</span></div>
-        <div class="metric"><b>5</b><span>真实面试后愿意回来反馈“哪些问题真的被问到了”。</span></div>
-        <div class="metric colspan" style="min-height:auto"><b>6</b><span>小额投流能带来可接受的获客成本，并验证 ¥99 / ¥299 早鸟付费转化。</span></div>
       </div>
     </section>
 
-    <!-- ============ 14 COLLAB ============ -->
-    <section class="section" id="collab">
-      <div class="sec-head">
-        <span class="eyebrow alt">合作与长期愿景</span>
-        <h2>Echo Interview 是 Echo 的尖刀入口，不是终点</h2>
-        <p>面试场景中的用户天然愿意暴露简历、项目、职业目标、能力短板和真实表现，这比泛聊天更容易沉淀高质量能力数据。云略提供真实招聘判断样本，Echo 提供 C 端训练闭环，一期先打透面试，再连接 Echo 的长期能力星图。</p>
+    <section class="section section--light section-full-bleed compare-section" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="diff.kicker">Difference</span>
+        <h2 class="heading-serif" data-i18n="diff.title">Not more isolated generation buttons. A real production chain.</h2>
       </div>
-
-      <div class="flow" style="margin-bottom:24px">
-        <div class="step"><b>入口</b><span>面试作战图</span></div>
-        <div class="step"><b>沉淀</b><span>候选人能力本质卡</span></div>
-        <div class="step"><b>记录</b><span>面试表现记录</span></div>
-        <div class="step"><b>积累</b><span>个人能力素材库</span></div>
-        <div class="step"><b>愿景</b><span>能力星图</span></div>
-        <div class="step"><b>延伸</b><span>未来职业成长 / 岗位匹配</span></div>
-      </div>
-
-      <div class="grid g3" style="margin-bottom:24px">
-        <div class="card"><span class="tag teal">学术 / 研究</span><h3 class="mt8">能力评价框架共建</h3><p>定义面试能力本体、设计训练前后对照与录音标注标准、明确伦理与合规边界，让产品不只靠主观满意度。</p></div>
-        <div class="card"><span class="tag gold">试点共建</span><h3 class="mt8">校园与年轻求职者试点</h3><p>与学生群体、就业指导中心或职业发展课程结合，在真实求职场景中验证产品效果。</p></div>
-        <div class="card"><span class="tag green">专家网络</span><h3 class="mt8">行业顾问与 HR 访谈</h3><p>引入前 HR、行业专家、面试官参与匿名访谈与标准标注，沉淀行业用人标准库，并承接高端 1v1 服务。</p></div>
-      </div>
-
-      <div class="card dark">
-        <h3>最终判断</h3>
-        <p class="mt8" style="color:rgba(255,253,248,0.82)">Echo 一期最应该做的，不是一个温和宽泛的职场聊天产品，而是一个足够尖锐、足够具体、足够能卖的面试作战产品。它的核心是：帮你看清这场面试的判断逻辑，找出你表达里的风险，并把你的真实经历训练成更有胜率的答案。云略提供的是招聘服务现场里的判断样本，Echo 把它产品化给 C 端用户。</p>
-        <div class="hero-actions mt20">
-          <button class="btn" type="button" onclick="window.print()" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.2);color:#fffdf8">导出 PDF 方案</button>
+      <div class="compare-table" data-animate="up" role="table" aria-label="XCE AI comparison table">
+        <div class="compare-row compare-head" role="row">
+          <span data-i18n="diff.col1">Tool type</span><span data-i18n="diff.col2">Typical output</span><span data-i18n="diff.col3">Common problem</span><span data-i18n="diff.col4">XCE AI difference</span>
         </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row1.1">AI Image</span><span data-i18n="diff.row1.2">Images</span><span data-i18n="diff.row1.3">Cannot become a game project directly</span><span data-i18n="diff.row1.4">Generated assets enter the asset and logic system</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row2.1">AI Video</span><span data-i18n="diff.row2.2">Videos</span><span data-i18n="diff.row2.3">Watchable but not playable</span><span data-i18n="diff.row2.4">Clips bind with CG, cutscenes and interactive drama logic</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row3.1">AI 3D</span><span data-i18n="diff.row3.2">Models</span><span data-i18n="diff.row3.3">Need cleanup, reduction, rigging and import</span><span data-i18n="diff.row3.4">Engineering processing and Asset Cards organize usage</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row4.1">AI Code</span><span data-i18n="diff.row4.2">Code</span><span data-i18n="diff.row4.3">Hard to connect with game projects</span><span data-i18n="diff.row4.4">Generates XCE AI DSL, events and components</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row5.1">Game Engines</span><span data-i18n="diff.row5.2">Powerful projects</span><span data-i18n="diff.row5.3">High learning cost</span><span data-i18n="diff.row5.4">No-code + AI + visual creation</span>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed markets-section" id="markets" data-section="markets" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="markets.kicker">Commercialization</span>
+        <h2 class="heading-serif" data-i18n="markets.title">From creator subscriptions to education, UGC markets and enterprise production.</h2>
+        <p data-i18n="markets.text">XCE AI uses AI to lower the creation threshold, an editable project environment to carry playable works, UGC to scale supply, and publishing mechanisms to support sustained commercialization.</p>
+      </div>
+      <div class="market-grid">
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">01</span>
+          <h3 data-i18n="markets.card1.title">Creator Subscription</h3>
+          <p data-i18n="markets.card1.text">Subscriptions, AI rendering credits, advanced templates, asset packs and publishing tools for individuals, students and indie creators.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">02</span>
+          <h3 data-i18n="markets.card2.title">UGC Asset Market</h3>
+          <p data-i18n="markets.card2.text">Templates, characters, UI kits, effects, scripts, prompts, workflows and tutorial projects with platform revenue share.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">03</span>
+          <h3 data-i18n="markets.card3.title">Education</h3>
+          <p data-i18n="markets.card3.text">STEAM, game design, vocational education, AI creation camps and digital media courses based on project-based learning.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">04</span>
+          <h3 data-i18n="markets.card4.title">Enterprise Interactive Content</h3>
+          <p data-i18n="markets.card4.text">Brand mini-games, interactive dramas, event experiences, launch demos, simulations, training games and IP collaboration content.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">05</span>
+          <h3 data-i18n="markets.card5.title">Small Studio Productivity</h3>
+          <p data-i18n="markets.card5.text">Vertical slices, pitch demos, Steam page materials, concept assets, whitebox levels, balance tests and entertainment MVPs.</p>
+        </article>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed contact-section" id="contact" data-section="contact" data-theme="light">
+      <div class="section-shell">
+      <div class="contact-panel card" data-animate="up">
+        <blockquote class="quote-block">
+          <p data-i18n="vision.quote">"Not Prompt to Image. Not Prompt to Video. Prompt to Playable Game Project."</p>
+          <cite data-i18n="vision.quoteAuthor">Arkx product thesis</cite>
+        </blockquote>
+        <span class="section-kicker" data-i18n="contact.kicker">Contact</span>
+        <h2 class="heading-serif" data-i18n="contact.title">Build the next interactive work with Arkx.</h2>
+        <p data-i18n="contact.text">Reach out to explore partnerships, early access, or enterprise interactive content projects.</p>
+        <div class="contact-actions">
+          <a class="btn btn--primary" href="mailto:arkx.creative@gmail.com">arkx.creative@gmail.com</a>
+          <a class="btn btn--ghost" href="#markets" data-i18n="contact.cta">View commercialization paths</a>
+        </div>
+      </div>
       </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
+  <footer class="site-footer site-footer--bleed section--light">
+    <div class="section-shell site-footer__inner">
       <div>
-        <strong>Echo Interview</strong>
-        只站在被面试者一边的 AI 面试精灵 · 一期产品方案 V0.1
+        <strong data-i18n="brand.name">Arkx</strong>
+        <p data-i18n="footer.tagline">Arks Creative · 所象 — Imagination, Made Real.</p>
+        <p class="site-build">Site build 2026.06.22-v26</p>
       </div>
-      <div>
-        三个核心卖点<br>
-        不背模板，基于真实简历训练 · 不卖题库，沉淀面试判断模型 · 不只给评分，帮你把回答改到能用
-      </div>
-      <div>
-        建议阅读时间：20-30 分钟<br>
-        本页为对外介绍版，可分享、可打印
+      <div class="footer-links">
+        <a href="#about" data-i18n="footer.about">About</a>
+        <a href="#products" data-i18n="footer.products">Products</a>
+        <a href="#contact" data-i18n="footer.contact">Contact</a>
       </div>
     </div>
   </footer>
 
-  <script>
-    (function () {
-      var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
-      var sections = links
-        .map(function (a) { return document.querySelector(a.getAttribute('href')); })
-        .filter(Boolean);
-
-      function onScroll() {
-        var y = window.scrollY + 100;
-        var current = sections[0];
-        for (var i = 0; i < sections.length; i++) {
-          if (sections[i].offsetTop <= y) current = sections[i];
-        }
-        links.forEach(function (a) {
-          a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
-        });
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-      onScroll();
-
-      var toggle = document.getElementById('menuToggle');
-      var nav = document.getElementById('navLinks');
-      if (toggle && nav) {
-        toggle.addEventListener('click', function () {
-          var open = nav.classList.toggle('open');
-          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        nav.addEventListener('click', function (e) {
-          if (e.target.tagName === 'A') {
-            nav.classList.remove('open');
-            toggle.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
-    })();
-  </script>
+  <script src="js/main.js?v=2026062237"></script>
 </body>
 </html>
