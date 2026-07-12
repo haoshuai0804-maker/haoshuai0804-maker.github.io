@@ -634,8 +634,29 @@
         margin-bottom: 14px;
       }
       .topic-grid {
+        display: block;
+      }
+      .topic-day {
+        margin-bottom: 24px;
+      }
+      .topic-direction {
+        margin-top: 14px;
+      }
+      .topic-direction h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 2px 10px;
+        font-size: 17px;
+      }
+      .topic-direction h3 span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .topic-cards {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
         gap: 12px;
       }
       .topic-card {
@@ -704,7 +725,7 @@
         font-weight: 700;
       }
       @media (max-width: 900px) {
-        .topic-grid {
+        .topic-cards {
           grid-template-columns: 1fr;
         }
       }
@@ -712,7 +733,7 @@
         .nav {
           grid-template-columns: 1fr;
         }
-        .topic-grid {
+        .topic-cards {
           display: block;
         }
         .topic-card {
@@ -758,7 +779,6 @@
               算力与具身智能信息。事实、观点与传闻分开处理，并按看多、看空、中性分类。
             </p>
           </div>
-          <div id="topicFilters" class="topic-toolbar card"></div>
           <div id="topicGrid" class="topic-grid"></div>
         </section>
         <section id="postsView" class="view">
@@ -5730,35 +5750,45 @@
             "当前分类：中性。\n\n若相关股票下一交易日上涨，更可能来自 AI 风险偏好和主题轮动。\n\n后续关注：量产订单、交付量、单机成本、利用率和客户复购。",
         },
       ];
-      let topicLevel = "all";
+      const TOPIC_DATES = {
+        shortage: "2026-07-12",
+        capacity: "2026-07-12",
+        kyber: "2026-07-12",
+        "capex-risk": "2026-07-12",
+        "robot-neutral": "2026-07-12",
+      };
       const topicLabels = {
-        all: "全部",
         bull: "看多",
         bear: "看空",
-        neutral: "中性",
+        neutral: "中性 / 待验证",
       };
       function renderTopic() {
-        topicFilters.innerHTML = Object.entries(topicLabels)
-          .map(
-            ([k, v]) =>
-              `<button class="pill ${k === topicLevel ? "active" : ""}" data-topic-level="${k}">${v}</button>`,
-          )
-          .join("");
-        topicFilters.querySelectorAll("button").forEach(
-          (b) =>
-            (b.onclick = () => {
-              topicLevel = b.dataset.topicLevel;
-              renderTopic();
-            }),
-        );
-        const list = TOPIC_DATA.filter(
-          (x) => topicLevel === "all" || x.direction === topicLevel,
-        );
-        topicGrid.innerHTML = list
-          .map(
-            (x) =>
-              `<article class="topic-card card ${x.direction}" tabindex="0" role="button" data-topic-id="${x.id}"><div class="topic-card-head"><span class="direction">${x.label}</span><span class="topic-meta">${x.source}</span></div><h4>${x.title}</h4><p>${x.summary}</p><div class="topic-meta">${x.impact}</div><span class="topic-open">查看帖子与判断 →</span></article>`,
-          )
+        const groups = new Map();
+        TOPIC_DATA.forEach((item) => {
+          const date = TOPIC_DATES[item.id] || "2026-07-11";
+          if (!groups.has(date)) groups.set(date, []);
+          groups.get(date).push(item);
+        });
+        topicGrid.innerHTML = [...groups.entries()]
+          .sort(([a], [b]) => b.localeCompare(a))
+          .map(([date, items]) => {
+            const sections = ["bull", "bear", "neutral"]
+              .map((direction) => {
+                const posts = items.filter(
+                  (item) => item.direction === direction,
+                );
+                if (!posts.length) return "";
+                const cards = posts
+                  .map(
+                    (x) =>
+                      `<article class="topic-card card ${x.direction}" tabindex="0" role="button" data-topic-id="${x.id}"><div class="topic-card-head"><span class="direction">${x.label}</span><span class="topic-meta">${x.source}</span></div><h4>${x.title}</h4><p>${x.summary}</p><div class="topic-meta">${x.impact}</div><span class="topic-open">查看帖子与判断 →</span></article>`,
+                  )
+                  .join("");
+                return `<section class="topic-direction"><h3>${topicLabels[direction]} <span>${posts.length} 条</span></h3><div class="topic-cards">${cards}</div></section>`;
+              })
+              .join("");
+            return `<section class="topic-day"><div class="day">${date}</div>${sections}</section>`;
+          })
           .join("");
       }
       function openTopic(id) {
