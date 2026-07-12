@@ -1243,6 +1243,91 @@
         opacity: 0.8;
       }
 
+      /* Unified typography hierarchy */
+      :root {
+        --type-section: 32px;
+        --type-title: 20px;
+        --type-body: 16px;
+        --type-meta: 13px;
+      }
+
+      .hero-title,
+      .section-head h2 {
+        font-size: var(--type-section);
+      }
+
+      .stage-header h3,
+      .outcome h3,
+      .panel h3,
+      .stage-block h4,
+      .agenda-block h3,
+      .quote-block h3,
+      .ai-block h3,
+      .deep-card h3,
+      .mini-title,
+      .model-output h3,
+      .panel strong {
+        font-size: var(--type-title);
+      }
+
+      .process-card strong,
+      .flow-step strong,
+      .ai-step strong,
+      .stack-item strong,
+      .dimension-card strong,
+      .logic-card strong,
+      .path-node strong,
+      .model-output-grid strong,
+      .decision-node strong {
+        font-size: var(--type-body);
+      }
+
+      body,
+      .hero-text,
+      .section-head p,
+      .panel p,
+      .stage-block p,
+      .outcome p,
+      .agenda-block p,
+      .quote-note,
+      .flow-step span,
+      .process-card span,
+      .ai-step span,
+      .dimension-card p,
+      .deep-card p,
+      .logic-card p,
+      .consulting-note p,
+      li,
+      td,
+      th {
+        font-size: var(--type-body);
+      }
+
+      .hero-kicker,
+      .eyebrow {
+        font-size: var(--type-body);
+      }
+
+      .panel-number,
+      .stage-tag,
+      .stack-item span,
+      .capability-step span,
+      .path-node span,
+      .model-output-grid span,
+      .stat span,
+      .nav-desc {
+        font-size: var(--type-meta);
+      }
+
+      .quote {
+        font-size: var(--type-title);
+      }
+
+      .ai-grid,
+      .replace-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       @media (max-width: 1180px) {
         :root { --sidebar: 226px; }
 
