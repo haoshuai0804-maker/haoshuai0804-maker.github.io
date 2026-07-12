@@ -1,0 +1,2088 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>关键岗位与人才盘点一体化方案展示版</title>
+    <style>
+      :root {
+        --bg: #f5f1e8;
+        --surface: #fffdf8;
+        --surface-strong: #fbf5eb;
+        --ink: #1f241f;
+        --muted: #5b645e;
+        --line: rgba(31, 36, 31, 0.12);
+        --accent: #0f766e;
+        --accent-soft: rgba(15, 118, 110, 0.1);
+        --accent-strong: #0b5c56;
+        --warm: #d97706;
+        --warm-soft: rgba(217, 119, 6, 0.12);
+        --danger: #b45309;
+        --shadow: 0 18px 48px rgba(47, 41, 29, 0.08);
+        --max: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)),
+          linear-gradient(120deg, #efe7d7 0%, #f6f1e8 48%, #e7f1ee 100%);
+        line-height: 1.65;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(14px);
+        background: rgba(245, 241, 232, 0.82);
+        border-bottom: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .topbar-inner {
+        max-width: calc(var(--max) + 48px);
+        margin: 0 auto;
+        padding: 14px 24px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        min-width: 0;
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background:
+          linear-gradient(135deg, var(--accent) 0%, #59a49e 100%);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        box-shadow: var(--shadow);
+        flex: 0 0 auto;
+      }
+
+      .brand-copy {
+        min-width: 0;
+      }
+
+      .brand-copy strong,
+      .section-head h2,
+      .hero-title,
+      .stage-header h3,
+      .quote,
+      .outcome h3 {
+        letter-spacing: 0;
+      }
+
+      .brand-copy strong {
+        display: block;
+        font-size: 16px;
+      }
+
+      .brand-copy span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .nav {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .nav a {
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.42);
+        border: 1px solid rgba(31, 36, 31, 0.06);
+      }
+
+      .nav a:hover {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      main {
+        overflow-x: hidden;
+      }
+
+      section {
+        padding: 72px 24px;
+      }
+
+      .shell {
+        max-width: var(--max);
+        margin: 0 auto;
+      }
+
+      .hero {
+        padding-top: 52px;
+        min-height: calc(100vh - 72px);
+        display: flex;
+        align-items: center;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+        gap: 28px;
+        align-items: stretch;
+      }
+
+      .hero-panel,
+      .hero-aside,
+      .panel,
+      .stage-block,
+      .quote-block,
+      .ai-block,
+      .agenda-block,
+      .outcome {
+        background: rgba(255, 253, 248, 0.88);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-panel {
+        padding: 34px;
+        border-radius: 28px;
+        background:
+          linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(255, 255, 255, 0.84) 42%),
+          rgba(255, 253, 248, 0.92);
+      }
+
+      .hero-kicker,
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--accent-strong);
+        background: var(--accent-soft);
+        border: 1px solid rgba(15, 118, 110, 0.16);
+      }
+
+      .hero-title {
+        margin: 18px 0 16px;
+        font-size: clamp(34px, 6vw, 68px);
+        line-height: 1.04;
+      }
+
+      .hero-text {
+        max-width: 46rem;
+        font-size: 18px;
+        color: var(--muted);
+        margin: 0 0 24px;
+      }
+
+      .hero-stats,
+      .pill-row,
+      .deliver-grid,
+      .govern-grid,
+      .question-grid,
+      .principle-grid,
+      .deliverable-list,
+      .customer-grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 24px;
+      }
+
+      .stat {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .hero-aside {
+        padding: 28px;
+        border-radius: 28px;
+        display: grid;
+        gap: 18px;
+        background:
+          linear-gradient(180deg, rgba(217, 119, 6, 0.08), rgba(255, 255, 255, 0.92) 45%),
+          rgba(255, 253, 248, 0.92);
+      }
+
+      .mini-title,
+      .panel h3,
+      .stage-block h4,
+      .outcome h3,
+      .agenda-block h3,
+      .quote-block h3,
+      .ai-block h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .flow-rail {
+        display: grid;
+        gap: 12px;
+      }
+
+      .flow-step {
+        display: grid;
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 14px;
+        align-items: start;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .flow-step:last-child {
+        border-bottom: 0;
+      }
+
+      .step-no {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--accent);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .flow-step strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .flow-step span,
+      .panel p,
+      .stage-block p,
+      li,
+      td,
+      th {
+        color: var(--muted);
+      }
+
+      .section-head {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+
+      .section-head h2 {
+        margin: 0;
+        font-size: clamp(28px, 3.8vw, 46px);
+        line-height: 1.08;
+      }
+
+      .section-head p {
+        margin: 0;
+        max-width: 56rem;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .issue-band {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.64)),
+          linear-gradient(180deg, #f8f2e4 0%, #fcfaf4 100%);
+      }
+
+      .issue-grid,
+      .question-grid,
+      .principle-grid,
+      .deliver-grid,
+      .govern-grid,
+      .customer-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .panel {
+        border-radius: 22px;
+        padding: 24px;
+      }
+
+      .panel-number {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--danger);
+        margin-bottom: 14px;
+      }
+
+      .panel strong {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .method-band {
+        background: #f6f8f2;
+      }
+
+      .process-shell {
+        display: grid;
+        gap: 16px;
+      }
+
+      .process-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .process-card {
+        padding: 18px 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.84);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+        display: grid;
+        gap: 10px;
+      }
+
+      .process-card .index {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .process-card strong {
+        font-size: 17px;
+      }
+
+      .process-card span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .question-grid .panel,
+      .principle-grid .panel {
+        background: rgba(255, 255, 255, 0.74);
+      }
+
+      .question-grid {
+        margin-top: 24px;
+      }
+
+      .question-grid .panel ul,
+      .principle-grid .panel p,
+      .stage-block ul,
+      .deliverable-list ul,
+      .agenda-block ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .principle-grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin-top: 24px;
+      }
+
+      .stage-shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .stage-block {
+        border-radius: 24px;
+        padding: 26px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .stage-header {
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+
+      .stage-tag {
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--warm-soft);
+        color: var(--danger);
+        border: 1px solid rgba(217, 119, 6, 0.16);
+      }
+
+      .stage-columns {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 18px;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .mini-panel {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .mini-panel strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .arch-band {
+        background: linear-gradient(180deg, #eef4f0 0%, #f6f8f2 100%);
+      }
+
+      .stack-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .stack-item {
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .stack-item span {
+        display: block;
+        color: var(--accent-strong);
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+
+      .stack-item strong {
+        font-size: 17px;
+      }
+
+      .ai-grid,
+      .outcome-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 18px;
+      }
+
+      .ai-block,
+      .quote-block,
+      .agenda-block,
+      .outcome {
+        border-radius: 24px;
+        padding: 26px;
+      }
+
+      .ai-chain {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .ai-step {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(31, 36, 31, 0.08);
+      }
+
+      .ai-step strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .quote {
+        margin: 0;
+        font-size: clamp(24px, 3.5vw, 42px);
+        line-height: 1.18;
+      }
+
+      .quote-note {
+        margin-top: 14px;
+        color: var(--muted);
+      }
+
+      .timeline {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .timeline .panel strong {
+        font-size: 18px;
+      }
+
+      .govern-grid {
+        margin-top: 24px;
+      }
+
+      .govern-grid .panel strong,
+      .deliver-grid .panel strong,
+      .customer-grid .panel strong {
+        font-size: 18px;
+      }
+
+      .deliver-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .deliverable-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-top: 18px;
+      }
+
+      .deliverable-list .panel {
+        padding: 20px 22px;
+      }
+
+      .outcome-grid {
+        align-items: stretch;
+      }
+
+      .outcome {
+        display: grid;
+        gap: 12px;
+      }
+
+      .outcome p,
+      .outcome li,
+      .agenda-block p {
+        margin: 0;
+      }
+
+      .customer-grid {
+        margin-top: 18px;
+      }
+
+      .footer {
+        padding: 34px 24px 48px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 1100px) {
+        .hero-grid,
+        .ai-grid,
+        .outcome-grid,
+        .stage-columns {
+          grid-template-columns: 1fr;
+        }
+
+        .process-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .principle-grid,
+        .stack-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .deliver-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 780px) {
+        section {
+          padding: 56px 18px;
+        }
+
+        .topbar-inner {
+          padding: 12px 18px;
+          align-items: flex-start;
+        }
+
+        .nav {
+          display: none;
+        }
+
+        .hero-panel,
+        .hero-aside,
+        .panel,
+        .stage-block,
+        .quote-block,
+        .ai-block,
+        .agenda-block,
+        .outcome {
+          border-radius: 20px;
+        }
+
+        .hero-stats,
+        .issue-grid,
+        .question-grid,
+        .principle-grid,
+        .timeline,
+        .deliver-grid,
+        .govern-grid,
+        .customer-grid,
+        .process-grid,
+        .stack-grid,
+        .mini-grid,
+        .deliverable-list,
+        .ai-chain {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-title {
+          font-size: 38px;
+        }
+      }
+
+      @media print {
+        .topbar {
+          position: static;
+          backdrop-filter: none;
+          background: #fff;
+        }
+
+        section {
+          padding: 36px 18px;
+          break-inside: avoid;
+        }
+
+        .hero {
+          min-height: auto;
+        }
+      }
+
+      /* Yunlue presentation system */
+      :root {
+        --bg: #f4f8fa;
+        --surface: #ffffff;
+        --surface-strong: #edf4f7;
+        --ink: #102f3f;
+        --muted: #587080;
+        --line: rgba(0, 67, 105, 0.13);
+        --accent: #004369;
+        --accent-soft: rgba(0, 67, 105, 0.08);
+        --accent-strong: #003653;
+        --warm: #d09b45;
+        --warm-soft: rgba(208, 155, 69, 0.14);
+        --danger: #a85b46;
+        --shadow: 0 10px 28px rgba(0, 52, 82, 0.055);
+        --sidebar: 278px;
+        --max: 1160px;
+      }
+
+      body {
+        background:
+          radial-gradient(circle at 90% 8%, rgba(82, 161, 180, 0.13), transparent 26rem),
+          linear-gradient(180deg, #f8fbfc 0%, #eef5f7 100%);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .topbar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: var(--sidebar);
+        z-index: 30;
+        background: #ffffff;
+        border-right: 1px solid var(--line);
+        border-bottom: 0;
+        backdrop-filter: none;
+        box-shadow: 10px 0 30px rgba(0, 52, 82, 0.04);
+      }
+
+      .topbar-inner {
+        height: 100%;
+        padding: 30px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 34px;
+      }
+
+      .brand {
+        display: block;
+        padding: 0 6px 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand-logo {
+        display: block;
+        width: 170px;
+        height: auto;
+      }
+
+      .brand-copy {
+        margin-top: 18px;
+      }
+
+      .brand-copy strong {
+        color: var(--accent);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .brand-copy span,
+      .brand-mark {
+        display: none;
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        justify-content: flex-start;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      .nav a {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        min-height: 46px;
+        padding: 10px 13px;
+        border: 0;
+        border-left: 3px solid transparent;
+        border-radius: 0 10px 10px 0;
+        background: transparent;
+        color: #56707f;
+        font-size: 15px;
+        line-height: 1.35;
+        font-weight: 650;
+      }
+
+      .nav-title {
+        display: block;
+        font-size: 16px;
+        font-weight: 750;
+      }
+
+      .nav-desc {
+        display: block;
+        margin-top: 3px;
+        color: #7a909c;
+        font-size: 11.5px;
+        line-height: 1.45;
+        font-weight: 500;
+      }
+
+      .nav a:hover,
+      .nav a:focus-visible,
+      .nav a.is-active {
+        color: var(--accent);
+        border-left-color: var(--accent);
+        background: var(--accent-soft);
+        outline: none;
+      }
+
+      .nav a.is-active .nav-desc {
+        color: #557d91;
+      }
+
+      .nav .demo-link {
+        margin-top: 12px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        border-left: 3px solid transparent;
+        color: var(--accent);
+        font-weight: 750;
+      }
+
+      .nav .demo-link:hover,
+      .nav .demo-link:focus-visible {
+        border-left-color: var(--accent);
+      }
+
+      main,
+      .footer {
+        margin-left: var(--sidebar);
+      }
+
+      section {
+        padding: 68px 42px;
+        scroll-margin-top: 12px;
+      }
+
+      section:nth-of-type(even) {
+        background: rgba(255, 255, 255, 0.44);
+      }
+
+      .hero {
+        padding-top: 58px;
+        padding-bottom: 68px;
+        min-height: auto;
+      }
+
+      .hero-grid {
+        align-items: stretch;
+      }
+
+      .hero-panel,
+      .hero-aside,
+      .panel,
+      .stage-block,
+      .quote-block,
+      .ai-block,
+      .agenda-block,
+      .outcome {
+        background: rgba(255, 255, 255, 0.94);
+        border-color: var(--line);
+      }
+
+      .hero-panel {
+        background:
+          linear-gradient(135deg, rgba(0, 67, 105, 0.08), rgba(255, 255, 255, 0.96) 48%),
+          #ffffff;
+      }
+
+      .hero-aside {
+        background:
+          linear-gradient(180deg, rgba(82, 161, 180, 0.12), rgba(255, 255, 255, 0.97) 42%),
+          #ffffff;
+      }
+
+      .hero-title {
+        max-width: 30em;
+        margin: 20px 0 18px;
+        font-size: clamp(26px, 2.5vw, 32px);
+        line-height: 1.32;
+        font-weight: 750;
+        color: #092f44;
+      }
+
+      .section-head h2 {
+        max-width: 30em;
+        font-size: clamp(26px, 2.5vw, 32px);
+        line-height: 1.32;
+        color: #0b3950;
+      }
+
+      .hero-kicker,
+      .eyebrow {
+        justify-self: start;
+        width: fit-content;
+        max-width: 100%;
+      }
+
+      .hero-kicker {
+        font-size: 17px;
+        font-weight: 650;
+      }
+
+      .eyebrow {
+        font-size: 17px;
+        font-weight: 650;
+      }
+
+      .mini-title {
+        font-weight: 750;
+        color: var(--accent);
+      }
+
+      .stage-header h3,
+      .outcome h3 {
+        font-size: 24px;
+        line-height: 1.35;
+      }
+
+      .panel h3,
+      .stage-block h4,
+      .agenda-block h3,
+      .quote-block h3,
+      .ai-block h3,
+      .deep-card h3 {
+        font-size: 19px;
+        line-height: 1.45;
+      }
+
+      .hero-text {
+        font-size: 17px;
+      }
+
+      .hero-panel,
+      .hero-aside {
+        border-radius: 22px;
+        height: 100%;
+      }
+
+      .panel,
+      .stage-block,
+      .quote-block,
+      .ai-block,
+      .agenda-block,
+      .outcome,
+      .deep-card,
+      .logic-card,
+      .path-demo,
+      .consulting-note,
+      .model-output {
+        border-radius: 18px;
+      }
+
+      .panel,
+      .stage-block,
+      .deep-card,
+      .logic-card {
+        box-shadow: 0 6px 18px rgba(0, 52, 82, 0.04);
+      }
+
+      .quote {
+        font-size: 19px;
+        line-height: 1.6;
+      }
+
+      .issue-band,
+      .method-band,
+      .arch-band {
+        background: transparent;
+      }
+
+      .deep-grid,
+      .dimension-grid,
+      .logic-grid,
+      .replace-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .question-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .issue-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .issue-grid .panel strong {
+        font-size: 20px;
+        line-height: 1.4;
+      }
+
+      .deep-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .dimension-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 22px;
+      }
+
+      .logic-grid,
+      .replace-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .deep-card,
+      .dimension-card,
+      .logic-card,
+      .decision-strip,
+      .path-demo,
+      .consulting-note {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: var(--shadow);
+      }
+
+      .deep-card,
+      .logic-card,
+      .path-demo,
+      .consulting-note {
+        padding: 24px;
+        border-radius: 22px;
+      }
+
+      .dimension-card {
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      .dimension-card strong,
+      .logic-card strong {
+        display: block;
+        color: var(--accent);
+        margin-bottom: 7px;
+      }
+
+      .dimension-card p,
+      .deep-card p,
+      .logic-card p,
+      .consulting-note p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .decision-strip {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr;
+        gap: 14px;
+        align-items: center;
+        margin-top: 24px;
+        padding: 20px 22px;
+        border-radius: 18px;
+      }
+
+      .decision-node {
+        min-height: 92px;
+        padding: 16px;
+        border-radius: 14px;
+        background: var(--surface-strong);
+      }
+
+      .decision-node strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--accent);
+      }
+
+      .decision-arrow {
+        color: #77a6b9;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .path-demo {
+        margin-top: 24px;
+        overflow-x: auto;
+      }
+
+      .path-line {
+        min-width: 760px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr auto 1fr auto 1.1fr;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .path-node {
+        min-height: 106px;
+        padding: 16px;
+        border-radius: 15px;
+        background: #eef5f7;
+        border: 1px solid rgba(0, 67, 105, 0.12);
+      }
+
+      .path-node.target {
+        color: #ffffff;
+        background: var(--accent);
+      }
+
+      .path-node strong,
+      .path-node span {
+        display: block;
+      }
+
+      .path-node span {
+        margin-top: 6px;
+        font-size: 13px;
+        opacity: 0.78;
+      }
+
+      .checkpoint {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        color: var(--accent);
+        background: #ffffff;
+        border: 2px solid #79aebe;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .consulting-note {
+        margin-top: 22px;
+        border-left: 5px solid var(--warm);
+        background: linear-gradient(110deg, rgba(208, 155, 69, 0.12), #ffffff 40%);
+      }
+
+      .consulting-note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #7b5620;
+        font-size: 18px;
+      }
+
+      .capability-chain {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .capability-step {
+        position: relative;
+        min-height: 150px;
+        padding: 20px 18px;
+        border-radius: 18px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .capability-step::after {
+        content: "→";
+        position: absolute;
+        top: 50%;
+        right: -14px;
+        z-index: 2;
+        width: 28px;
+        color: #77a6b9;
+        text-align: center;
+        font-weight: 800;
+        transform: translateY(-50%);
+      }
+
+      .capability-step:last-child::after {
+        display: none;
+      }
+
+      .capability-step span,
+      .capability-step strong {
+        display: block;
+      }
+
+      .capability-step span {
+        margin-bottom: 12px;
+        color: #77a6b9;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .capability-step strong {
+        margin-bottom: 8px;
+        color: var(--accent);
+        font-size: 17px;
+      }
+
+      .model-output {
+        margin-top: 24px;
+        padding: 26px;
+        border-radius: 22px;
+        color: #ffffff;
+        background: linear-gradient(120deg, #004369 0%, #0b6687 100%);
+        box-shadow: var(--shadow);
+      }
+
+      .model-output h3 {
+        margin: 0 0 18px;
+        font-size: 21px;
+      }
+
+      .model-output-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .model-output-grid div {
+        min-height: 104px;
+        padding: 15px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      .model-output-grid strong {
+        display: block;
+        margin-bottom: 6px;
+      }
+
+      .model-output-grid span {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      @media (max-width: 1180px) {
+        :root { --sidebar: 226px; }
+
+        .dimension-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .deep-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .capability-chain,
+        .model-output-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .capability-step::after { display: none; }
+      }
+
+      @media (max-width: 780px) {
+        :root { --sidebar: 0px; }
+
+        .topbar {
+          position: sticky;
+          width: 100%;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .topbar-inner {
+          height: auto;
+          padding: 12px 18px;
+          flex-direction: row;
+          align-items: center;
+        }
+
+        .brand {
+          padding: 0;
+          border: 0;
+        }
+
+        .brand-logo { width: 128px; }
+        .brand-copy { display: none; }
+        .nav { display: none; }
+        main, .footer { margin-left: 0; }
+        section { padding: 54px 18px; }
+        .hero-title { font-size: 26px; }
+        .section-head h2 { font-size: 26px; }
+        .dimension-grid,
+        .logic-grid,
+        .replace-grid,
+        .decision-strip,
+        .capability-chain,
+        .model-output-grid {
+          grid-template-columns: 1fr;
+        }
+        .decision-arrow { transform: rotate(90deg); text-align: center; }
+      }
+
+      @media (min-width: 481px) and (max-width: 780px) {
+        .hero-stats {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .stat {
+          padding: 16px 14px;
+        }
+      }
+
+      @media print {
+        .topbar { display: none; }
+        main, .footer { margin-left: 0; }
+        section { padding: 34px 22px; }
+        .hero { min-height: auto; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <img class="brand-logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDI0LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IuWbvuWxgl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIKCSB2aWV3Qm94PSIwIDAgMTQxOS4xIDIyMi42IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNDE5LjEgMjIyLjY7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDojRkZGRkZGO30KCS5zdDF7ZmlsbDpub25lO3N0cm9rZTojMDA0MzY5O3N0cm9rZS13aWR0aDowLjI0ODE7c3Ryb2tlLW1pdGVybGltaXQ6MTA7fQoJLnN0MntmaWxsOiMwMDQzNjk7fQoJLnN0M3tmaWxsOm5vbmU7c3Ryb2tlOiNGRkZGRkY7c3Ryb2tlLXdpZHRoOjAuMjU7c3Ryb2tlLW1pdGVybGltaXQ6MTA7fQoJLnN0NHtmaWxsOm5vbmU7c3Ryb2tlOiMwMDQzNjk7c3Ryb2tlLXdpZHRoOjAuODExNTtzdHJva2UtbWl0ZXJsaW1pdDoxMDt9Cgkuc3Q1e2NsaXAtcGF0aDp1cmwoI1NWR0lEXzJfKTt9Cjwvc3R5bGU+CjxnPgoJPHBhdGggY2xhc3M9InN0MiIgZD0iTTExMS44LDkuN0wyLjgsMTkyLjZjLTcuOSwxMy4yLDEuNiwzMCwxNy4xLDMwaDIxOGMxNS40LDAsMjUtMTYuOCwxNy4xLTMwTDE0Niw5LjcKCQlDMTM4LjMtMy4yLDExOS41LTMuMiwxMTEuOCw5Ljd6Ii8+Cgk8cmVjdCB4PSIxMDc1LjQiIHk9IjU1LjgiIGNsYXNzPSJzdDIiIHdpZHRoPSIxNDAuNCIgaGVpZ2h0PSIyMC4xIi8+Cgk8cG9seWdvbiBjbGFzcz0ic3QyIiBwb2ludHM9IjEwNjMuNSwxMjYgMTEwMS44LDEyNiAxMDcxLDE4Ny4yIDEwNzEsMTk0LjcgMTIyMSwxOTQuNyAxMjIxLDE4Ny4yIDExOTkuMiwxNDMuOCAxMTc0LjMsMTQzLjggCgkJMTE4OS43LDE3NC4zIDExMDIuMywxNzQuMyAxMTI2LjcsMTI2IDEyMjguNSwxMjYgMTIyOC41LDEwNS45IDEwNjMuNSwxMDUuOSAJIi8+Cgk8cGF0aCBjbGFzcz0ic3QyIiBkPSJNMTI1NC4xLDU1LjZMMTI1NC4xLDU1LjZsMCwxMzkuMWgwaDY5VjU1LjZIMTI1NC4xeiBNMTI3My4xLDk4LjJWNzMuNmgxMHYyNC42djE4aC0xMFY5OC4yeiBNMTI3My4xLDE3NS44CgkJdi0yMy43di0xOGgxMHYxOHYyMy43SDEyNzMuMXogTTEzMDQsMTUyLjF2MjMuN2gtMTB2LTIzLjd2LTE4aDEwVjE1Mi4xeiBNMTMwNCw5OC4ydjE4aC0xMHYtMThWNzMuNmgxMFY5OC4yeiIvPgoJPHBhdGggY2xhc3M9InN0MiIgZD0iTTEzMjkuOCwxMzUuOHY1OC45aDg4LjhoMC41di01OC45aC0wLjVIMTMyOS44eiBNMTM0OC45LDE3Ni43TDEzNDguOSwxNzYuN3YtMjIuOXYtMC4xaDUxLjF2MC4xdjIyLjh2MC4xCgkJSDEzNDguOXoiLz4KCTxwb2x5Z29uIGNsYXNzPSJzdDIiIHBvaW50cz0iMTM0OS42LDU1LjYgMTM0OS42LDQ1LjkgMTMyOS44LDU0LjQgMTMyOS44LDczLjYgMTQwMCw3My42IDE0MDAsODQuMiAxMzc0LjUsOTUuMSAxMzI5LjgsNzYuMSAKCQkxMzI5LjgsNzYuMiAxMzI5LjgsOTUuMiAxMzUyLDEwNC42IDEzMjkuOCwxMTQuMSAxMzI5LjgsMTMzLjMgMTM3NC41LDExNC4yIDE0MTkuMSwxMzMuMyAxNDE5LjEsMTE0LjEgMTM5Ni45LDEwNC42IDE0MTkuMSw5NS4yIAoJCTE0MTkuMSw1NS42IAkiLz4KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik04NTYuMywxOTcuNGMtMzAuOSwwLTU2LTI0LjMtNTYtNTUuMlY1NS44aDI1LjJ2ODYuNGMwLDE3LDEzLjgsMzAsMzAuOCwzMGMxNywwLDMwLjgtMTMsMzAuOC0zMFY1NS44aDI1LjIKCQl2ODYuNEM5MTIuMywxNzMuMSw4ODcuMiwxOTcuNCw4NTYuMywxOTcuNHoiLz4KCTxwYXRoIGNsYXNzPSJzdDIiIGQ9Ik00NjksMTk3LjRjLTMwLjksMC01Ni0yNC4zLTU2LTU1LjJWNTUuOGgyNS4ydjg2LjRjMCwxNywxMy44LDMwLDMwLjgsMzBzMzAuOC0xMywzMC44LTMwVjU1LjhoMjUuMnY4Ni40CgkJQzUyNS4xLDE3My4xLDQ5OS45LDE5Ny40LDQ2OSwxOTcuNHoiLz4KCTxwb2x5Z29uIGNsYXNzPSJzdDIiIHBvaW50cz0iNzgyLjksMTcxLjIgNzIyLjIsMTcxLjIgNzIyLjIsNTUuOCA2OTYuOSw1NS44IDY5Ni45LDE5NC42IDc4Mi45LDE5NC42IAkiLz4KCTxwb2x5Z29uIGNsYXNzPSJzdDIiIHBvaW50cz0iMTAzMC45LDc5LjIgMTAzMC45LDU1LjggOTQxLjUsNTUuOCA5NDEuNSwxOTQuNiAxMDMwLjksMTk0LjYgMTAzMC45LDE3MS4yIDk2Ni44LDE3MS4yIDk2Ni44LDEzNC4xIAoJCTEwMjEuNiwxMzQuMSAxMDIxLjYsMTEwLjcgOTY2LjgsMTEwLjcgOTY2LjgsNzkuMiAJIi8+Cgk8cG9seWdvbiBjbGFzcz0ic3QyIiBwb2ludHM9IjY2Ny42LDU1LjggNjQyLjQsNTUuOCA2NDIuNCwxNTAuNiA1ODAsNTUuOCA1NzkuNSw1NS44IDU1NC4zLDU1LjggNTU0LjMsNTUuOCA1NTQuMywxOTQuNiAKCQk1NzkuNSwxOTQuNiA1NzkuNSw5OS44IDY0MS45LDE5NC42IDY2Ny4zLDE5NC42IDY2Ny42LDE5NC42IAkiLz4KCTxwb2x5Z29uIGNsYXNzPSJzdDIiIHBvaW50cz0iMzI1LjEsMTk0LjYgMzUwLjMsMTk0LjYgMzUwLjMsMTM4LjYgMzk3LjksNTUuOCAzNjkuMiw1NS44IDMzNy43LDExMC42IDMwNi4zLDU1LjggMjc3LjYsNTUuOCAKCQkzMjUuMSwxMzguNiAJIi8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTQ4LjQsMTg1LjdsLTEzLjktNi43di0yLjljMS45LTEuMiwzLjMtMi45LDMuNy00LjljMS45LTAuMywzLjMtMS45LDMuMy0zLjh2LTIuN2MwLTEuMS0wLjgtMi0xLjgtMi40di01LjEKCQloMGMwLDAsMCwwLDAsMHYwaDBjMC00LjYtNC45LTguMy0xMC44LTguM2MtNiwwLTEwLjgsMy43LTEwLjgsOC4zaDB2MGMwLDAsMCwwLDAsMGgwdjUuMWMtMSwwLjMtMS44LDEuMi0xLjgsMi40djIuNwoJCWMwLDEuOSwxLjQsMy41LDMuMywzLjhjMC41LDIsMS44LDMuNywzLjcsNC45djIuOWwtMTMuOSw2LjdjLTEuMywwLjYtMi4yLDEuOC0yLjUsMy4ybC0yLjQsMTIuM2MtMC40LDEuOCwxLjEsMy41LDMsMy41aDQyLjkKCQljMS45LDAsMy40LTEuNywzLTMuNWwtMi40LTEyLjNDMTUwLjYsMTg3LjYsMTQ5LjcsMTg2LjQsMTQ4LjQsMTg1Ljd6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNODEsMTg1LjdMNjcuMSwxNzl2LTIuOWMxLjktMS4yLDMuMy0yLjksMy43LTQuOWMxLjktMC4zLDMuMy0xLjksMy4zLTMuOHYtMi43YzAtMS4xLTAuOC0yLTEuOC0yLjR2LTUuMWgwCgkJYzAsMCwwLDAsMCwwdjBoMGMwLTQuNi00LjktOC4zLTEwLjgtOC4zcy0xMC44LDMuNy0xMC44LDguM2gwdjBjMCwwLDAsMCwwLDBoMHY1LjFjLTEsMC4zLTEuOCwxLjItMS44LDIuNHYyLjcKCQljMCwxLjksMS40LDMuNSwzLjMsMy44YzAuNSwyLDEuOCwzLjcsMy43LDQuOXYyLjlMNDIsMTg1LjdjLTEuMywwLjYtMi4yLDEuOC0yLjUsMy4ybC0yLjQsMTIuM2MtMC40LDEuOCwxLjEsMy41LDMsMy41SDgzCgkJYzEuOSwwLDMuNC0xLjcsMy0zLjVsLTIuNC0xMi4zQzgzLjMsMTg3LjYsODIuMywxODYuNCw4MSwxODUuN3oiLz4KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yMTUuOCwxODUuN2wtMTMuOS02Ljd2LTIuOWMxLjktMS4yLDMuMy0yLjksMy43LTQuOWMxLjktMC4zLDMuMy0xLjksMy4zLTMuOHYtMi43YzAtMS4xLTAuOC0yLTEuOC0yLjR2LTUuMQoJCWgwYzAsMCwwLDAsMCwwdjBoMGMwLTQuNi00LjktOC4zLTEwLjgtOC4zcy0xMC44LDMuNy0xMC44LDguM2gwdjBjMCwwLDAsMCwwLDBsMCwwdjUuMWMtMSwwLjMtMS44LDEuMi0xLjgsMi40djIuNwoJCWMwLDEuOSwxLjQsMy41LDMuMywzLjhjMC41LDIsMS44LDMuNywzLjcsNC45djIuOWwtMTMuOSw2LjdjLTEuMywwLjYtMi4yLDEuOC0yLjUsMy4ybC0yLjQsMTIuM2MtMC40LDEuOCwxLjEsMy41LDMsMy41aDQyLjkKCQljMS45LDAsMy40LTEuNywzLTMuNWwtMi40LTEyLjNDMjE4LDE4Ny42LDIxNy4xLDE4Ni40LDIxNS44LDE4NS43eiIvPgoJPHBhdGggY2xhc3M9InN0MCIgZD0iTTExNi40LDY2LjhjMS4yLDQuOSw2LjMsOC42LDEyLjUsOC42YzYuMiwwLDExLjQtMy43LDEyLjUtOC42YzIuNS0wLjUsNC40LTIuNiw0LjQtNS4xVjU4CgkJYzAtMS41LTEtMi43LTIuNC0zLjJWNDhoMGMwLTYuMS02LjUtMTEuMS0xNC41LTExLjFzLTE0LjQsNC45LTE0LjUsMTEuMWgwdjAuMWMwLDAsMCwwLDAsMHY2LjdjLTEuNCwwLjQtMi40LDEuNy0yLjQsMy4ydjMuNwoJCUMxMTIsNjQuMiwxMTMuOSw2Ni4zLDExNi40LDY2Ljh6Ii8+Cgk8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTYxLjYsMTA3bC0zLjMtMTYuNWMtMC40LTEuOS0xLjYtMy40LTMuMy00LjNsLTEzLjctNi42Yy0wLjQtMC4yLTAuOSwwLTEuMSwwLjRsLTcuMSwxNC43CgkJYy0wLjEsMC4xLTAuMywwLjEtMC4zLDBsLTEuNi0xMS4xYzAtMC4xLDAtMC4yLDAuMS0wLjNsMi0yLjZjMC4xLTAuMiwwLjEtMC40LDAtMC41Yy0wLjItMC4zLTAuNC0wLjgtMC42LTEuMQoJCWMtMC4xLTAuMS0wLjItMC4yLTAuNC0wLjJoLTYuOWMtMC4yLDAtMC4zLDAuMS0wLjQsMC4yYy0wLjEsMC4zLTAuNCwwLjctMC42LDEuMWMtMC4xLDAuMi0wLjEsMC40LDAsMC41bDIsMi42CgkJYzAuMSwwLjEsMC4xLDAuMiwwLjEsMC4zTDEyNSw5NC43YzAsMC4yLTAuMiwwLjItMC4zLDBMMTE3LjYsODBjLTAuMi0wLjQtMC43LTAuNi0xLjEtMC40bC0xMy43LDYuNmMtMS43LDAuOC0zLDIuNC0zLjMsNC4zCgkJTDk2LjIsMTA3Yy0wLjUsMi40LDEuNSw0LjcsNCw0LjdoNTcuNEMxNjAuMiwxMTEuOCwxNjIuMSwxMDkuNSwxNjEuNiwxMDd6Ii8+Cgk8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjEzMS4yLDEyOCAxMzEuMiwxMTcuOCAxMjYuNiwxMTcuOCAxMjYuNiwxMjggNTkuMiwxMjggNTkuMiwxNDIuOCA2My44LDE0Mi44IDYzLjgsMTMyLjUgMTk0LDEzMi41IAoJCTE5NCwxNDIuOCAxOTguNiwxNDIuOCAxOTguNiwxMjggCSIvPgo8L2c+Cjwvc3ZnPgo=" alt="云略咨询 Yunlue Consulting" />
+          <div class="brand-copy">
+            <strong>关键岗位与人才盘点一体化方案</strong>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#top">
+            <span class="nav-title">方案首页</span>
+            <span class="nav-desc">从战略能力到关键岗位与人才选择</span>
+          </a>
+          <a href="#issues">痛点</a>
+          <a href="#method">方法</a>
+          <a href="#capability-model">战略能力建模</a>
+          <a href="#key-position">关键岗位识别</a>
+          <a href="#path-design">岗位路径设计</a>
+          <a href="#stages">人才盘点与行动</a>
+          <a href="#system">系统承接</a>
+          <a href="#ai">AI增强</a>
+          <a href="#value">价值</a>
+          <a class="demo-link" href="http://47.103.26.1:3688/" target="_blank" rel="noopener noreferrer">示例系统 ↗</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="shell hero-grid">
+          <div class="hero-panel">
+            <span class="hero-kicker">从战略能力出发，而不是从通用模板出发</span>
+            <h1 class="hero-title">先定义未来战略需要什么能力，再决定关键岗位、成长路径与人才选择</h1>
+            <p class="hero-text">
+              以未来3—5年公司战略和年度业务目标为锚点，由云略团队结合AI形成企业定制化能力模型，并将能力要求贯穿关键岗位识别、岗位路径、人才盘点、继任判断和发展行动
+            </p>
+            <div class="hero-stats">
+              <div class="stat">
+                <strong>4</strong>
+                <span>阶段推进，从共识打样到扩展固化</span>
+              </div>
+              <div class="stat">
+                <strong>8</strong>
+                <span>方法步骤，形成完整的人才运营闭环</span>
+              </div>
+              <div class="stat">
+                <strong>11</strong>
+                <span>系统能力模块，承接规则、盘点与行动</span>
+              </div>
+            </div>
+          </div>
+
+          <aside class="hero-aside">
+            <div>
+              <p class="mini-title">方案适用场景</p>
+              <p>战略能力建模、关键岗位识别、岗位发展路径设计、人才盘点、继任管理、高潜人才发展</p>
+            </div>
+            <div>
+              <p class="mini-title">项目本质</p>
+              <p>回答六类问题：战略能力、关键岗位、岗位路径、人才盘点、继任发展、工具运营</p>
+            </div>
+            <div>
+              <p class="mini-title">方案链路</p>
+              <div class="flow-rail">
+                <div class="flow-step">
+                  <div class="step-no">1</div>
+                  <div><strong>战略能力建模</strong><span>把3—5年战略与年度目标拆成能力要求</span></div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-no">2</div>
+                  <div><strong>关键岗位识别</strong><span>找到承载战略能力的岗位与关键历练站点</span></div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-no">3</div>
+                  <div><strong>发展路径设计</strong><span>围绕能力获得与验证设计关键岗位经历</span></div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-no">4</div>
+                  <div><strong>人才盘点与校准</strong><span>按能力模型与经验路径识别人岗差距</span></div>
+                </div>
+                <div class="flow-step">
+                  <div class="step-no">5</div>
+                  <div><strong>继任与发展行动</strong><span>把结论落到轮岗、IDP、任用和外部补位</span></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="issue-band" id="issues">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">为什么很多人才盘点难以落地</span>
+            <h2>问题不在于没有九宫格，而在于盘点之前没有统一的战略能力与岗位标准</h2>
+            <p>很多企业直接套用通用能力词典，再从人员评价或继任名单开始，能力没有锚定未来战略，盘点结论自然难以支撑任用决策和组织行动</p>
+          </div>
+          <div class="issue-grid">
+            <article class="panel">
+              <div class="panel-number">01</div>
+              <strong>盘点对象过宽</strong>
+              <p>有限的管理精力无法聚焦到最关键、最稀缺、最具风险的岗位与人才，资源分散，优先级失真</p>
+            </article>
+            <article class="panel">
+              <div class="panel-number">02</div>
+              <strong>继任判断靠印象</strong>
+              <p>缺少目标岗位所需关键经验的统一标准，导致管理者容易围绕熟悉的人选倒推标准</p>
+            </article>
+            <article class="panel">
+              <div class="panel-number">03</div>
+              <strong>结论不能变行动</strong>
+              <p>“高潜”“待发展”“可继任”这些标签无法直接转换为轮岗、历练、IDP、任用和补位动作</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="method-band" id="method">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">方法总览</span>
+            <h2>把战略目标、能力模型、岗位标准、人才评价和发展动作拉到同一条业务链路上</h2>
+            <p>战略能力模型是起点；关键岗位与发展路径是能力落到组织和经历的载体；人才盘点是把这些要求与现有人才做匹配；继任、轮岗和发展计划是盘点结果的行动化</p>
+          </div>
+
+          <div class="process-shell">
+            <div class="process-grid">
+              <div class="process-card"><div class="index">1</div><strong>战略与业务目标</strong><span>锚定未来3—5年战略及年度经营目标</span></div>
+              <div class="process-card"><div class="index">2</div><strong>战略能力建模</strong><span>拆解组织必须建立和强化的关键能力</span></div>
+              <div class="process-card"><div class="index">3</div><strong>关键岗位识别</strong><span>锁定能力载体、承重墙与关键历练岗位</span></div>
+              <div class="process-card"><div class="index">4</div><strong>岗位路径设计</strong><span>围绕能力获得与验证设计必备经历</span></div>
+              <div class="process-card"><div class="index">5</div><strong>人才盘点校准</strong><span>评价人，也评价能力和经历匹配度</span></div>
+              <div class="process-card"><div class="index">6</div><strong>继任与高潜识别</strong><span>形成候选池、准备度和短板判断</span></div>
+              <div class="process-card"><div class="index">7</div><strong>轮岗与发展行动</strong><span>让盘点结果进入真实的人才流动</span></div>
+              <div class="process-card"><div class="index">8</div><strong>周期复盘迭代</strong><span>随战略和业务目标调整模型与路径</span></div>
+            </div>
+          </div>
+
+          <div class="question-grid">
+            <article class="panel">
+              <strong>战略能力</strong>
+              <ul>
+                <li>未来3—5年战略和年度目标要求组织建立什么能力？</li>
+                <li>哪些能力真正形成业务差异，而不是通用素质？</li>
+                <li>这些能力应由哪些岗位承载、通过什么经历验证？</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <strong>关键岗位</strong>
+              <ul>
+                <li>哪些岗位最影响战略落地、经营结果和组织稳定？</li>
+                <li>哪些岗位一旦断档会形成明显经营风险？</li>
+                <li>哪些岗位既关键又适合作为高潜历练站点？</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <strong>岗位路径</strong>
+              <ul>
+                <li>目标岗位通常从哪些岗位产生？</li>
+                <li>哪些经验是必备，哪些只是加分项？</li>
+                <li>多久、做到什么结果，才算有效经验？</li>
+              </ul>
+            </article>
+            <article class="panel">
+              <strong>人才盘点与继任</strong>
+              <ul>
+                <li>现有人才的绩效、潜力、能力和价值观如何？</li>
+                <li>谁具备继任资格，谁有潜力但还差关键经验？</li>
+                <li>应该轮岗、晋升、项目历练还是外部引进？</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="principles">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">设计原则</span>
+            <h2>先把判断逻辑做对，再把系统做深</h2>
+            <p>方案不追求一开始就用复杂算法覆盖全公司，而是先用少量关键岗位建立共识、形成规则、验证价值</p>
+          </div>
+          <div class="principle-grid">
+            <article class="panel">
+              <strong>先战略能力，再岗位，再人才</strong>
+              <p>先从战略与业务目标定义能力，再明确岗位责任和关键经历，最后评价谁合适</p>
+            </article>
+            <article class="panel">
+              <strong>岗位评价与人员评价分开</strong>
+              <p>一个人高潜，不等于已具备关键岗位继任资格</p>
+            </article>
+            <article class="panel">
+              <strong>纵向晋升与横向历练结合</strong>
+              <p>越接近综合经营岗位，越需要跨领域和跨场景经验</p>
+            </article>
+            <article class="panel">
+              <strong>关键岗位既要出结果也要育人才</strong>
+              <p>关键岗位既承担业绩，也承担对未来干部的培养和验证</p>
+            </article>
+            <article class="panel">
+              <strong>规则先简后繁</strong>
+              <p>先打样、先共识、先人工校准，再逐步扩展规则和智能能力</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="capability-model">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">专题一 · 战略能力建模</span>
+            <h2>由云略团队结合AI，为每家企业建立锚定战略与业务目标的定制化能力模型</h2>
+            <p>我们不套用一张行业通用能力词典，而是从客户未来3—5年的战略方向和每年的业务目标出发，拆解为关键战略任务，再识别支撑任务完成的少数核心能力AI提升资料分析、对标研究和模型生成效率，云略团队负责业务理解、方法判断和最终取舍</p>
+          </div>
+
+          <div class="capability-chain" aria-label="战略能力模型拆解路径">
+            <article class="capability-step">
+              <span>01 · 战略锚点</span>
+              <strong>3—5年公司战略</strong>
+              明确增长方向、业务组合、竞争方式和组织转型要求
+            </article>
+            <article class="capability-step">
+              <span>02 · 经营落点</span>
+              <strong>年度业务目标</strong>
+              识别收入、利润、客户、产品、区域与效率等年度重点
+            </article>
+            <article class="capability-step">
+              <span>03 · 任务拆解</span>
+              <strong>关键战略任务</strong>
+              把目标转化为必须完成的业务任务、关键场景和重大挑战
+            </article>
+            <article class="capability-step">
+              <span>04 · 能力选择</span>
+              <strong>3—7项核心能力</strong>
+              找到决定战略成败、需要组织重点建设的差异化能力
+            </article>
+            <article class="capability-step">
+              <span>05 · 组织承载</span>
+              <strong>岗位、路径与人才</strong>
+              明确能力由谁承载、在哪些经历中获得、如何评价与验证
+            </article>
+          </div>
+
+          <div class="model-output">
+            <h3>每一项能力都形成可解释、可选择、可应用的完整定义</h3>
+            <div class="model-output-grid">
+              <div><strong>能力名称</strong><span>采用客户业务语言，避免抽象口号</span></div>
+              <div><strong>定义与边界</strong><span>说明“是什么、不是什么”及适用场景</span></div>
+              <div><strong>理论依据</strong><span>给出所采用的管理理论、行业研究或能力建模依据</span></div>
+              <div><strong>选择建议</strong><span>解释为什么选、优先级如何、与战略任务怎样对应</span></div>
+              <div><strong>分级与证据</strong><span>形成行为描述、业务证据和可验证的成熟度标准</span></div>
+            </div>
+          </div>
+
+          <div class="deep-grid" style="margin-top: 24px;">
+            <article class="deep-card">
+              <h3>战略清晰：从战略顶层拆解</h3>
+              <p>以中长期战略、业务规划和年度目标为起点，AI先提取战略主题和关键任务，团队再筛选真正决定成败的能力</p>
+            </article>
+            <article class="deep-card">
+              <h3>战略在形成：从年度任务反推</h3>
+              <p>如果长期战略仍在讨论，可从年度经营目标、核心战役和管理层访谈起步，先形成可应用的能力模型，再随战略迭代</p>
+            </article>
+            <article class="deep-card">
+              <h3>资料有限：从对标假设验证</h3>
+              <p>结合行业规律、标杆实践和企业现状提出能力假设，通过访谈和业务案例验证，帮助企业找到适合自己的建模起始点</p>
+            </article>
+          </div>
+
+          <div class="consulting-note">
+            <strong>模型不是一次性成果，而是战略与人才系统之间的共同语言</strong>
+            <p>能力模型一经确认，将成为关键岗位识别、岗位任职要求、发展路径设计、人才盘点评价、继任差距判断和IDP行动设计的共同锚点；每年结合业务目标校准，战略发生重大变化时同步更新</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="key-position">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">专题二 · 关键岗位识别</span>
+            <h2>关键岗位不是“级别高的岗位”，而是战略落地与人才供给体系中的承重墙</h2>
+            <p>关键岗位识别必须锚定前一步形成的战略能力模型：既判断哪些岗位直接承载核心能力和当期经营结果，也判断哪些岗位是获得、验证这些能力不可绕开的历练站点</p>
+          </div>
+
+          <div class="deep-grid">
+            <article class="deep-card">
+              <h3>01 从战略能力形成岗位长名单</h3>
+              <p>从未来3—5年的战略任务、年度目标和核心能力出发，识别直接承载能力、决定关键结果或制约业务增长的岗位</p>
+            </article>
+            <article class="deep-card">
+              <h3>02 用统一维度评估岗位</h3>
+              <p>业务负责人、HRBP与专业部门分别初评，保留判断依据，避免只凭岗位名称、现任者影响力或历史习惯决定</p>
+            </article>
+            <article class="deep-card">
+              <h3>03 通过校准会形成组织共识</h3>
+              <p>校准岗位价值、稀缺性和发展杠杆，最终区分公司级关键岗位、业务级关键岗位与关键历练岗位</p>
+            </article>
+          </div>
+
+          <div class="dimension-grid">
+            <article class="dimension-card"><strong>战略影响</strong><p>是否直接承接战略任务和未来能力建设</p></article>
+            <article class="dimension-card"><strong>经营影响</strong><p>对收入、利润、客户、产品和交付结果的影响</p></article>
+            <article class="dimension-card"><strong>组织影响</strong><p>空缺或失误是否影响组织稳定与关键协同</p></article>
+            <article class="dimension-card"><strong>能力承载</strong><p>是否直接承载战略能力，且对能力形成具有不可替代作用</p></article>
+            <article class="dimension-card"><strong>稀缺程度</strong><p>内外部人才供给、招聘难度和培养周期</p></article>
+            <article class="dimension-card"><strong>替代难度</strong><p>岗位出现空缺后，合格替代者是否容易获得</p></article>
+            <article class="dimension-card"><strong>发展杠杆</strong><p>是否是通向更高岗位的关键历练与验证站点</p></article>
+            <article class="dimension-card"><strong>当前风险</strong><p>现任者风险、继任覆盖与梯队厚度是否健康</p></article>
+          </div>
+
+          <div class="decision-strip" aria-label="关键岗位识别决策链路">
+            <div class="decision-node"><strong>岗位长名单</strong><span>战略、流程与能力视角共同提名</span></div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-node"><strong>多角色初评</strong><span>业务、HRBP、COE分别给出证据</span></div>
+            <div class="decision-arrow">→</div>
+            <div class="decision-node"><strong>校准与分级</strong><span>形成岗位库、风险地图及维护责任</span></div>
+          </div>
+
+          <div class="consulting-note">
+            <strong>关键岗位的双重管理要求：承载能力，也培养能力</strong>
+            <p>关键岗位首先必须配置齐、保障当期结果与战略能力落地；同时应优先配置经过盘点验证的高潜人才，让岗位成为培养和验证未来干部核心能力的真实战场，而不只是组织架构上的一个“坑位”</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="path-design">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">专题三 · 岗位路径设计</span>
+            <h2>围绕目标岗位和目标能力反向设计：从哪里来、如何获得能力、在哪些节点完成验证</h2>
+            <p>路径不是给某个人量身定做，也不是简单画一条纵向晋升线；它是组织对“哪些关键经历能够形成并验证目标岗位所需战略能力”的共同判断</p>
+          </div>
+
+          <div class="logic-grid">
+            <article class="logic-card">
+              <strong>第一步：确定目标岗位与人才画像</strong>
+              <p>将企业战略能力模型映射到目标岗位，明确该岗位需要重点承载的能力、经营责任、管理复杂度和核心挑战</p>
+            </article>
+            <article class="logic-card">
+              <strong>第二步：标记来源与过程岗位</strong>
+              <p>识别哪些岗位能够提供目标能力的学习场景、责任范围和结果验证，确定起点、来源与中间历练岗位</p>
+            </article>
+            <article class="logic-card">
+              <strong>第三步：配置经验卡与组合规则</strong>
+              <p>区分必备、可选与加分经历，并设置“三选二”“规则与作战各一段”等组合门槛</p>
+            </article>
+            <article class="logic-card">
+              <strong>第四步：定义有效经验与检查点</strong>
+              <p>规定最低时长、完整责任、业务周期、能力行为和结果证据，在阶段性节点确认能力是否真正形成</p>
+            </article>
+          </div>
+
+          <div class="path-demo">
+            <div class="path-line">
+              <div class="path-node"><strong>起点岗位</strong><span>完成专业打底，在一线场景建立业务理解</span></div>
+              <div class="checkpoint">CP1</div>
+              <div class="path-node"><strong>作战岗位</strong><span>承担客户、区域、产品或交付结果</span></div>
+              <div class="checkpoint">CP2</div>
+              <div class="path-node"><strong>规则岗位</strong><span>形成策略、机制、资源配置与全局视角</span></div>
+              <div class="checkpoint">集卡</div>
+              <div class="path-node target"><strong>关键目标岗位</strong><span>同时验证战略能力、人才合格度与岗位经验匹配度</span></div>
+            </div>
+          </div>
+
+          <div class="deep-grid" style="margin-top: 24px;">
+            <article class="deep-card">
+              <h3>集卡门槛：先判断有没有资格</h3>
+              <p>必备经验不能由无关经历的高分替代例如综合经营岗位可以要求核心业务经历三选二，并至少具备一段规则和一段作战经历</p>
+            </article>
+            <article class="deep-card">
+              <h3>经验排序：再比较谁更合适</h3>
+              <p>多人达到门槛后，再比较岗位层级、责任复杂度、经历相关性、跨区域经验、有效结果和经历新鲜度</p>
+            </article>
+            <article class="deep-card">
+              <h3>有效经验：避免“洗澡式轮岗”</h3>
+              <p>短期挂职或只有岗位名称不能自动获得经验卡；长期停留在同类岗位也应预警，避免用年限替代真实成长</p>
+            </article>
+          </div>
+
+          <div class="consulting-note">
+            <strong>能力模型、岗位路径与人才盘点形成三层判断</strong>
+            <p>能力模型回答“战略需要什么能力”；岗位路径回答“这些能力应在什么岗位和经历中获得与验证”；人才盘点回答“这个人的表现、潜力、能力现状和经验完成度怎么样”高潜不等于已准备好继任，最终候选人必须同时满足能力、人才评价与经验资格要求</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="stages">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">四个阶段</span>
+            <h2>从战略能力建模到人才行动，方法上分四段，运营上形成一条闭环</h2>
+            <p>每个阶段都对应明确的产出、判断标准和系统能力，而不是只停留在会议讨论层面</p>
+          </div>
+
+          <div class="stage-shell">
+            <article class="stage-block">
+              <div class="stage-header">
+                <div>
+                  <span class="stage-tag">阶段一</span>
+                  <h3>战略能力建模与关键岗位识别</h3>
+                </div>
+                <p>先形成战略能力模型，再输出关键岗位库、分级和风险地图，为后续路径与人才判断建立共同标准</p>
+              </div>
+              <div class="stage-columns">
+                <div class="mini-grid">
+                  <div class="mini-panel">
+                    <strong>能力模型</strong>
+                    <p>从3—5年战略和年度目标拆解核心能力，形成定义、理论依据、选择建议、分级和验证证据</p>
+                  </div>
+                  <div class="mini-panel">
+                    <strong>岗位识别</strong>
+                    <p>识别能力承载岗位，区分公司级关键岗位、业务级关键岗位和关键历练岗位</p>
+                  </div>
+                </div>
+                <div class="mini-panel">
+                  <strong>关键输出</strong>
+                  <p>战略能力模型、能力—岗位映射、关键岗位清单、岗位分级、风险地图、责任人与复盘频率</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="stage-block">
+              <div class="stage-header">
+                <div>
+                  <span class="stage-tag">阶段二</span>
+                  <h3>岗位发展路径设计</h3>
+                </div>
+                <p>不是问某个人下一步去哪，而是围绕目标岗位反推人才从哪里来、要经过什么历练</p>
+              </div>
+              <div class="stage-columns">
+                <div class="mini-grid">
+                  <div class="mini-panel">
+                    <strong>路径规则</strong>
+                    <p>起点岗位、来源岗位、中间岗位、必备经验、组合逻辑、有效时长、关键证据、checkpoint</p>
+                  </div>
+                  <div class="mini-panel">
+                    <strong>经验判断方式</strong>
+                    <p>先做“集卡门槛”，再做“经验排序”；先判断有没有资格，再比较谁更适合</p>
+                  </div>
+                </div>
+                <div class="mini-panel">
+                  <strong>核心原则</strong>
+                  <p>长期只在规则端或只在作战端都不够，综合经营岗位需要跨场景、跨责任的横向历练</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="stage-block">
+              <div class="stage-header">
+                <div>
+                  <span class="stage-tag">阶段三</span>
+                  <h3>人才盘点与校准</h3>
+                </div>
+                <p>同一个周期内选择一种主模型，不把九宫格当结果，而是当作结构化讨论的起点</p>
+              </div>
+              <div class="stage-columns">
+                <div class="mini-grid">
+                  <div class="mini-panel">
+                    <strong>两类模型</strong>
+                    <p>绩效 × 潜力，或能力验证 × 潜力与战略契合度，按项目目标选其一</p>
+                  </div>
+                  <div class="mini-panel">
+                    <strong>盘点流程</strong>
+                    <p>经理初评、HRBP校准、业务盘点会、跨部门校准、人才委员会确认</p>
+                  </div>
+                </div>
+                <div class="mini-panel">
+                  <strong>盘点输出</strong>
+                  <p>九宫格、高潜池、关键人才名单、继任候选人准备度、岗位风险、能力差距和经验差距</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="stage-block">
+              <div class="stage-header">
+                <div>
+                  <span class="stage-tag">阶段四</span>
+                  <h3>继任、高潜与发展行动</h3>
+                </div>
+                <p>同时检查战略能力匹配度、人才合格度和岗位经验完成度，避免把潜力等同于准备就绪</p>
+              </div>
+              <div class="stage-columns">
+                <div class="mini-grid">
+                  <div class="mini-panel">
+                    <strong>继任准备度</strong>
+                    <p>Ready Now、Ready Soon、Ready Later、暂不纳入，按岗位复杂度定义时间区间</p>
+                  </div>
+                  <div class="mini-panel">
+                    <strong>发展动作</strong>
+                    <p>轮岗、代理任职、专项项目、P&amp;L历练、导师制、训练营或外部引进，直接对齐差距</p>
+                  </div>
+                </div>
+                <div class="mini-panel">
+                  <strong>行动原则</strong>
+                  <p>第一批不追求人数，优先做出成功案例，让业务看到计划性流动对组织能力的价值</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="arch-band" id="system">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">系统承接</span>
+            <h2>系统不只是记录盘点结果，而是承接战略能力、岗位规则、差距比对与人才行动</h2>
+            <p>在现有人才盘点工具基础上，向前补上战略能力建模、关键岗位与路径规则，向后连到继任、IDP、组织健康和行动追踪</p>
+          </div>
+
+          <div class="stack-grid">
+            <div class="stack-item"><span>01</span><strong>战略与岗位基础数据</strong></div>
+            <div class="stack-item"><span>02</span><strong>战略能力模型共创与配置</strong></div>
+            <div class="stack-item"><span>03</span><strong>关键岗位识别与岗位库</strong></div>
+            <div class="stack-item"><span>04</span><strong>岗位标签与发展路径配置</strong></div>
+            <div class="stack-item"><span>05</span><strong>人才盘点周期与评价模型</strong></div>
+            <div class="stack-item"><span>06</span><strong>九宫格及人才校准</strong></div>
+            <div class="stack-item"><span>07</span><strong>关键岗位继任管理</strong></div>
+            <div class="stack-item"><span>08</span><strong>高潜人才池与IDP</strong></div>
+            <div class="stack-item"><span>09</span><strong>流动和发展行动追踪</strong></div>
+            <div class="stack-item"><span>10</span><strong>组织健康与人才风险</strong></div>
+            <div class="stack-item"><span>11</span><strong>报告中心与权限管理</strong></div>
+          </div>
+
+          <div class="deliver-grid" style="margin-top: 24px;">
+            <article class="panel">
+              <strong>战略能力模型模块</strong>
+              <p>引导战略与年度目标拆解，生成能力定义、理论依据、选择建议、分级标准和能力—岗位映射</p>
+            </article>
+            <article class="panel">
+              <strong>关键岗位与路径模块</strong>
+              <p>按能力承载识别岗位，并配置来源岗位、经验门槛、组合规则、有效时长和checkpoint</p>
+            </article>
+            <article class="panel">
+              <strong>人岗匹配与差距扫描</strong>
+              <p>输出已拥有经验卡、缺失经验卡、能力差距、下一站岗位和绿黄红匹配状态</p>
+            </article>
+            <article class="panel">
+              <strong>继任与高潜模块衔接</strong>
+              <p>展示目标岗位经验完成度、准备度依据、短板、责任人和完成时间</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="ai">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">AI增强模块</span>
+            <h2>云略团队结合AI完成定制建模，再把方法嵌入工具，让企业HR能够持续自主运行</h2>
+          </div>
+
+          <div class="ai-grid">
+            <article class="ai-block">
+              <h3>规划中的 AI 工作流</h3>
+              <div class="ai-chain">
+                <div class="ai-step">
+                  <strong>1. 战略解读</strong>
+                  <span>分析3—5年战略、年度目标、业务资料和管理层访谈</span>
+                </div>
+                <div class="ai-step">
+                  <strong>2. 能力共创</strong>
+                  <span>提出能力候选、定义、理论依据、选择建议与岗位映射</span>
+                </div>
+                <div class="ai-step">
+                  <strong>3. 访谈与分析</strong>
+                  <span>指导HR访谈追问，将材料映射到能力、岗位与经验卡</span>
+                </div>
+                <div class="ai-step">
+                  <strong>4. 校准与行动</strong>
+                  <span>由云略、HR与业务校准模型，再生成差距和人才行动建议</span>
+                </div>
+              </div>
+            </article>
+
+            <aside class="quote-block">
+              <h3>AI 模块的业务价值</h3>
+              <p class="quote">把一次性的外部咨询项目，转化为企业能够自己运行、持续复用的方法与工具</p>
+              <p class="quote-note">工具提供咨询级的方法指导和过程辅助，但不替代业务判断最终结果保留“建议 + 证据 + 规则依据 + 人工确认”，避免黑箱决策</p>
+            </aside>
+          </div>
+
+          <div class="replace-grid" style="margin-top: 20px;">
+            <article class="logic-card">
+              <strong>过去依赖咨询公司的工作</strong>
+              <p>战略资料研读、能力模型设计、理论框架选择、访谈提纲设计、顾问访谈与追问、纪要整理、岗位维度归纳、人才证据提取、初步报告与工作坊材料准备</p>
+            </article>
+            <article class="logic-card">
+              <strong>工具增强后的企业自主模式</strong>
+              <p>云略团队与AI先完成客户化能力模型共创；系统再逐步提示HR准备资料和开展访谈，实时给出追问建议，自动整理证据，并生成岗位初评、路径草案和盘点建议供业务校准</p>
+            </article>
+          </div>
+
+          <div class="consulting-note">
+            <strong>替代的是大量标准化咨询过程，不是企业管理者的最终责任</strong>
+            <p>对于多数标准场景，企业不再需要每轮都聘请咨询团队从头设计和执行；HR可以依靠系统指导完成大部分准备、访谈、整理与初步分析工作涉及战略取舍、关键岗位定级、干部任用和重大争议时，仍由业务负责人和人才委员会作最终判断，必要时再引入专家支持</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="roadmap">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">实施路径</span>
+            <h2>先打样，后应用，再行动，最后固化为机制</h2>
+            <p>方案实施不追求一次性全覆盖，而是先用少量关键岗位验证方法价值，再扩展到岗位族、业务单元和公司级路网</p>
+          </div>
+          <div class="timeline">
+            <article class="panel">
+              <strong>阶段一：共识与打样</strong>
+              <p>锚定3—5年战略与年度目标，形成首版能力模型；识别首批关键岗位，反推1到3个目标岗位路径，并完成第一版配置原型</p>
+            </article>
+            <article class="panel">
+              <strong>阶段二：人才盘点与校准</strong>
+              <p>导入人才与履历数据，组织经理初评、HRBP校准和业务盘点会，形成第一版关键人才与继任图谱</p>
+            </article>
+            <article class="panel">
+              <strong>阶段三：行动落地</strong>
+              <p>确定首批计划性流动人选，建立IDP，明确培养、轮岗、补位和招聘动作，并跟踪进展</p>
+            </article>
+            <article class="panel">
+              <strong>阶段四：扩展与固化</strong>
+              <p>复盘首批效果，结合下一年度目标校准能力模型，调整路径规则与门槛，并扩展更多岗位和岗位族</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="governance">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">治理与交付</span>
+            <h2>方法要稳定运行，必须有清晰的角色分工、会议机制和交付物</h2>
+            <p>关键岗位与路径讨论、人选盘点、继任与流动决策应分成三类会议，避免围绕现有人选倒推岗位标准</p>
+          </div>
+
+          <div class="govern-grid">
+            <article class="panel">
+              <strong>公司高管 / 人才委员会</strong>
+              <p>确认关键岗位、重大路径规则、高潜与继任结论</p>
+            </article>
+            <article class="panel">
+              <strong>业务负责人 / HR</strong>
+              <p>提供业务判断，组织关键岗位识别、路径共创、盘点校准和行动跟进</p>
+            </article>
+            <article class="panel">
+              <strong>直线经理 / 员工 / 系统管理员</strong>
+              <p>提供事实证据、承担培养责任、确认发展意愿并维护数据、权限和版本</p>
+            </article>
+          </div>
+
+          <div class="deliverable-list">
+            <article class="panel">
+              <strong>建议交付物</strong>
+              <ul>
+                <li>关键岗位识别标准与岗位清单</li>
+                <li>关键岗位分级与风险地图</li>
+                <li>目标岗位发展路径图</li>
+                <li>岗位标签与关键经验卡规则</li>
+                <li>人才盘点模型及操作手册</li>
+                <li>关键岗位继任图谱与高潜人才池</li>
+              </ul>
+            </article>
+            <article class="agenda-block">
+              <h3>首次沟通建议聚焦</h3>
+              <ul>
+                <li>为什么现在做，最想解决什么业务问题</li>
+                <li>哪些岗位最值得优先试点</li>
+                <li>当前岗位路径和人才盘点机制是否成熟</li>
+                <li>现有系统和数据能提供什么</li>
+                <li>客户方项目负责人、参与角色和下一次工作坊安排</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="value">
+        <div class="shell">
+          <div class="section-head">
+            <span class="eyebrow">核心价值</span>
+            <h2>最终交付的不是一张静态九宫格，而是一套持续回答“战略需要什么能力、组织未来需要谁”的机制</h2>
+            <p>这套方案把战略目标、能力模型、岗位标准、人才评价和发展动作连起来，让人才盘点从一次性项目变成持续运营机制</p>
+          </div>
+
+          <div class="outcome-grid">
+            <article class="outcome">
+              <h3>对客户的直接价值</h3>
+              <ul>
+                <li>把3—5年战略和年度业务目标转译成可定义、可选择、可验证的组织能力</li>
+                <li>看清哪些岗位最关键、哪里存在断档、人才该如何有序流动</li>
+                <li>形成更一致的选人标准，降低凭印象任用和单一经历提拔的风险</li>
+                <li>把盘点结论真正落到继任、轮岗、IDP、补位与组织动作上</li>
+                <li>让工具从记录结果升级为支持规则配置、人岗匹配和行动闭环的平台</li>
+              </ul>
+            </article>
+
+            <article class="outcome">
+              <h3>最后要持续回答的问题</h3>
+              <p class="quote">未来战略要求我们建立什么能力？这些能力由哪些岗位承载、通过什么经历获得？我们现在有哪些人？谁已经准备好？下一步把他们放到哪里，才能真正支撑未来业务？</p>
+            </article>
+          </div>
+
+          <div class="customer-grid">
+            <article class="panel">
+              <strong>对组织</strong>
+              <p>让关键岗位、继任风险和人才供给情况变得可见</p>
+            </article>
+            <article class="panel">
+              <strong>对业务负责人</strong>
+              <p>用更稳定的标准做选人、用人和干部发展判断</p>
+            </article>
+            <article class="panel">
+              <strong>对 HR 与系统</strong>
+              <p>把一次性盘点会议升级为可配置、可追踪、可复盘的人才运营机制</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell">展示文档基于《关键岗位与人才盘点一体化标准方案》整理，重组为适合客户沟通与汇报的单页演示结构</div>
+    </footer>
+    <script>
+      (() => {
+        const links = [...document.querySelectorAll('.nav a[href^="#"]')];
+        const byId = new Map(links.map((link) => [link.getAttribute('href').slice(1), link]));
+        const sections = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+
+        const activate = (id) => {
+          links.forEach((link) => link.classList.toggle('is-active', link === byId.get(id)));
+        };
+
+        const updateActive = () => {
+          const marker = window.innerHeight * 0.28;
+          let current = sections[0];
+          for (const section of sections) {
+            if (section.getBoundingClientRect().top <= marker) current = section;
+            else break;
+          }
+          if (current) activate(current.id);
+        };
+
+        let scheduled = false;
+        window.addEventListener('scroll', () => {
+          if (scheduled) return;
+          scheduled = true;
+          requestAnimationFrame(() => {
+            updateActive();
+            scheduled = false;
+          });
+        }, { passive: true });
+        window.addEventListener('resize', updateActive);
+        updateActive();
+        links.forEach((link) => link.addEventListener('click', () => activate(link.getAttribute('href').slice(1))));
+      })();
+    </script>
+  </body>
+</html>
