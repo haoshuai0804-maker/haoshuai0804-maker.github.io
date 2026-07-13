@@ -446,7 +446,7 @@
       background: var(--gold);
       box-shadow: 0 0 0 3px var(--gold), 0 8px 18px rgba(201,155,79,.32);
     }
-    .point.focus span { color: #fff; border-color: var(--brand); background: var(--brand); font-weight: 760; font-size: var(--type-meta); }
+    .point.focus span { max-width: 220px; color: #fff; border-color: var(--brand); background: var(--brand); font-weight: 760; font-size: var(--type-meta); white-space: normal; }
     .point.platform::before { background: var(--brand); box-shadow: 0 0 0 2px var(--brand); }
     .point.service::before { background: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
 
@@ -462,6 +462,23 @@
     .quad-summary small { color: #f2d59c; font-weight: 800; letter-spacing: .07em; }
     .quad-summary strong { display: block; margin: 7px 0 8px; font-size: var(--type-card); line-height: 1.45; }
     .quad-summary p { margin: 0; color: rgba(255,255,255,.76); font-size: var(--type-body); line-height: 1.65; }
+    .judgment-loop {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .judgment-loop span {
+      padding: 8px 11px;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      background: rgba(255,255,255,.09);
+      color: #fff;
+      font-size: var(--type-meta);
+      font-weight: 760;
+    }
+    .judgment-loop i { color: #f2d59c; font-style: normal; font-weight: 900; }
     .c-insight-block {
       margin-top: 8px;
       padding: 0 22px;
@@ -664,7 +681,7 @@
     .cap-position { padding: 7px 10px; border-radius: 999px; color: var(--brand); background: var(--brand-soft); font-size: var(--type-meta); font-weight: 720; }
     .cap-flow {
       display: grid;
-      grid-template-columns: repeat(7, minmax(120px,1fr));
+      grid-template-columns: repeat(4, minmax(150px,1fr));
       gap: 9px;
     }
     .cap-step {
@@ -821,7 +838,7 @@
   <div class="page-shell">
     <aside class="sidebar" aria-label="页面导航">
       <a class="brand-lockup" href="#top" aria-label="返回顶部">
-        <img src="yunlue-logo.svg" alt="云略" />
+        <img src="yunlue-logo.svg" alt="云略 YUNLUE" />
       </a>
       <nav class="sidebar-nav">
         <a href="#conclusion"><span class="nav-num">00</span><span>先给结论</span></a>
@@ -838,14 +855,14 @@
         <div class="content-wrap hero-grid">
           <div>
             <h1>两个独立前台，<br />一套职业智能底座</h1>
-            <p class="hero-lead">B端经营应聘发生之前的人才市场；C端通过长期、低防备的 AI 顾问关系还原真实能力。不公开做双边市场，不默认交换身份或原始数据；只有在人选授权、企业场景适合、证据充分时才触发。</p>
+            <p class="hero-lead">B端经营应聘发生之前的人才市场，并判断人选为什么成功、换一个环境能否继续成功；C端通过长期、低防备的 AI 顾问关系还原真实能力。不公开做双边市场，不默认交换身份或原始数据；只有在人选授权、企业场景适合、证据充分时才触发。</p>
             <div class="hero-quote">“我们不是帮你在现有名单里挑得更快，而是帮你看见名单之外真正需要的人，并让他在机会出现时愿意和你谈。”</div>
           </div>
           <div class="hero-summary">
             <article class="summary-card">
               <span class="tag">B端前台</span>
-              <strong>关键人才发现与关系经营系统</strong>
-              <p>人才地图、名单之外人才发现、关系触达、长期培育、窗口识别与深度验证。</p>
+              <strong>关键人才发现、关系经营与成功路径判断系统</strong>
+              <p>人才地图、名单之外发现、关系经营、成长路径识别、迁移风险与结果校准。</p>
             </article>
             <article class="summary-card">
               <span class="tag">C端前台</span>
@@ -872,8 +889,8 @@
           <div class="conclusion-cards">
             <article class="conclusion-card">
               <small>B端前台</small>
-              <strong>企业关键人才发现与关系经营系统</strong>
-              <p>在岗位出现前画人才地图，在人才产生求职意愿前建立关系，在窗口成熟时完成深度验证与流程交接。</p>
+              <strong>企业关键人才发现、关系经营与成功路径判断系统</strong>
+              <p>在岗位出现前画人才地图，在求职意愿出现前建立关系；重建人选成长路径，区分个人能力与平台红利，用面试证据和入职结果持续校准。</p>
             </article>
             <article class="conclusion-card">
               <small>C端前台</small>
@@ -920,8 +937,8 @@
             <div class="logic-arrow">→</div>
             <div class="logic-card target">
               <small>右上角 · 云略机会</small>
-              <strong>关键人才发现与关系经营层</strong>
-              <p>把猎头的主动寻访、人才 Mapping、关系培育和专业判断嵌入企业高招团队。</p>
+              <strong>关键人才经营与成功路径判断层</strong>
+              <p>把主动寻访、人才 Mapping、关系培育，以及对成长路径、环境依赖和能力迁移的判断嵌入企业高招团队。</p>
             </div>
           </div>
 
@@ -946,20 +963,23 @@
                 <div class="point platform" style="left:88%;top:68%"><span>北森 / Moka / 大易</span></div>
                 <div class="point company-point" style="left:82%;top:58%"><span><b>招聘自动化 Agent</b><small>Moka Eva · 用友大易 · Paradox</small></span></div>
                 <div class="point company-point" style="left:67%;top:40%"><span><b>人才智能平台</b><small>Eightfold · Gloat · Moka AI</small></span></div>
-                <div class="point focus" style="left:82%;top:14%"><span>云略：关键人才发现与关系经营</span></div>
+                <div class="point focus" style="left:82%;top:14%"><span>云略：人才经营＋成功路径判断</span></div>
                 <span class="axis-x">进入企业招聘流程的深度 →</span>
                 <span class="axis-y">专业判断与结果责任 →</span>
               </div>
               <div class="quad-summary">
                 <small>B端象限结论</small>
-                <strong>北森、Moka 管理应聘流程；云略经营应聘发生之前的人才市场。</strong>
-                <p>不再做一套 ATS，而是在岗位出现前建立人才地图，在人才产生求职意愿前建立关系，并在窗口成熟时完成深度验证与流程交接。</p>
+                <strong>北森、Moka 管理流程与已知候选人；云略经营名单之外的人，并判断他为什么成功、换个环境能否继续成功。</strong>
+                <p>不只做 JD 与简历的静态匹配，而是在岗位出现前建立人才地图和关系，重建人选成长路径，区分个人贡献与平台、资源红利，再用面试证据和入职后表现持续校准。</p>
+                <div class="judgment-loop" aria-label="B端动态判断闭环">
+                  <span>成长路径识别</span><i>→</i><span>面试证据判断</span><i>→</i><span>入职结果校准</span>
+                </div>
               </div>
               <div class="player-summary">
-                <div class="mini-card"><b>ATS / HCM</b><span>记录、流转、权限与协作。</span></div>
-                <div class="mini-card"><b>招聘平台</b><span>提供活跃人才，但受可得池限制。</span></div>
-                <div class="mini-card"><b>猎头 / RPO</b><span>突破公开市场，但关系难沉淀。</span></div>
-                <div class="mini-card"><b>云略机会</b><span>把发现、连接和经营变成组织能力。</span></div>
+                <div class="mini-card"><b>ATS / HCM</b><span>管流程、权限与已知候选人。</span></div>
+                <div class="mini-card"><b>普通 AI 筛选</b><span>JD 对简历，以静态特征和分数为主。</span></div>
+                <div class="mini-card"><b>猎头 / RPO</b><span>有复杂判断，但经验容易留在个人。</span></div>
+                <div class="mini-card"><b>云略机会</b><span>把发现、关系、可编辑判断与结果校准变成组织能力。</span></div>
               </div>
             </article>
 
@@ -1074,23 +1094,23 @@
               <div class="mind-side b-side">
                 <div class="side-title">
                   <small>B端前台</small>
-                  <strong>关键人才发现与关系经营系统</strong>
+                  <strong>关键人才发现、关系经营与成功路径判断系统</strong>
                 </div>
-                <div class="mind-node"><b>战略与需求翻译</b><span>未来能力缺口 · 人才原型 · 搜索策略树</span></div>
-                <div class="mind-node"><b>人才地图与主动发现</b><span>目标公司 · Longlist · 名单之外人才 · 覆盖盲区</span></div>
-                <div class="mind-node"><b>连接与关系经营</b><span>关系路径 · 接触理由 · 培育阶段 · 窗口信号</span></div>
-                <div class="mind-node"><b>深度验证与流程交接</b><span>能力迁移 · 动机风险 · 证据卡 · ATS · 结果反馈</span></div>
+                <div class="mind-node"><b>战略需求与成功样本</b><span>业务问题 · 成功标准 · 正反案例 · 搜索策略</span></div>
+                <div class="mind-node"><b>人才地图与关系经营</b><span>目标公司 · Longlist · 名单之外发现 · 窗口信号</span></div>
+                <div class="mind-node"><b>成长路径与迁移判断</b><span>个人贡献 · 平台红利 · 资源依赖 · 环境迁移</span></div>
+                <div class="mind-node"><b>面试证据与结果校准</b><span>原始记录 · 矛盾追问 · 风险判断 · Landing 结果</span></div>
               </div>
 
               <div class="mind-core">
                 <div class="core-symbol">底座</div>
                 <h3>人才与岗位证据图谱</h3>
                 <p>共用模型能力，不等于原始数据互通</p>
-                <div class="core-item">岗位真实需求模型</div>
-                <div class="core-item">个人能力与行为证据模型</div>
+                <div class="core-item">岗位真实需求与成功样本</div>
+                <div class="core-item">个人成长路径与行为证据</div>
+                <div class="core-item">环境依赖与能力迁移模型</div>
                 <div class="core-item">人才关系与流动窗口模型</div>
-                <div class="core-item">行业 / 公司类型 / 岗位关注模式</div>
-                <div class="core-item">结果校准与可解释匹配</div>
+                <div class="core-item">面试证据与入职结果校准</div>
                 <div class="core-item">数据治理、授权、脱敏与审计</div>
               </div>
 
@@ -1124,7 +1144,7 @@
               <div class="section-index"><b>03</b></div>
               <h2>把定位拆成可建设、<br />可交付、可验证的能力</h2>
             </div>
-            <p class="section-intro">“愿意谈”不是一个 AI 按钮，而是找对人、找对理由、找对关系路径、找对时机、找对出面者的乘法结果。工具提供判断和杠杆，人负责真实信任。</p>
+            <p class="section-intro">B端不只要解决“看见谁、如何让他愿意谈”，还要判断“他为什么成功、换一个环境能否继续成功”。工具把猎头与高招专家的经验变成可编辑、可追溯、可用结果校准的组织判断能力。</p>
           </header>
 
           <div class="capability-layout">
@@ -1132,19 +1152,20 @@
               <div class="cap-head">
                 <div class="cap-letter">B</div>
                 <div>
-                  <h3>B端七段人才经营能力</h3>
-                  <p>从岗位问题到名单之外人才，再到成熟关系与正式交接</p>
+                  <h3>B端八段人才发现与判断能力</h3>
+                  <p>从成功样本、名单之外人才和关系经营，到面试证据与入职结果校准</p>
                 </div>
-                <span class="cap-position">人才经营系统 + AI Agent + 云略顾问</span>
+                <span class="cap-position">人才经营系统 + 动态判断引擎 + 云略顾问</span>
               </div>
               <div class="cap-flow">
-                <div class="cap-step"><span class="step-no">01 · 看见</span><b>需求翻译与搜索策略</b><span>岗位成功画像、人才原型、目标公司与策略树。</span></div>
-                <div class="cap-step"><span class="step-no">02 · 扩展</span><b>人才地图与多源发现</b><span>统一人才图谱、去重、相似人扩展与覆盖盲区。</span></div>
-                <div class="cap-step"><span class="step-no">03 · 看懂</span><b>人才360与迁移判断</b><span>个人贡献、环境依赖、迁移风险与优先级。</span></div>
-                <div class="cap-step"><span class="step-no">04 · 触达</span><b>关系路径与接触 Copilot</b><span>合法联系方式、共同连接、个性化开场与节奏。</span></div>
-                <div class="cap-step"><span class="step-no">05 · 愿聊</span><b>组织引力与价值翻译</b><span>为什么值得谈、由谁出面、哪些承诺不能兑现。</span></div>
-                <div class="cap-step"><span class="step-no">06 · 经营</span><b>人才关系 CRM 与窗口雷达</b><span>关系记忆、培育阶段、下一步与职业窗口。</span></div>
-                <div class="cap-step"><span class="step-no">07 · 验证</span><b>深度沟通与 ATS 交接</b><span>能力证据、动机风险、授权、交接与结果学习。</span></div>
+                <div class="cap-step"><span class="step-no">01 · 定标</span><b>需求翻译与成功案例库</b><span>从业务问题、成功者和失败者中提炼可验证标准。</span></div>
+                <div class="cap-step"><span class="step-no">02 · 发现</span><b>人才地图与多源扩展</b><span>目标公司、Longlist、相似人扩展、去重与覆盖盲区。</span></div>
+                <div class="cap-step"><span class="step-no">03 · 还原</span><b>职业成长路径重建</b><span>连接关键选择、挑战、责任变化与过往成功机制。</span></div>
+                <div class="cap-step"><span class="step-no">04 · 迁移</span><b>个人贡献与环境依赖</b><span>区分真实能力、平台红利、组织资源与可迁移条件。</span></div>
+                <div class="cap-step"><span class="step-no">05 · 经营</span><b>关系路径与窗口雷达</b><span>共同连接、接触理由、培育阶段、职业窗口与出面者。</span></div>
+                <div class="cap-step"><span class="step-no">06 · 求证</span><b>面试原始证据判断</b><span>从原始记录中找支持证据、矛盾、缺口和下一个追问。</span></div>
+                <div class="cap-step"><span class="step-no">07 · 交接</span><b>风险分层与正式流程</b><span>区分致命风险、可补偿项与待验证项，获得授权后交接 ATS。</span></div>
+                <div class="cap-step"><span class="step-no">08 · 校准</span><b>Offer、入职与 Landing 学习</b><span>用录拒、Offer、入职后表现和负面案例修正判断规则。</span></div>
               </div>
             </article>
 
@@ -1176,11 +1197,11 @@
                 <span class="cap-position">共用能力 ≠ 原始数据互通</span>
               </div>
               <div class="shared-grid">
-                <div class="shared-item"><b>岗位真实需求模型</b><span>业务问题、组织语境、成功标准、失败模式与验证问题。</span></div>
+                <div class="shared-item"><b>岗位真实需求与样本模型</b><span>业务问题、组织语境、成功与失败案例、验证标准。</span></div>
                 <div class="shared-item"><b>优质企业深度认知模型</b><span>企业阶段、文化、管理风格、人才关注模式、成功与错配特征。</span></div>
-                <div class="shared-item"><b>行为证据模型</b><span>在什么情境、承担什么角色、做了什么、产生什么结果。</span></div>
+                <div class="shared-item"><b>成长路径与行为证据模型</b><span>在什么环境、为何做选择、承担什么角色、产生什么结果。</span></div>
                 <div class="shared-item"><b>追问策略引擎</b><span>识别缺失证据、矛盾与下一问，并保持自然、低防备。</span></div>
-                <div class="shared-item"><b>结果校准系统</b><span>用录拒、Offer、入职表现与用户反馈持续修正判断。</span></div>
+                <div class="shared-item"><b>迁移判断与结果校准</b><span>区分个人能力与环境红利，用录拒、Offer与 Landing 结果持续修正。</span></div>
                 <div class="shared-item"><b>信任与数据治理</b><span>客户域隔离、人选授权、匿名聚合、删除、用途控制与审计。</span></div>
               </div>
             </article>
@@ -1190,19 +1211,19 @@
             <div class="mvp-promise">
               <div>
                 <small>B端首期北极星指标</small>
-                <strong>用更少人工时间，建立更多原本不在企业应聘流程中的高质量人才连接。</strong>
+                <strong>用更少人工时间，在名单之外建立高质量人才连接，并更早识别真正能在本企业成功的人。</strong>
               </div>
-              <p>不是生成多少简历，而是有效人才地图、有效连接和成熟关系的质量。</p>
+              <p>不是生成多少简历或输出一个黑箱分数，而是有效人才地图、成熟关系、可解释证据和经结果验证的正确判断。</p>
             </div>
             <div class="mvp-steps">
-              <div class="mvp-step"><b>1</b><span>职位沟通生成岗位画像、人才原型与搜索策略。</span></div>
-              <div class="mvp-step"><b>2</b><span>输出目标公司地图、100–200人 Longlist 与覆盖盲区。</span></div>
-              <div class="mvp-step"><b>3</b><span>顾问审核形成30–50人重点经营名单。</span></div>
-              <div class="mvp-step"><b>4</b><span>建议关系路径、接触理由、出面者并人工触达。</span></div>
-              <div class="mvp-step"><b>5</b><span>管理回复、顾虑、关系阶段、下一步与窗口。</span></div>
-              <div class="mvp-step"><b>6</b><span>深度交流后生成5–8份能力证据卡。</span></div>
-              <div class="mvp-step"><b>7</b><span>获得授权后进入客户 ATS 与正式招聘流程。</span></div>
-              <div class="mvp-step"><b>8</b><span>用录拒、Offer与入职结果修正人才地图和策略。</span></div>
+              <div class="mvp-step"><b>1</b><span>职位沟通生成岗位画像，并录入正反成功样本。</span></div>
+              <div class="mvp-step"><b>2</b><span>输出目标公司地图、Longlist 与名单覆盖盲区。</span></div>
+              <div class="mvp-step"><b>3</b><span>重建重点人选的成长路径，标记个人贡献与环境依赖。</span></div>
+              <div class="mvp-step"><b>4</b><span>形成重点经营名单，建议关系路径、接触理由与出面者。</span></div>
+              <div class="mvp-step"><b>5</b><span>管理回复、顾虑、关系阶段、下一步与职业窗口。</span></div>
+              <div class="mvp-step"><b>6</b><span>深度交流后从原始记录中生成证据、矛盾、缺口与追问建议。</span></div>
+              <div class="mvp-step"><b>7</b><span>区分致命风险、可补偿项与待验证项，授权后交接 ATS。</span></div>
+              <div class="mvp-step"><b>8</b><span>用录拒、Offer、入职与 Landing 结果修正判断规则。</span></div>
             </div>
           </div>
         </div>
@@ -1210,7 +1231,7 @@
 
       <footer class="footer">
         <div class="footer-inner">
-          <strong>让真实能力被看见，让关键人才在名单形成之前被经营。</strong>
+          <strong>让名单之外的人才被看见，让真正可迁移的能力被验证。</strong>
           <span>云略 YUNLUE · B/C端招聘产品战略讨论稿 · 2026.07</span>
         </div>
       </footer>
