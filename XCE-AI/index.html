@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en" data-locale="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title data-i18n="site.title">Arkx — Imagination, Made Real</title>
+  <meta name="description" data-i18n="site.description" content="Arkx by Arks Creative is building a Creator OS for the AI-native generation of playable, interactive digital works." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" href="https://fonts.gstatic.com/s/spacegrotesk/v22/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-gOoraIAEj7aUUsj.ttf" as="font" type="font/ttf" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=2026071312" />
+</head>
+<body class="theme-dark is-at-top">
+  <div class="page-backdrop" aria-hidden="true">
+    <div class="page-backdrop__dark"></div>
+    <div class="page-backdrop__light"></div>
+  </div>
+  <header class="site-header">
+    <a class="brand" href="#about" aria-label="Arkx home">
+      <span class="brand-lockup">
+        <svg class="brand-wordmark" xmlns="http://www.w3.org/2000/svg" viewBox="40 45 2355 760" role="img" aria-label="Arkx">
+          <path fill="currentColor" fill-rule="evenodd" d="M45 800 265 125 300 70 330 50H430L460 70L495 125L715 800H548L493 628H267L212 800ZM438 485H322L353 315H407Z M790 800H950V495Q970 390 1068 390H1110L1156 349V295L1128 267H1068Q993 267 950 322V267H790Z M1298 800V50H1458V800ZM1448 510 1645 267H1810L1590 530L1810 800H1638L1448 562Z M1864 800H2037L2392 312L2372 267H2227ZM2227 800H2372L2392 755L2037 267H1864Z"/>
+        </svg>
+        <small class="brand-tagline" data-i18n="brand.tagline">Arks Creative</small>
+      </span>
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#about" class="nav-link" data-nav="about" data-i18n="nav.about">About</a>
+      <a href="#creator-os" class="nav-link" data-nav="creator-os" data-i18n="nav.creatorOS">Creator OS</a>
+      <div class="nav-menu">
+        <a href="#products" class="nav-link" data-nav="products" data-i18n="nav.products">Products</a>
+        <div class="nav-menu-panel">
+          <a href="#xce-ai" class="nav-link" data-nav="xce-ai" data-i18n="nav.xce">XCE AI</a>
+          <a href="#ai-native-generator" class="nav-link" data-nav="ai-native-generator" data-i18n="nav.ang">AI Native Generator</a>
+        </div>
+      </div>
+      <a href="#markets" class="nav-link" data-nav="markets" data-i18n="nav.markets">Markets</a>
+      <a href="#contact" class="nav-link" data-nav="contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="lang-chip is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-chip" type="button" data-lang="zh">简</button>
+      <button class="lang-chip" type="button" data-lang="zh-hant">繁</button>
+      <a class="btn btn--small btn--primary" href="#xce-ai" data-i18n="nav.explore">Explore XCE AI</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-act section section--dark" id="about" data-section="about" data-theme="dark">
+      <div class="hero-fixed" id="hero-fixed">
+        <div class="hero-laptop-wrap" id="hero-laptop-wrap">
+          <div class="hero-laptop" id="hero-laptop">
+            <div class="laptop-shell laptop-shell--3d">
+              <div class="laptop-lid">
+                <div class="laptop-bezel">
+                  <div class="laptop-screen">
+                    <video class="hero-video" autoplay muted loop playsinline webkit-playsinline preload="metadata" poster="img/hero-creator-os.webp" data-src-desktop="video/XGE_AI720p.mp4" data-src-mobile="video/XGE_AI_mobile.mp4">
+                      <source src="video/XGE_AI720p.mp4" type="video/mp4" />
+                    </video>
+                    <div class="laptop-screen-scrim"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="laptop-hinge" aria-hidden="true"></div>
+              <div class="laptop-deck" aria-hidden="true">
+                <div class="laptop-keyboard"></div>
+                <div class="laptop-trackpad"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-runway" id="hero-runway" aria-hidden="true"></div>
+
+      <div class="hero-foreground">
+        <div class="hero-scroll-window" aria-hidden="true">
+          <div class="hero-slogan">
+            <h1 data-i18n="hero.title">Imagination, Made Real</h1>
+            <p class="hero-scroll-hint" data-i18n="hero.scrollHint">Scroll to explore</p>
+          </div>
+        </div>
+        <div class="hero-details section-light-panel section-full-bleed">
+          <div class="section-shell">
+          <span class="eyebrow" data-i18n="hero.eyebrow">AI-Native Creation Technology · Founded 2025</span>
+          <p class="hero-lede" data-i18n="hero.lede">Arkx is building a Creator OS for a new generation of AI-era creators — a lighter, faster way to turn stories, characters, scenes, gameplay and emotions into interactive digital works.</p>
+          <div class="hero-actions">
+            <a class="btn btn--primary" href="#products" data-i18n="hero.cta.primary">Enter the Creator OS</a>
+            <a class="btn btn--ghost" href="#creator-os" data-i18n="hero.cta.secondary">See the thesis</a>
+          </div>
+          <div class="metric-row" aria-label="Arkx positioning metrics">
+            <div class="metric-card reveal-card">
+              <strong data-i18n="metric.1.value">2025</strong>
+              <span data-i18n="metric.1.label">Founded for the AI creation era</span>
+            </div>
+            <div class="metric-card reveal-card">
+              <strong>4×</strong>
+              <span data-i18n="metric.2.label">Input modes: text, image, voice, context</span>
+            </div>
+            <div class="metric-card reveal-card">
+              <strong>1</strong>
+              <span data-i18n="metric.3.label">Path from prompt to playable project</span>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed split-section section-scroll-over" id="creator-os" data-section="creator-os" data-theme="light">
+      <div class="section-shell">
+      <div class="section-kicker" data-animate="up" data-i18n="creatorOS.kicker">Creator OS</div>
+      <div class="split-copy" data-animate="up">
+        <h2 data-i18n="creatorOS.title">Past creators published content. Future creators build experiences.</h2>
+        <p data-i18n="creatorOS.text">For years, turning an idea into a digital work required complex tools, specialist teams, asset budgets and long production cycles. AI changes the route. Generation, composition, interaction and publishing can now become lighter, faster and more open.</p>
+      </div>
+      <div class="thesis-grid">
+        <article class="card" data-animate="up">
+          <span class="card-index">01</span>
+          <h3 data-i18n="creatorOS.card1.title">Ideas become systems</h3>
+          <p data-i18n="creatorOS.card1.text">A story no longer has to stop at text. A character no longer has to stay inside an image. Emotion, relationship and inspiration can become interactive works.</p>
+        </article>
+        <article class="card" data-animate="up">
+          <span class="card-index">02</span>
+          <h3 data-i18n="creatorOS.card2.title">Creation becomes iterative</h3>
+          <p data-i18n="creatorOS.card2.text">Creators can prototype fast, publish into real ecosystems, read feedback, then continue growing the work instead of starting over.</p>
+        </article>
+        <article class="card" data-animate="up">
+          <span class="card-index">03</span>
+          <h3 data-i18n="creatorOS.card3.title">Tools follow imagination</h3>
+          <p data-i18n="creatorOS.card3.text">Arkx does not decide what creators should make. It helps them cross the first gap from idea to playable, editable, publishable project.</p>
+        </article>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed advantage-section section-scroll-over" id="why" data-section="why" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="why.kicker">Why Arkx</span>
+        <h2 data-i18n="why.title">Lightweight, open, composable.</h2>
+        <p data-i18n="why.text">AI-native creation tools should not build higher walls. They should make more capabilities usable by more creators.</p>
+      </div>
+      <div class="advantage-matrix" data-tabs>
+        <div class="tab-list" role="tablist" aria-label="Arkx advantages">
+          <button class="tab-button is-active" type="button" data-tab="speed" data-i18n="why.tab.speed">Speed</button>
+          <button class="tab-button" type="button" data-tab="access" data-i18n="why.tab.access">Access</button>
+          <button class="tab-button" type="button" data-tab="context" data-i18n="why.tab.context">Context</button>
+          <button class="tab-button" type="button" data-tab="publish" data-i18n="why.tab.publish">Publish</button>
+        </div>
+        <div class="tab-panels">
+          <article class="tab-panel is-active" data-panel="speed">
+            <h3 data-i18n="why.speed.title">Start fast. Build fast. Validate fast.</h3>
+            <p data-i18n="why.speed.text">Creators do not need heavier workflows for early validation. XCE AI is designed for shorter paths from idea to demo, vertical slice and shareable build.</p>
+          </article>
+          <article class="tab-panel" data-panel="access">
+            <h3 data-i18n="why.access.title">Lower the production threshold.</h3>
+            <p data-i18n="why.access.text">AI helps users generate and organize 2D/3D assets, scenes, UI, effects, voices and music, while the editor keeps everything editable.</p>
+          </article>
+          <article class="tab-panel" data-panel="context">
+            <h3 data-i18n="why.context.title">AI understands the project, not just the prompt.</h3>
+            <p data-i18n="why.context.text">The system can read project structure, assets, scripts and scene objects, then continue generation or modification from the current context.</p>
+          </article>
+          <article class="tab-panel" data-panel="publish">
+            <h3 data-i18n="why.publish.title">Build inside real ecosystems.</h3>
+            <p data-i18n="why.publish.text">XCE AI supports visual editing, multi-platform export, independent publishing, community assets and ongoing iteration after user feedback.</p>
+          </article>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed audiences-section" id="audiences" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head compact" data-animate="up">
+          <span class="section-kicker" data-i18n="audiences.kicker">Who It's For</span>
+          <h2 class="heading-serif" data-i18n="audiences.title">Built for creators, teams, universities and enterprises.</h2>
+          <p data-i18n="audiences.text">XCE AI is a playable content generation platform for individual creators, UGC makers, small teams, university AI programs and enterprise marketing teams.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="card audience-card" data-animate="up">
+            <span class="card-index">01</span>
+            <h3 data-i18n="audiences.card1.title">Individual Game Creators</h3>
+            <p data-i18n="audiences.card1.text">No full team, no art or 3D skills, no coding — use AI to generate assets, logic, levels and test results fast.</p>
+          </article>
+          <article class="card audience-card" data-animate="up">
+            <span class="card-index">02</span>
+            <h3 data-i18n="audiences.card2.title">UGC Content Creators</h3>
+            <p data-i18n="audiences.card2.text">Want shareable, interactive content without complex tools — go from text or voice ideas to playable works and interactive dramas.</p>
+          </article>
+          <article class="card audience-card" data-animate="up">
+            <span class="card-index">03</span>
+            <h3 data-i18n="audiences.card3.title">Small Indie Teams</h3>
+            <p data-i18n="audiences.card3.text">Few people, slow prototype validation — shorten demo, vertical slice and promotional asset production cycles.</p>
+          </article>
+          <article class="card audience-card" data-animate="up">
+            <span class="card-index">04</span>
+            <h3 data-i18n="audiences.card4.title">University AI Programs</h3>
+            <p data-i18n="audiences.card4.text">Teaching often stops at theory or single-model labs — XCE AI connects model calls, agents, knowledge bases, interaction design and publishing in one practice environment.</p>
+          </article>
+          <article class="card audience-card" data-animate="up">
+            <span class="card-index">05</span>
+            <h3 data-i18n="audiences.card5.title">Enterprise Brand Teams</h3>
+            <p data-i18n="audiences.card5.text">Need interactive content but traditional development is costly — quickly generate brand mini-games, event experiences and launch demos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed product-strip" id="products" data-section="products" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="products.kicker">Products</span>
+        <h2 class="heading-serif" data-i18n="products.title">Two entrances into AI-native creation.</h2>
+        <p data-i18n="products.text">XCE AI gives creators a lightweight interactive creation workspace. AI Native Generator extends it into interactive AI short dramas and playable narrative content.</p>
+      </div>
+      <div class="product-intro" data-animate="up">
+        <div class="product-intro-copy">
+          <span class="eyebrow" data-i18n="phero.eyebrow">Arkx Product System</span>
+          <p class="intro-lede" data-i18n="phero.lede">XCE AI is an AI-native creation system that embeds AI into the core production chain of games and interactive short dramas.</p>
+        </div>
+        <div class="console-card">
+          <div class="console-topbar">
+            <span></span><span></span><span></span>
+            <strong data-i18n="console.title">XCE AI / Build Console</strong>
+          </div>
+          <div class="console-body">
+            <p><span>creator.prompt</span> <span data-i18n="console.line1">"Create an interactive cyber-school mystery with 3 endings."</span></p>
+            <p><span>ai.pipeline</span> <span data-i18n="console.line2">assets → scenes → dialogue → events → tests → publish</span></p>
+            <p><span>build.status</span> <span data-i18n="console.line3">playable project generated · editable in workspace</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="product-showcase">
+        <a class="product-tile" href="#xce-ai" data-animate="up">
+          <div class="tile-media media-slot media-slot--editor-shot">
+            <img src="img/showcase/s1.webp" alt="XCE AI editor screenshot" width="1920" height="942" />
+          </div>
+          <div class="tile-body">
+            <span data-i18n="products.xce.label">Xrafts Contents Editor</span>
+            <h3 data-i18n="products.xce.title">XCE AI</h3>
+            <p data-i18n="products.xce.text">Prompt to playable game project — assets, scenes, logic, testing and publishing in one editable production chain.</p>
+          </div>
+        </a>
+        <a class="product-tile" href="#ai-native-generator" data-animate="up">
+          <div class="tile-media media-slot media-slot--editor-shot">
+            <img src="img/showcase/s2.webp" alt="AI Native Generator screenshot" width="1920" height="942" />
+          </div>
+          <div class="tile-body">
+            <span data-i18n="products.ang.label">Interactive AI Drama</span>
+            <h3 data-i18n="products.ang.title">AI Native Generator</h3>
+            <p data-i18n="products.ang.text">Generate characters, scenes, video, voice, choices, relationship states and multi-ending interactive stories.</p>
+          </div>
+        </a>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed product-demo" id="product-demo" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head" data-animate="up">
+          <span class="section-kicker" data-i18n="demo.kicker">Product Demo</span>
+          <h2 class="heading-serif" data-i18n="demo.title">See XCE AI in action</h2>
+          <p data-i18n="demo.text">From map to playable scene — watch the creation flow.</p>
+        </div>
+        <div class="demo-video-wrap media-slot media-slot--demo" data-animate="up">
+          <video class="demo-video" controls playsinline preload="metadata"
+            poster="img/showcase/xrafts-mapshow-poster.webp"
+            data-src-desktop="video/xrafts_mapshow_720p.mp4"
+            data-src-mobile="video/xrafts_mapshow_mobile.mp4">
+            <source src="video/xrafts_mapshow_720p.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed product-deep" id="xce-ai" data-section="xce-ai" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="xce.kicker">Xrafts Contents Editor</span>
+        <h2 class="heading-serif" data-i18n="xce.title">XCE AI — the AI-native workspace for playable content.</h2>
+        <p data-i18n="xce.text">It is not a traditional game editor, not a single-format generation tool, and not another traffic-heavy closed platform. It is a playable content generation platform for individual creators, small teams, university AI teaching and enterprise production — turning stories, characters, scenes, gameplay and expression into editable, runnable, testable and publishable works.</p>
+      </div>
+      <div class="baseline-section" data-animate="up">
+        <div class="section-head compact">
+          <span class="section-kicker" data-i18n="baseline.kicker">XCE Foundation</span>
+          <h2 class="heading-serif" data-i18n="baseline.title">Built on a proven no-code editor, ready for AI.</h2>
+        </div>
+        <div class="baseline-grid">
+          <article class="card baseline-card">
+            <h3 data-i18n="baseline.card1.title">No-Code Creation</h3>
+            <p data-i18n="baseline.card1.text">AI output lands in a visual, editable, runnable project — not a pile of uncontrollable files.</p>
+          </article>
+          <article class="card baseline-card">
+            <h3 data-i18n="baseline.card2.title">Asset Library &amp; Templates</h3>
+            <p data-i18n="baseline.card2.text">AI generation + built-in assets + parametric composition — more stable than pure AIGC, easier to ship playable content.</p>
+          </article>
+          <article class="card baseline-card">
+            <h3 data-i18n="baseline.card3.title">Visual Engineering</h3>
+            <p data-i18n="baseline.card3.text">WYSIWYG editing — AI doesn't just advise, it operates inside the project while you keep full control.</p>
+          </article>
+          <article class="card baseline-card">
+            <h3 data-i18n="baseline.card4.title">Publish &amp; UGC</h3>
+            <p data-i18n="baseline.card4.text">One-click publishing on Steam, Windows, Linux/SteamOS and Android — the foundation for templates, assets and AI creation ecosystems.</p>
+          </article>
+        </div>
+      </div>
+      <div class="feature-split">
+        <div class="media-stack" data-animate="up">
+          <div class="media-slot media-slot--screen">
+            <img src="img/showcase/s3.webp" alt="XCE AI editor screenshot" width="1920" height="942" />
+          </div>
+          <p class="feature-note" data-i18n="xce.panelText">C++ editor · no-code · visual events · TypeScript API · multi-platform publishing</p>
+        </div>
+        <div class="feature-copy" data-animate="up">
+          <h3 data-i18n="xce.subtitle">AI is not bolted on. It is inside the creation chain.</h3>
+          <p data-i18n="xce.subtext">XCE AI uses AI to generate and organize 2D/3D assets, characters, actions, CG animation, effects, music, voice, game logic, automated tests, tuning suggestions and feedback analysis.</p>
+          <ul class="check-list">
+            <li data-i18n="xce.list1">Generate editable assets into the project asset system.</li>
+            <li data-i18n="xce.list2">Transform natural language into XCE AI DSL, events and components.</li>
+            <li data-i18n="xce.list3">Use AI player agents to test flows, interactions and balance.</li>
+            <li data-i18n="xce.list4">Ship playable works instead of disconnected generated files.</li>
+            <li data-i18n="xce.list5">Product operations AI and feedback analytics — in active development.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="showcase-gallery-wrap" data-animate="up">
+        <div class="section-head compact">
+          <span class="section-kicker" data-i18n="showcase.kicker">Inside the workspace</span>
+          <h2 class="heading-serif" data-i18n="showcase.title">Editor interface highlights</h2>
+        </div>
+        <div class="showcase-gallery">
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s4.webp" alt="XCE AI workspace screenshot 4" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s4.title">Scene viewport</h3>
+              <p data-i18n="showcase.s4.text">Compose large-scale environments in the live editor — navigate scenes, place objects and iterate layouts in real time.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s5.webp" alt="XCE AI workspace screenshot 5" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s5.title">Map &amp; placement</h3>
+              <p data-i18n="showcase.s5.text">Top-down editing for terrain, buildings and scene layout with precise placement tools and instant visual feedback.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s6.webp" alt="XCE AI workspace screenshot 6" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s6.title">Stylized worlds</h3>
+              <p data-i18n="showcase.s6.text">Build colorful, character-driven scenes across 2D and 3D styles from a unified workspace.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s7.webp" alt="XCE AI workspace screenshot 7" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s7.title">Interactive sequences</h3>
+              <p data-i18n="showcase.s7.text">Author action flows, combat beats and narrative triggers inside playable scenes.</p>
+            </div>
+          </article>
+          <article class="showcase-row" data-animate="up">
+            <div class="showcase-row-media media-slot">
+              <img src="img/showcase/s8.webp" alt="XCE AI workspace screenshot 8" width="1920" height="942" loading="lazy" />
+            </div>
+            <div class="showcase-row-copy">
+              <h3 data-i18n="showcase.s8.title">Lighting &amp; atmosphere</h3>
+              <p data-i18n="showcase.s8.text">Tune mood, lighting and environment details for immersive nighttime worlds.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed pipeline-section" id="product-core" data-section="xce-ai" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="core.kicker">Product Core</span>
+        <h2 class="heading-serif" data-i18n="core.title">One connected loop: express, generate, organize, test, modify, publish.</h2>
+      </div>
+      <div class="pipeline" aria-label="XCE AI production pipeline">
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-prompt.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.1.title">Creative Input</h3>
+          <p data-i18n="pipeline.1.text">Text, reference images, voice and project context are transformed into clear production tasks.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-asset.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.2.title">Asset Generation</h3>
+          <p data-i18n="pipeline.2.text">2D/3D assets, UI, characters, scenes, actions, effects, music, sound and voice enter the project asset system.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-logic.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.3.title">Logic Engineering</h3>
+          <p data-i18n="pipeline.3.text">AI generates XCE AI DSL, visual events, components, dialogue nodes, conditions, variables and endings.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-test.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.4.title">AI Testing</h3>
+          <p data-i18n="pipeline.4.text">AI player agents check branches, reachability, interaction flows and numeric balance, then return practical fixes.</p>
+        </article>
+        <article class="card pipeline-card" data-animate="up">
+          <span class="icon-slot media-slot media-slot--icon"><img src="img/icon-publish.png" alt="" width="256" height="256" /></span>
+          <h3 data-i18n="pipeline.5.title">Publish &amp; Iterate</h3>
+          <p data-i18n="pipeline.5.text">Playable projects can be exported, tested with users and improved through feedback-driven iteration.</p>
+        </article>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed ai-generator" id="ai-native-generator" data-section="ai-native-generator" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="ang.kicker">AI Native Generator</span>
+        <h2 class="heading-serif" data-i18n="ang.title">From watching stories to participating in stories.</h2>
+        <p data-i18n="ang.text">Interactive AI short drama is the natural extension of XCE AI's game creation capability. Scripts, characters, scenes, video, voice and music become content foundations; dialogue editing, event systems, state variables and publishing become the interaction carrier.</p>
+      </div>
+      <div class="generator-grid">
+        <article class="card generator-card large-card" data-animate="up">
+          <div class="media-slot media-slot--wide">
+            <img src="img/card-interactive-drama.webp" alt="Interactive AI drama visual" width="1100" height="660" />
+          </div>
+          <h3 data-i18n="ang.card1.title">Interactive formats</h3>
+          <p data-i18n="ang.card1.text">Story choices, clue exploration, relationship states, QTE moments, puzzles, resources, simple battles and AI character dialogue can all affect the following story state.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card2.title">Story Generation</h3>
+          <p data-i18n="ang.card2.text">World settings, characters, chapters, conflict, dialogue and endings enter dialogue editing and narrative projects.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card3.title">Character &amp; Scene</h3>
+          <p data-i18n="ang.card3.text">Characters, outfits, expressions, props, scenes and style references become reusable assets across shots and branches.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card4.title">Storyboard &amp; Audio</h3>
+          <p data-i18n="ang.card4.text">Keyframes, clips, voice, music and sound effects are generated and bound to scenes and story nodes.</p>
+        </article>
+        <article class="card generator-card" data-animate="up">
+          <h3 data-i18n="ang.card5.title">Logic &amp; Multi-Endings</h3>
+          <p data-i18n="ang.card5.text">Choices, conditions, variables, affection levels, items, clues and endings are configured through dialogue, events and components.</p>
+        </article>
+      </div>
+      <div class="ang-scenarios" data-animate="up">
+        <div class="section-head compact">
+          <span class="section-kicker" data-i18n="ang.scenarios.kicker">Use Cases</span>
+          <h2 class="heading-serif" data-i18n="ang.scenarios.title">Where interactive AI drama fits.</h2>
+        </div>
+        <ul class="scenario-list">
+          <li data-i18n="ang.scenario1">Interactive comics and AVG-style video games</li>
+          <li data-i18n="ang.scenario2">Brand IP interactive spin-offs</li>
+          <li data-i18n="ang.scenario3">Cultural tourism interactive narratives</li>
+          <li data-i18n="ang.scenario4">University AI practice teaching projects</li>
+          <li data-i18n="ang.scenario5">Enterprise training and sales simulations</li>
+          <li data-i18n="ang.scenario6">Exhibition and offline interactive content</li>
+        </ul>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed problems-section" id="problems" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head compact" data-animate="up">
+          <span class="section-kicker" data-i18n="problems.kicker">User Research</span>
+          <h2 class="heading-serif" data-i18n="problems.title">Real feedback. Connected solutions.</h2>
+          <p data-i18n="problems.text">Market research from game and AI drama creators reveals recurring pain points — XCE AI connects expression, generation, organization, testing, modification and publishing into one chain.</p>
+        </div>
+        <div class="compare-table problems-table" data-animate="up" role="table" aria-label="User feedback to XCE AI capabilities">
+          <div class="compare-row compare-head problems-head" role="row">
+            <span data-i18n="problems.col1">User feedback</span><span data-i18n="problems.col2">XCE AI capability</span><span data-i18n="problems.col3">Product advantage</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row1.1">Hard to write prompts or describe needs</span><span data-i18n="problems.row1.2">Natural language, voice and project context</span><span data-i18n="problems.row1.3">Describe intent directly; AI breaks it into assets, scenes, logic and tests</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row2.1">AI code doesn't understand the full game</span><span data-i18n="problems.row2.2">Main Agent, RAG, Tool Calling, editor API</span><span data-i18n="problems.row2.3">Generates project content, not isolated code snippets</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row3.1">Scattered tools, inconsistent style</span><span data-i18n="problems.row3.2">Unified orchestration + asset library</span><span data-i18n="problems.row3.3">One production chain from creative input to testing</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row4.1">Repeated generation wastes cost</span><span data-i18n="problems.row4.2">Local models, built-in assets, editable projects</span><span data-i18n="problems.row4.3">Reuse assets and edit results instead of starting over</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row5.1">Demos are hard to grow into full works</span><span data-i18n="problems.row5.2">Visual engineering, logic generation, auto-testing</span><span data-i18n="problems.row5.3">AI output enters a runnable project ready for iteration</span>
+          </div>
+          <div class="compare-row" role="row">
+            <span data-i18n="problems.row6.1">AI drama is watch-only, not interactive</span><span data-i18n="problems.row6.2">Dialogue, events, variables and branches</span><span data-i18n="problems.row6.3">Video binds with choice nodes, story states and multi-endings</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed compare-section" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head compact" data-animate="up">
+        <span class="section-kicker" data-i18n="diff.kicker">Difference</span>
+        <h2 class="heading-serif" data-i18n="diff.title">Not more isolated generation buttons. A real production chain.</h2>
+      </div>
+      <div class="compare-table" data-animate="up" role="table" aria-label="XCE AI comparison table">
+        <div class="compare-row compare-head" role="row">
+          <span data-i18n="diff.col1">Tool type</span><span data-i18n="diff.col2">Typical output</span><span data-i18n="diff.col3">Common problem</span><span data-i18n="diff.col4">XCE AI difference</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row1.1">AI Image</span><span data-i18n="diff.row1.2">Images</span><span data-i18n="diff.row1.3">Cannot become a game project directly</span><span data-i18n="diff.row1.4">Generated assets enter the asset and logic system</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row2.1">AI Video</span><span data-i18n="diff.row2.2">Videos</span><span data-i18n="diff.row2.3">Watchable but not playable</span><span data-i18n="diff.row2.4">Clips bind with CG, cutscenes and interactive drama logic</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row3.1">AI 3D</span><span data-i18n="diff.row3.2">Models</span><span data-i18n="diff.row3.3">Need cleanup, reduction, rigging and import</span><span data-i18n="diff.row3.4">Engineering processing and Asset Cards organize usage</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row4.1">AI Code</span><span data-i18n="diff.row4.2">Code</span><span data-i18n="diff.row4.3">Hard to connect with game projects</span><span data-i18n="diff.row4.4">Generates XCE AI DSL, events and components</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row5.1">Game Engines</span><span data-i18n="diff.row5.2">Powerful projects</span><span data-i18n="diff.row5.3">High learning cost</span><span data-i18n="diff.row5.4">No-code + AI + visual creation</span>
+        </div>
+        <div class="compare-row" role="row">
+          <span data-i18n="diff.row6.1">No-Code Game Tools</span><span data-i18n="diff.row6.2">Easy to start</span><span data-i18n="diff.row6.3">Assets and logic still manual</span><span data-i18n="diff.row6.4">AI generates assets, logic, tests and optimization</span>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed architecture-section" id="architecture" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head compact" data-animate="up">
+          <span class="section-kicker" data-i18n="arch.kicker">Architecture</span>
+          <h2 class="heading-serif" data-i18n="arch.title">Local-first, cloud-enhanced, models replaceable.</h2>
+          <p data-i18n="arch.text">A seven-layer stack connects user intent to published playable projects.</p>
+        </div>
+        <div class="arch-pipeline" aria-label="XCE AI architecture">
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">01</span>
+            <h3 data-i18n="arch.layer1.title">User Input</h3>
+            <p data-i18n="arch.layer1.text">Text, voice, image/video references, project context and operation logs.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">02</span>
+            <h3 data-i18n="arch.layer2.title">AI Orchestration</h3>
+            <p data-i18n="arch.layer2.text">Main Agent, RAG, Tool Calling, model routing and safety controls.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">03</span>
+            <h3 data-i18n="arch.layer3.title">Generation Models</h3>
+            <p data-i18n="arch.layer3.text">2D, 3D, video/animation, TTS, STT, music and sound effects.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">04</span>
+            <h3 data-i18n="arch.layer4.title">Logic &amp; Content</h3>
+            <p data-i18n="arch.layer4.text">XCE DSL, event components, dialogue graphs, branches, variables and balance systems.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">05</span>
+            <h3 data-i18n="arch.layer5.title">Editor &amp; Assets</h3>
+            <p data-i18n="arch.layer5.text">Asset library, scenes, scripts, components, Asset Cards and version management.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">06</span>
+            <h3 data-i18n="arch.layer6.title">Automated Testing</h3>
+            <p data-i18n="arch.layer6.text">AI players, interaction tests, branch tests, balance checks and optimization suggestions.</p>
+          </article>
+          <article class="card arch-card" data-animate="up">
+            <span class="card-index">07</span>
+            <h3 data-i18n="arch.layer7.title">Run &amp; Publish</h3>
+            <p data-i18n="arch.layer7.text">Windows, Linux/SteamOS, Android, Steam Workshop and UGC ecosystems.</p>
+          </article>
+        </div>
+        <p class="arch-summary" data-animate="up" data-i18n="arch.summary">The orchestration layer plans and schedules; multimodal models generate; XCE carries and lands projects; test agents verify.</p>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed deployment-section" id="deployment" data-theme="light">
+      <div class="section-shell">
+        <div class="section-head compact" data-animate="up">
+          <span class="section-kicker" data-i18n="deploy.kicker">Deployment</span>
+          <h2 class="heading-serif" data-i18n="deploy.title">Why local-first matters.</h2>
+        </div>
+        <ul class="deploy-reasons" data-animate="up">
+          <li data-i18n="deploy.reason1">Large project context — assets, scenes, scripts, textures, audio and logs</li>
+          <li data-i18n="deploy.reason2">High-frequency iteration — every tweak shouldn't require costly cloud calls</li>
+          <li data-i18n="deploy.reason3">Privacy and commercial IP — unreleased scripts and brand assets stay local</li>
+          <li data-i18n="deploy.reason4">Offline creation — Steam users, university labs and small-team workstations</li>
+        </ul>
+        <div class="deploy-grid">
+          <article class="card deploy-card" data-animate="up">
+            <h3 data-i18n="deploy.lite.title">Lite Local</h3>
+            <p class="deploy-audience" data-i18n="deploy.lite.audience">Creators &amp; university teaching</p>
+            <p data-i18n="deploy.lite.text">Small models, quantized models, local STT/TTS and lightweight image generation.</p>
+          </article>
+          <article class="card deploy-card" data-animate="up">
+            <h3 data-i18n="deploy.pro.title">Pro Workstation</h3>
+            <p class="deploy-audience" data-i18n="deploy.pro.audience">Indie teams &amp; professional creators</p>
+            <p data-i18n="deploy.pro.text">RTX 4090/5090 or multi-GPU setups running full LLM, image, video and 3D generation.</p>
+          </article>
+          <article class="card deploy-card" data-animate="up">
+            <h3 data-i18n="deploy.studio.title">Studio / Enterprise</h3>
+            <p class="deploy-audience" data-i18n="deploy.studio.audience">Enterprises, universities &amp; studios</p>
+            <p data-i18n="deploy.studio.text">Private GPU servers, multi-user queues, permissions, asset libraries and audit trails.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed markets-section" id="markets" data-section="markets" data-theme="light">
+      <div class="section-shell">
+      <div class="section-head" data-animate="up">
+        <span class="section-kicker" data-i18n="markets.kicker">Commercialization</span>
+        <h2 class="heading-serif" data-i18n="markets.title">From creator subscriptions to education, UGC markets and enterprise production.</h2>
+        <p data-i18n="markets.text">XCE AI uses AI to lower the creation threshold, an editable project environment to carry playable works, UGC to scale supply, and publishing mechanisms to support sustained commercialization.</p>
+      </div>
+      <div class="market-grid">
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">01</span>
+          <h3 data-i18n="markets.card1.title">Creator Subscription</h3>
+          <p data-i18n="markets.card1.text">Subscriptions, AI rendering credits, advanced templates, asset packs and publishing tools for individuals, students and indie creators.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">02</span>
+          <h3 data-i18n="markets.card2.title">UGC Asset Market</h3>
+          <p data-i18n="markets.card2.text">Templates, characters, UI kits, effects, scripts, prompts, workflows and tutorial projects with platform revenue share.</p>
+        </article>
+        <a class="card market-card market-card--link" href="#education" data-animate="up">
+          <span class="card-index">03</span>
+          <h3 data-i18n="markets.card3.title">University AI Education</h3>
+          <p data-i18n="markets.card3.text">An AI playable content creation and practice platform for higher education — from model calls and agents to interactive apps and publishing.</p>
+        </a>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">04</span>
+          <h3 data-i18n="markets.card4.title">Enterprise Interactive Content</h3>
+          <p data-i18n="markets.card4.text">Brand mini-games, interactive dramas, event experiences, launch demos, simulations, training games and IP collaboration content.</p>
+        </article>
+        <article class="card market-card" data-animate="up">
+          <span class="card-index">05</span>
+          <h3 data-i18n="markets.card5.title">Small Studio Productivity</h3>
+          <p data-i18n="markets.card5.text">Vertical slices, pitch demos, Steam page materials, concept assets, whitebox levels, balance tests and entertainment MVPs.</p>
+        </article>
+      </div>
+      <div class="education-panel card" id="education" data-animate="up">
+        <div class="section-head compact">
+          <span class="section-kicker" data-i18n="edu.kicker">Higher Education</span>
+          <h2 class="heading-serif" data-i18n="edu.title">AI playable content creation &amp; practice platform.</h2>
+          <p data-i18n="edu.lede">XCE AI targets AI, computer science, digital media, game design and educational technology programs — integrating model calls, agent design, knowledge bases, interactive logic, digital content and multi-platform publishing into one practice environment.</p>
+        </div>
+        <div class="edu-disciplines">
+          <span class="chip" data-i18n="edu.disc1">Artificial Intelligence</span>
+          <span class="chip" data-i18n="edu.disc2">Computer Science</span>
+          <span class="chip" data-i18n="edu.disc3">Digital Media Technology</span>
+          <span class="chip" data-i18n="edu.disc4">Game Design</span>
+          <span class="chip" data-i18n="edu.disc5">Educational Technology</span>
+        </div>
+        <div class="edu-grid">
+          <article class="edu-block">
+            <h3 data-i18n="edu.value.title">What students build</h3>
+            <ul class="check-list">
+              <li data-i18n="edu.value1">Design AI agents, knowledge bases and interactive scenarios through natural language</li>
+              <li data-i18n="edu.value2">Understand LLMs, RAG, knowledge graphs, Tool Calling and multimodal generation in real projects</li>
+              <li data-i18n="edu.value3">Ship runnable, editable, testable and publishable AI applications — not just lab reports</li>
+              <li data-i18n="edu.value4">Develop engineering practice, cross-disciplinary collaboration and innovation skills</li>
+            </ul>
+          </article>
+          <article class="edu-block">
+            <h3 data-i18n="edu.teacher.title">For educators &amp; researchers</h3>
+            <ul class="check-list">
+              <li data-i18n="edu.teacher1">Build course case libraries, experiment project banks and reusable teaching templates</li>
+              <li data-i18n="edu.teacher2">Track learning data across content creation, logic design, model calls and debugging</li>
+              <li data-i18n="edu.teacher3">Support learning analytics and knowledge-graph-based diagnosis and assessment</li>
+            </ul>
+          </article>
+        </div>
+        <div class="edu-partnerships">
+          <h3 data-i18n="edu.partner.title">Partnership models</h3>
+          <div class="edu-chips">
+            <span class="chip" data-i18n="edu.partner1">Education licensing</span>
+            <span class="chip" data-i18n="edu.partner2">Lab co-building</span>
+            <span class="chip" data-i18n="edu.partner3">Joint curriculum</span>
+            <span class="chip" data-i18n="edu.partner4">Faculty training</span>
+            <span class="chip" data-i18n="edu.partner5">Research collaboration</span>
+            <span class="chip" data-i18n="edu.partner6">Private deployment</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </section>
+
+    <section class="section section--light section-full-bleed contact-section" id="contact" data-section="contact" data-theme="light">
+      <div class="section-shell">
+      <div class="contact-panel card" data-animate="up">
+        <blockquote class="quote-block">
+          <p data-i18n="vision.quote">"Not Prompt to Image. Not Prompt to Video. Prompt to Playable Game Project."</p>
+          <cite data-i18n="vision.quoteAuthor">Arkx product thesis</cite>
+        </blockquote>
+        <span class="section-kicker" data-i18n="contact.kicker">Contact</span>
+        <h2 class="heading-serif" data-i18n="contact.title">Build the next interactive work with Arkx.</h2>
+        <p data-i18n="contact.text">Reach out for partnerships, early access, university curriculum collaboration, AI practice lab co-building, education licensing or enterprise interactive content projects.</p>
+        <div class="contact-actions">
+          <a class="btn btn--primary" href="mailto:arkx.creative@gmail.com">arkx.creative@gmail.com</a>
+          <a class="btn btn--ghost" href="#education" data-i18n="contact.cta">Explore education &amp; partnerships</a>
+        </div>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer site-footer--bleed section--light">
+    <div class="section-shell site-footer__inner">
+      <div>
+        <strong data-i18n="brand.name">Arkx</strong>
+        <p data-i18n="footer.tagline">Arks Creative · 所象 — Imagination, Made Real.</p>
+        <p class="site-build">Site build 2026.07.13-v27</p>
+      </div>
+      <div class="footer-links">
+        <a href="#about" data-i18n="footer.about">About</a>
+        <a href="#products" data-i18n="footer.products">Products</a>
+        <a href="#contact" data-i18n="footer.contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js?v=2026071312"></script>
+</body>
+</html>
