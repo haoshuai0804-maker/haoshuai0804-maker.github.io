@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="云略鉴真 SONAR OS 能力中心型招聘 Agent 系统客户演示">
+  <title>云略鉴真 SONAR OS｜Agent 系统客户演示</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink-950:#061420;
+      --navy-950:#071827;
+      --navy-900:#0a2033;
+      --navy-850:#0d2940;
+      --navy-800:#123550;
+      --brand:#004369;
+      --brand-2:#0f6a8b;
+      --cyan:#62c1d8;
+      --cyan-soft:#c7edf4;
+      --gold:#d8b26d;
+      --gold-soft:#f2e5c9;
+      --white:#ffffff;
+      --paper:#f3f7f9;
+      --paper-2:#e7eef2;
+      --ink:#132a3a;
+      --muted:#6c8190;
+      --line:rgba(255,255,255,.14);
+      --line-dark:#cad7de;
+      --danger:#ef8c83;
+      --success:#82c9a1;
+      --radius:18px;
+      --max:1180px;
+      --shadow:0 20px 60px rgba(1,18,31,.22);
+    }
+
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0;
+      color:var(--ink);
+      background:var(--paper);
+      font-family:"Inter","Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+      line-height:1.68;
+      -webkit-font-smoothing:antialiased;
+    }
+    a { color:inherit; text-decoration:none; }
+    button { font:inherit; }
+    .container { width:min(calc(100% - 48px),var(--max)); margin-inline:auto; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .progress { position:fixed; z-index:1000; top:0; left:0; width:0; height:3px; background:var(--cyan); }
+
+    .topbar {
+      position:sticky; top:0; z-index:900;
+      color:var(--white); background:rgba(7,24,39,.96);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(16px);
+    }
+    .topbar-inner { height:72px; display:flex; align-items:center; gap:26px; }
+    .brand-lockup { display:flex; align-items:center; gap:14px; min-width:max-content; }
+    .brand-plate { display:flex; align-items:center; width:132px; height:34px; padding:7px 10px; border-radius:8px; background:#fff; }
+    .brand-plate img { display:block; width:100%; height:auto; }
+    .brand-product { padding-left:14px; border-left:1px solid rgba(255,255,255,.24); font-weight:700; letter-spacing:.04em; }
+    .nav { display:flex; gap:22px; margin-left:auto; overflow:auto; scrollbar-width:none; }
+    .nav::-webkit-scrollbar { display:none; }
+    .nav a { position:relative; padding:24px 0 21px; color:#b7c8d2; font-size:13px; font-weight:600; white-space:nowrap; }
+    .nav a:hover,.nav a.active { color:#fff; }
+    .nav a.active::after { content:""; position:absolute; left:0; right:0; bottom:0; height:3px; background:var(--cyan); }
+    .print-btn { flex:0 0 auto; border:1px solid rgba(255,255,255,.26); color:#fff; background:transparent; padding:8px 13px; border-radius:8px; cursor:pointer; }
+    .print-btn:hover { border-color:var(--cyan); color:var(--cyan-soft); }
+
+    .hero { min-height:calc(100vh - 72px); display:flex; align-items:center; color:#fff; background:var(--navy-950); overflow:hidden; position:relative; }
+    .hero::before,.hero::after { content:""; position:absolute; border:1px solid rgba(98,193,216,.18); border-radius:50%; pointer-events:none; }
+    .hero::before { width:540px; height:540px; right:-180px; top:-150px; }
+    .hero::after { width:320px; height:320px; right:70px; bottom:-170px; }
+    .hero-inner { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr); gap:64px; align-items:center; padding:84px 0 76px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; margin-bottom:24px; color:var(--cyan-soft); font-size:13px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+    .eyebrow::before { content:""; width:28px; height:2px; background:var(--cyan); }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:760px; margin-bottom:24px; font-size:clamp(46px,6.2vw,82px); line-height:1.06; letter-spacing:-.045em; }
+    h1 .keep { white-space:nowrap; }
+    h1 .accent { display:block; color:var(--cyan); }
+    .hero-lead { max-width:710px; margin-bottom:36px; color:#c6d5dd; font-size:clamp(17px,2vw,21px); line-height:1.75; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:14px; }
+    .btn { display:inline-flex; align-items:center; gap:10px; padding:13px 18px; border-radius:9px; border:1px solid transparent; font-weight:700; cursor:pointer; }
+    .btn-primary { color:var(--navy-950); background:var(--cyan); }
+    .btn-primary:hover { background:#85d4e6; }
+    .btn-secondary { color:#fff; border-color:rgba(255,255,255,.3); }
+    .btn-secondary:hover { border-color:var(--cyan); color:var(--cyan-soft); }
+
+    .hero-panel { position:relative; padding:32px; background:var(--navy-900); border:1px solid var(--line); border-radius:24px; box-shadow:var(--shadow); }
+    .hero-panel-label { margin-bottom:22px; color:var(--gold); font-size:12px; font-weight:700; letter-spacing:.14em; }
+    .metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .metric { min-height:120px; padding:18px; border:1px solid var(--line); background:var(--navy-850); border-radius:14px; }
+    .metric strong { display:block; color:#fff; font-size:38px; line-height:1.05; }
+    .metric span { display:block; margin-top:10px; color:#a9beca; font-size:13px; }
+    .metric.wide { grid-column:1/-1; display:flex; min-height:auto; align-items:center; justify-content:space-between; gap:18px; }
+    .metric.wide strong { font-size:24px; }
+    .metric.wide span { margin:0; text-align:right; }
+    .panel-note { margin:18px 0 0; color:#9db2be; font-size:13px; }
+
+    section { position:relative; padding:104px 0; }
+    .dark { color:#fff; background:var(--navy-950); }
+    .dark-2 { color:#fff; background:var(--navy-900); }
+    .light { background:var(--paper); }
+    .white { background:#fff; }
+    .section-head { display:grid; grid-template-columns:minmax(0,.7fr) minmax(360px,1.3fr); gap:64px; align-items:end; margin-bottom:54px; }
+    .kicker { margin-bottom:12px; color:var(--brand-2); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .dark .kicker,.dark-2 .kicker { color:var(--cyan); }
+    h2 { margin-bottom:0; font-size:clamp(34px,4.7vw,58px); line-height:1.14; letter-spacing:-.035em; }
+    .section-intro { margin:0; color:var(--muted); font-size:17px; }
+    .dark .section-intro,.dark-2 .section-intro { color:#b4c6d0; }
+    h3 { margin-bottom:12px; font-size:21px; line-height:1.35; }
+
+    .stat-strip { display:grid; grid-template-columns:repeat(5,1fr); border-top:1px solid var(--line-dark); border-bottom:1px solid var(--line-dark); }
+    .stat-item { padding:26px 18px; text-align:center; border-right:1px solid var(--line-dark); }
+    .stat-item:last-child { border-right:0; }
+    .stat-item b { display:block; color:var(--brand); font-size:32px; }
+    .stat-item span { color:var(--muted); font-size:13px; }
+
+    .architecture { display:grid; grid-template-columns:1fr 44px .92fr 44px 1fr; gap:14px; align-items:stretch; margin-top:54px; }
+    .arch-column { display:flex; flex-direction:column; gap:12px; }
+    .arch-card { padding:21px 22px; border:1px solid var(--line-dark); background:#fff; border-radius:13px; }
+    .arch-card strong { display:block; color:var(--brand); }
+    .arch-card small { display:block; margin-top:5px; color:var(--muted); }
+    .arch-card.primary { color:#fff; background:var(--brand); border-color:var(--brand); }
+    .arch-card.primary strong { color:#fff; }
+    .arch-card.primary small { color:#c9dce4; }
+    .arch-connector { display:flex; align-items:center; justify-content:center; color:var(--brand-2); font-size:30px; }
+    .arch-center { display:flex; flex-direction:column; justify-content:center; gap:12px; }
+    .arch-center .arch-card { text-align:center; border-color:#86b7c8; background:#eaf6f8; }
+    .principle { margin-top:26px; padding:20px 22px; border-left:4px solid var(--gold); background:#fff; color:var(--ink); box-shadow:0 10px 30px rgba(0,36,57,.08); }
+    .principle b { color:var(--brand); }
+
+    .agent-shell { display:grid; grid-template-columns:260px 1fr 260px; gap:24px; align-items:stretch; }
+    .agent-side { display:flex; flex-direction:column; justify-content:center; padding:26px; border:1px solid var(--line); background:var(--navy-850); border-radius:var(--radius); }
+    .agent-side .index { display:flex; width:42px; height:42px; align-items:center; justify-content:center; margin-bottom:18px; border-radius:50%; color:var(--navy-950); background:var(--cyan); font-weight:900; }
+    .agent-side.quality .index { background:var(--gold); }
+    .agent-side p { margin:0; color:#aec0ca; font-size:14px; }
+    .agent-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .agent-card { min-height:172px; padding:23px; border:1px solid var(--line); background:var(--navy-900); border-radius:14px; transition:transform .2s ease,border-color .2s ease; }
+    .agent-card:hover { transform:translateY(-3px); border-color:rgba(98,193,216,.7); }
+    .agent-code { display:inline-flex; margin-bottom:14px; color:var(--cyan); font-size:12px; font-weight:900; letter-spacing:.1em; }
+    .agent-card h3 { font-size:18px; }
+    .agent-card p { margin:0; color:#a9bdc8; font-size:13px; }
+
+    .scenario { margin-top:42px; border:1px solid var(--line); border-radius:18px; overflow:hidden; }
+    .scenario-tabs { display:flex; overflow:auto; background:var(--navy-900); border-bottom:1px solid var(--line); }
+    .scenario-tab { flex:1 0 auto; min-width:150px; border:0; border-right:1px solid var(--line); padding:16px 18px; color:#9fb4bf; background:transparent; cursor:pointer; font-weight:700; }
+    .scenario-tab[aria-selected="true"] { color:#fff; background:var(--navy-800); box-shadow:inset 0 -3px var(--cyan); }
+    .scenario-body { display:grid; grid-template-columns:.75fr 1.25fr; gap:34px; padding:30px; background:var(--navy-850); }
+    .scenario-combo { display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
+    .chip { display:inline-flex; align-items:center; padding:7px 10px; border-radius:999px; border:1px solid rgba(98,193,216,.45); color:var(--cyan-soft); font-size:12px; font-weight:700; }
+    .scenario-output { padding-left:28px; border-left:1px solid var(--line); }
+    .scenario-output ul { margin:12px 0 0; padding-left:20px; color:#bed0d8; }
+
+    .control-lane { display:grid; grid-template-columns:repeat(5,1fr); gap:0; margin:20px 0 48px; }
+    .control { position:relative; padding:0 14px; text-align:center; }
+    .control:not(:last-child)::after { content:""; position:absolute; top:25px; left:calc(50% + 29px); right:calc(-50% + 29px); height:2px; background:#adc4ce; }
+    .control-dot { position:relative; z-index:1; display:flex; width:50px; height:50px; align-items:center; justify-content:center; margin:0 auto 14px; border:2px solid var(--brand); border-radius:50%; color:#fff; background:var(--brand); font-weight:900; }
+    .control b { display:block; color:var(--brand); font-size:13px; }
+    .control span { display:block; margin-top:4px; color:var(--muted); font-size:12px; line-height:1.45; }
+
+    .flow-groups { display:grid; gap:14px; }
+    details.flow { border:1px solid var(--line-dark); background:#fff; border-radius:13px; overflow:hidden; }
+    details.flow[open] { box-shadow:0 10px 32px rgba(0,36,57,.08); }
+    details.flow summary { display:grid; grid-template-columns:70px 180px 1fr 32px; align-items:center; gap:16px; padding:20px 22px; cursor:pointer; list-style:none; }
+    details.flow summary::-webkit-details-marker { display:none; }
+    .flow-id { color:var(--brand); font-weight:900; font-size:20px; }
+    .flow-title { font-weight:800; }
+    .flow-desc { color:var(--muted); font-size:14px; }
+    .flow-plus { color:var(--brand-2); font-size:22px; text-align:center; transition:transform .2s; }
+    details[open] .flow-plus { transform:rotate(45deg); }
+    .node-list { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; padding:1px; background:var(--line-dark); border-top:1px solid var(--line-dark); }
+    .node { min-height:132px; padding:18px; background:#fff; }
+    .node b { display:block; color:var(--brand); font-size:13px; }
+    .node strong { display:block; margin:5px 0 8px; }
+    .node small { color:var(--muted); line-height:1.55; }
+    .node.key { background:#edf7f9; box-shadow:inset 0 3px var(--cyan); }
+
+    .cognition-layout { display:grid; grid-template-columns:.84fr 1.16fr; gap:34px; align-items:start; }
+    .cognition-copy { position:sticky; top:104px; }
+    .cognition-copy p { color:#b6c8d1; }
+    .plain-language { padding:20px 22px; border-left:4px solid var(--gold); color:#fff; background:var(--navy-850); }
+    .plain-language span { color:var(--gold-soft); }
+    .state-panel { border:1px solid var(--line); background:var(--navy-900); border-radius:20px; overflow:hidden; box-shadow:var(--shadow); }
+    .state-head { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:23px 25px; border-bottom:1px solid var(--line); }
+    .state-head small { color:#96acb8; }
+    .confidence { display:inline-flex; align-items:center; gap:8px; padding:7px 11px; color:#fff; border:1px solid rgba(216,178,109,.45); border-radius:999px; font-size:12px; }
+    .confidence::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--gold); }
+    .hypotheses { padding:12px 25px 8px; }
+    .hypothesis { display:grid; grid-template-columns:1fr 80px; gap:14px; padding:17px 0; border-bottom:1px solid var(--line); }
+    .hypothesis:last-child { border-bottom:0; }
+    .hypothesis b { display:block; }
+    .hypothesis p { margin:5px 0 0; color:#9fb4bf; font-size:13px; }
+    .level { align-self:center; text-align:right; color:var(--cyan); font-size:12px; font-weight:800; }
+    .evidence-row { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .evidence-box { padding:20px 24px; }
+    .evidence-box + .evidence-box { border-left:1px solid var(--line); }
+    .evidence-box b { color:var(--cyan-soft); font-size:13px; }
+    .evidence-box p { margin:8px 0 0; color:#a8bbc5; font-size:13px; }
+    .next-question { padding:24px; background:var(--navy-850); }
+    .next-question small { color:var(--gold); font-weight:800; letter-spacing:.08em; }
+    .next-question blockquote { margin:10px 0 0; color:#fff; font-size:19px; line-height:1.55; }
+    .next-question p { margin:10px 0 0; color:#9fb4bf; font-size:13px; }
+
+    .sourcing-rail { display:grid; grid-template-columns:1fr 54px 1fr 54px 1fr; gap:12px; align-items:stretch; }
+    .rail-card { min-height:210px; padding:24px; border:1px solid var(--line-dark); background:#fff; border-radius:14px; }
+    .rail-card .rail-no { color:var(--brand-2); font-size:12px; font-weight:900; }
+    .rail-card h3 { margin-top:12px; color:var(--brand); }
+    .rail-card ul { margin:0; padding-left:18px; color:var(--muted); font-size:13px; }
+    .rail-arrow { display:flex; align-items:center; justify-content:center; color:var(--brand-2); font-size:26px; }
+    .source-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:24px; }
+    .source { padding:18px; color:#fff; background:var(--navy-900); border-left:3px solid var(--cyan); }
+    .source b { display:block; }
+    .source small { display:block; margin-top:6px; color:#a9bdc8; }
+    .guardrail { display:grid; grid-template-columns:180px 1fr; gap:26px; align-items:center; margin-top:24px; padding:24px 26px; color:#fff; background:var(--brand); border-radius:14px; }
+    .guardrail b { color:var(--cyan-soft); }
+    .guardrail p { margin:0; color:#d6e6eb; }
+    .trigger-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:38px; }
+    .trigger { padding:18px 20px; border:1px solid var(--line-dark); background:#fff; }
+    .trigger b { color:var(--brand); }
+    .trigger p { margin:6px 0 0; color:var(--muted); font-size:13px; }
+
+    .interview-path { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+    .interview-step { position:relative; min-height:230px; padding:22px; border-top:4px solid var(--cyan); background:var(--navy-850); }
+    .interview-step:nth-child(2),.interview-step:nth-child(4) { border-top-color:var(--gold); }
+    .interview-step .num { color:var(--cyan); font-weight:900; font-size:12px; }
+    .interview-step:nth-child(2) .num,.interview-step:nth-child(4) .num { color:var(--gold); }
+    .interview-step h3 { margin-top:18px; font-size:17px; }
+    .interview-step p { color:#aabdc7; font-size:13px; }
+    .interview-step b { color:#fff; }
+    .interview-note { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:30px; }
+    .note-card { padding:24px; border:1px solid var(--line); background:var(--navy-900); }
+    .note-card b { color:var(--cyan-soft); }
+    .note-card p { margin:8px 0 0; color:#a9bdc8; }
+
+    .workbench { display:grid; grid-template-columns:350px 1fr; min-height:660px; overflow:hidden; border:1px solid #c9d7de; border-radius:20px; background:#fff; box-shadow:var(--shadow); }
+    .wb-side { padding:26px; color:#fff; background:var(--navy-950); }
+    .wb-side .mini-logo { width:130px; padding:8px 10px; border-radius:8px; background:#fff; }
+    .wb-side .mini-logo img { display:block; width:100%; }
+    .wb-project { margin-top:34px; }
+    .wb-project small { color:#7894a3; }
+    .wb-project h3 { margin:8px 0 18px; }
+    .wb-progress { display:grid; gap:11px; }
+    .wb-stage { display:grid; grid-template-columns:28px 1fr; gap:11px; align-items:center; color:#8da6b3; font-size:13px; }
+    .wb-stage i { display:flex; width:25px; height:25px; align-items:center; justify-content:center; border:1px solid #486577; border-radius:50%; font-style:normal; font-size:11px; }
+    .wb-stage.done { color:#cce4e9; }
+    .wb-stage.done i { color:var(--navy-950); border-color:var(--success); background:var(--success); }
+    .wb-stage.current { color:#fff; font-weight:800; }
+    .wb-stage.current i { color:var(--navy-950); border-color:var(--cyan); background:var(--cyan); }
+    .wb-main { display:flex; flex-direction:column; background:#f7fafb; }
+    .wb-header { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:22px 26px; border-bottom:1px solid #d9e3e8; background:#fff; }
+    .wb-status { display:flex; gap:8px; }
+    .status-pill { padding:5px 9px; border-radius:999px; color:var(--brand); background:#e3f3f6; font-size:11px; font-weight:800; }
+    .wb-content { display:grid; grid-template-columns:1.1fr .9fr; gap:18px; padding:22px; }
+    .wb-card { padding:22px; border:1px solid #d8e2e7; background:#fff; border-radius:12px; }
+    .wb-card h3 { color:var(--brand); font-size:17px; }
+    .wb-list { display:grid; gap:12px; }
+    .wb-list-item { padding:12px 14px; border-left:3px solid var(--cyan); background:#f0f7f9; }
+    .wb-list-item small { display:block; color:var(--muted); }
+    .wb-evidence { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+    .evidence-tag { padding:4px 7px; border:1px solid #c7d9e1; color:#527080; font-size:10px; }
+    .wb-compose { margin-top:auto; padding:16px 22px 22px; }
+    .command-box { padding:16px; border:2px solid var(--brand-2); background:#fff; border-radius:12px; }
+    .command-text { color:#244352; }
+    .command-preview { display:flex; flex-wrap:wrap; gap:8px; margin-top:13px; }
+    .command-preview span { padding:5px 8px; color:var(--brand); background:#e8f4f6; font-size:11px; font-weight:700; }
+    .command-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:13px; }
+    .command-actions button { border:1px solid #b9cbd4; padding:7px 12px; border-radius:7px; background:#fff; cursor:pointer; }
+    .command-actions .confirm { color:#fff; border-color:var(--brand); background:var(--brand); }
+
+    .governance-grid { display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+    .automation { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); }
+    .automation-row { display:grid; grid-template-columns:68px 120px 1fr; gap:16px; align-items:center; padding:16px 18px; background:var(--navy-900); }
+    .automation-row b { color:var(--cyan); }
+    .automation-row span { font-weight:700; }
+    .automation-row small { color:#9fb3bd; }
+    .stop-card { padding:28px; border:1px solid rgba(239,140,131,.38); background:var(--navy-900); }
+    .stop-card h3 { color:#ffd0cb; }
+    .stop-list { display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; margin-top:20px; }
+    .stop-item { padding-left:14px; border-left:2px solid var(--danger); color:#b9c9d1; font-size:13px; }
+    .governance-callout { grid-column:1/-1; display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; margin-top:8px; background:var(--line); border:1px solid var(--line); }
+    .gov-point { padding:22px; background:var(--navy-850); }
+    .gov-point b { color:var(--gold); }
+    .gov-point p { margin:7px 0 0; color:#aabdc7; font-size:13px; }
+
+    .roadmap { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .roadmap-step { min-height:260px; padding:28px; border-top:4px solid var(--brand); background:#fff; box-shadow:0 10px 32px rgba(0,36,57,.08); }
+    .roadmap-step:nth-child(2) { border-top-color:var(--brand-2); }
+    .roadmap-step:nth-child(3) { border-top-color:var(--gold); }
+    .roadmap-step .tag { color:var(--brand-2); font-size:12px; font-weight:900; }
+    .roadmap-step h3 { margin-top:16px; color:var(--brand); }
+    .roadmap-step p { color:var(--muted); }
+    .roadmap-step ul { margin:0; padding-left:18px; color:var(--ink); font-size:13px; }
+
+    .closing { padding:90px 0; text-align:center; color:#fff; background:var(--brand); }
+    .closing h2 { max-width:860px; margin:0 auto 22px; }
+    .closing p { max-width:780px; margin:0 auto; color:#d4e5ea; font-size:18px; }
+    .closing-line { width:64px; height:3px; margin:30px auto 0; background:var(--gold); }
+    footer { padding:28px 0; color:#8ca3af; background:var(--navy-950); font-size:12px; }
+    .footer-inner { display:flex; justify-content:space-between; gap:20px; }
+
+    .reveal { opacity:1; transform:none; }
+    .reveal.visible { opacity:1; transform:none; }
+    :focus-visible { outline:3px solid var(--cyan); outline-offset:3px; }
+
+    @media (max-width:1024px) {
+      .nav { display:none; }
+      .print-btn { margin-left:auto; }
+      .hero-inner { grid-template-columns:1fr; }
+      .hero-panel { max-width:720px; }
+      .section-head { grid-template-columns:1fr; gap:20px; }
+      .agent-shell { grid-template-columns:1fr 1fr; }
+      .agent-grid { grid-column:1/-1; grid-row:2; }
+      .sourcing-rail { grid-template-columns:1fr; }
+      .rail-arrow { transform:rotate(90deg); }
+      .source-grid,.interview-path { grid-template-columns:repeat(2,1fr); }
+      .workbench { grid-template-columns:280px 1fr; }
+      .wb-content { grid-template-columns:1fr; }
+      .governance-grid { grid-template-columns:1fr; }
+      .governance-callout { grid-column:auto; }
+    }
+    @media (max-width:768px) {
+      .container { width:min(calc(100% - 32px),var(--max)); }
+      .topbar-inner { height:62px; }
+      .brand-plate { width:108px; }
+      .brand-product { font-size:13px; }
+      .print-btn { display:none; }
+      .hero { min-height:auto; }
+      .hero-inner { padding:64px 0; gap:38px; }
+      h1 { font-size:45px; }
+      section { padding:76px 0; }
+      .stat-strip { grid-template-columns:repeat(2,1fr); }
+      .stat-item { border-bottom:1px solid var(--line-dark); }
+      .architecture { grid-template-columns:1fr; }
+      .arch-connector { transform:rotate(90deg); }
+      .agent-shell { grid-template-columns:1fr; }
+      .agent-grid { grid-column:auto; grid-row:auto; }
+      .scenario-body,.cognition-layout { grid-template-columns:1fr; }
+      .cognition-copy { position:static; }
+      .scenario-output { padding:22px 0 0; border-left:0; border-top:1px solid var(--line); }
+      .control-lane { grid-template-columns:1fr; gap:18px; }
+      .control { display:grid; grid-template-columns:50px 1fr; gap:16px; align-items:center; text-align:left; }
+      .control-dot { margin:0; }
+      .control:not(:last-child)::after { top:50px; bottom:-18px; left:25px; width:2px; height:auto; right:auto; }
+      .node-list { grid-template-columns:1fr 1fr; }
+      details.flow summary { grid-template-columns:58px 1fr 28px; }
+      .flow-desc { grid-column:2/3; }
+      .source-grid,.trigger-grid,.interview-path { grid-template-columns:1fr 1fr; }
+      .workbench { grid-template-columns:1fr; }
+      .wb-side { display:none; }
+      .governance-callout,.roadmap { grid-template-columns:1fr; }
+      .footer-inner { flex-direction:column; }
+    }
+    @media (max-width:520px) {
+      h1 { font-size:38px; }
+      h2 { font-size:32px; }
+      .brand-product { display:none; }
+      .metric-grid,.agent-grid,.node-list,.source-grid,.trigger-grid,.interview-path,.interview-note { grid-template-columns:1fr; }
+      .stat-strip { grid-template-columns:1fr 1fr; }
+      .metric.wide { display:block; }
+      .metric.wide span { margin-top:8px; text-align:left; }
+      .evidence-row { grid-template-columns:1fr; }
+      .evidence-box + .evidence-box { border-left:0; border-top:1px solid var(--line); }
+      .guardrail { grid-template-columns:1fr; }
+      .wb-header { align-items:flex-start; flex-direction:column; }
+      .wb-content { padding:12px; }
+      .automation-row { grid-template-columns:54px 1fr; }
+      .automation-row small { grid-column:1/-1; }
+      .stop-list { grid-template-columns:1fr; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
+      *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
+      .reveal { opacity:1; transform:none; }
+    }
+    @media print {
+      @page { size:A4; margin:12mm; }
+      body { background:#fff; color:#122b3a; }
+      .topbar,.progress,.hero-actions,.print-btn { display:none!important; }
+      .hero,.dark,.dark-2,.closing,footer { color:#122b3a!important; background:#fff!important; }
+      .hero { min-height:auto; }
+      .hero-inner { grid-template-columns:1fr 1fr; padding:24px 0; }
+      .hero-lead,.section-intro,.dark p,.dark-2 p,.closing p { color:#4b6574!important; }
+      .hero-panel,.agent-side,.agent-card,.scenario-body,.state-panel,.interview-step,.note-card,.automation-row,.stop-card,.gov-point { color:#122b3a!important; background:#f3f7f9!important; box-shadow:none!important; border-color:#cbd8df!important; }
+      .metric strong,.agent-card h3,.state-panel b,.interview-step h3,.interview-step b { color:#122b3a!important; }
+      section { padding:36px 0; break-inside:auto; }
+      .reveal { opacity:1!important; transform:none!important; }
+      .workbench,.roadmap-step { box-shadow:none; }
+      details { break-inside:avoid; }
+      details:not([open]) > *:not(summary) { display:block; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand-lockup" href="#top" aria-label="返回首页">
+        <span class="brand-plate"><img src="assets/yunlue-logo.svg" alt="云略 YUNLUE"></span>
+        <span class="brand-product">鉴真 SONAR OS</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#blueprint">总架构</a>
+        <a href="#capabilities">能力 Agent</a>
+        <a href="#flows">业务任务</a>
+        <a href="#cognition">输入不足</a>
+        <a href="#sourcing">AI Sourcing</a>
+        <a href="#interview">面试闭环</a>
+        <a href="#workbench">工作台</a>
+        <a href="#governance">安全边界</a>
+      </nav>
+      <button class="print-btn" type="button" onclick="window.print()">打印 / 导出 PDF</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="container hero-inner">
+        <div class="reveal visible">
+          <div class="eyebrow">AI Native Recruiting Agent OS</div>
+          <h1>把猎头 <span class="keep">Know-how</span><span class="accent">变成可持续运行的 Agent 系统</span></h1>
+          <p class="hero-lead">不是给每个业务节点放一个机器人，而是把云略最稳定、最专业的判断能力沉淀成能力中心，再由业务任务按场景组合调用。每次沟通、寻访、面试和结果，都会让下一次判断更准确。</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#capabilities">查看 8 个专业能力 Agent <span aria-hidden="true">↓</span></a>
+            <a class="btn btn-secondary" href="#workbench">查看顾问端形态</a>
+          </div>
+        </div>
+        <aside class="hero-panel reveal" aria-label="Agent 系统规模">
+          <div class="hero-panel-label">SONAR AGENT SYSTEM</div>
+          <div class="metric-grid">
+            <div class="metric"><strong>10</strong><span>个逻辑 Agent 角色<br>1 总控＋8 能力＋1 质量</span></div>
+            <div class="metric"><strong>20</strong><span>个业务任务模板<br>覆盖完整猎头主流程</span></div>
+            <div class="metric"><strong>4</strong><span>条主业务流<br>BD、寻访、人选推进、Referral</span></div>
+            <div class="metric"><strong>5</strong><span>个关键控制点<br>重要判断必须留证据</span></div>
+            <div class="metric wide"><strong>一个能力，多处复用</strong><span>节点决定现在做什么<br>能力 Agent 决定怎样专业地判断</span></div>
+          </div>
+          <p class="panel-note">客户交流稿 · 2026.08</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="light" id="blueprint">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">01 / System Blueprint</div><h2>Agent 不是孤岛<br>它运行在业务事实之上</h2></div>
+          <p class="section-intro">ATS 保存正式业务状态，本体统一“人才、企业、职位、关系和证据”的含义，项目总控判断下一步，再由任务模板组合能力 Agent 与工具。这样模型可以替换，云略的方法、数据和历史记录不会丢。</p>
+        </div>
+
+        <div class="stat-strip reveal" aria-label="系统构成统计">
+          <div class="stat-item"><b>1</b><span>项目总控</span></div>
+          <div class="stat-item"><b>8</b><span>专业能力</span></div>
+          <div class="stat-item"><b>1</b><span>质量审查</span></div>
+          <div class="stat-item"><b>20</b><span>任务模板</span></div>
+          <div class="stat-item"><b>按需</b><span>执行工具与运行实例</span></div>
+        </div>
+
+        <div class="architecture reveal" role="img" aria-label="能力中心型 Agent 架构">
+          <div class="arch-column">
+            <div class="arch-card primary"><strong>业务事实层</strong><small>ATS／CRM · 人才 · 企业 · 职位 · 项目 · 当前节点</small></div>
+            <div class="arch-card"><strong>本体与证据</strong><small>对象关系 · 原始材料 · 版本 · 来源 · 可信程度</small></div>
+            <div class="arch-card"><strong>持久化流程</strong><small>跨天、跨周管理节点、等待、退回、暂停与继续</small></div>
+          </div>
+          <div class="arch-connector" aria-hidden="true">→</div>
+          <div class="arch-center">
+            <div class="arch-card"><strong>项目总控 Agent</strong><small>识别场景 · 组装材料 · 选择任务 · 检查控制点</small></div>
+            <div class="arch-card"><strong>20 个业务任务模板</strong><small>组合能力、工具、人工确认、输出与写回</small></div>
+          </div>
+          <div class="arch-connector" aria-hidden="true">→</div>
+          <div class="arch-column">
+            <div class="arch-card primary"><strong>8 个专业能力 Agent</strong><small>理解 · 洞察 · 建模 · 核验 · 发现 · 匹配 · 推进</small></div>
+            <div class="arch-card"><strong>统一工具入口</strong><small>录音 · 检索 · 比较 · 文档 · 远程执行 · ATS 写回</small></div>
+            <div class="arch-card"><strong>质量与评价</strong><small>证据审查 · 顾问修改 · 业务结果 · 方法版本</small></div>
+          </div>
+        </div>
+        <div class="principle reveal"><b>最关键的拆分：</b>业务节点回答“现在要完成什么结果”；能力 Agent 回答“怎样做出专业判断”；工具负责“执行确定性动作”；项目总控负责“何时调用、何时暂停、何时交给人”。</div>
+      </div>
+    </section>
+
+    <section class="dark" id="capabilities">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">02 / Capability Center</div><h2>8 个能力 Agent<br>承载可复用的专业判断</h2></div>
+          <p class="section-intro">同一个“人物动机判断”会出现在人选沟通、客户访谈、意愿管理、面试和 Offer 阶段。如果按节点重复开发，系统会越来越碎。能力中心让同一种判断使用同一套证据标准、评价样本和版本。</p>
+        </div>
+
+        <div class="agent-shell reveal">
+          <aside class="agent-side">
+            <div class="index">1</div>
+            <h3>项目总控 Agent</h3>
+            <p>读取 ATS 状态，判断当前节点，组装最新材料，调用任务模板，控制暂停、退回、人工确认和写回。</p>
+          </aside>
+
+          <div class="agent-grid">
+            <article class="agent-card"><span class="agent-code">C1</span><h3>交流与证据理解</h3><p>把录音、微信、邮件、简历和会议材料转成可追溯的事实、陈述、承诺、观点与待核验问题。</p></article>
+            <article class="agent-card"><span class="agent-code">C2</span><h3>利益相关人洞察</h3><p>理解人选、客户决策人、HR、用人经理和推荐人的动机、顾虑、决策结构、信任与行为倾向。</p></article>
+            <article class="agent-card"><span class="agent-code">C3</span><h3>企业与组织洞察</h3><p>理解企业阶段、业务问题、组织成熟度、汇报关系、文化、用人特点和人才流动。</p></article>
+            <article class="agent-card"><span class="agent-code">C4</span><h3>职位与能力建模</h3><p>把客户语言转成业务问题、成功结果、能力模型、证据标准、必备项、加分项和边界案例。</p></article>
+            <article class="agent-card"><span class="agent-code">C5</span><h3>事实核验与一致性</h3><p>比较简历版本、口述、推荐、背调和业务记录，识别差异、冲突及可能的合理解释。</p></article>
+            <article class="agent-card"><span class="agent-code">C6</span><h3>人才发现与组织 Mapping</h3><p>决定为什么搜、搜什么、从哪里扩展，并用市场反馈持续修正画像、目标公司和组织关系。</p></article>
+            <article class="agent-card"><span class="agent-code">C7</span><h3>匹配、风险与决策</h3><p>在同一证据框架中区分已证明、推断、缺证与冲突，给出推荐、待补充、淘汰及验证建议。</p></article>
+            <article class="agent-card"><span class="agent-code">C8</span><h3>互动与推进策略</h3><p>根据动机、关系和阶段，设计下一问题、沟通顺序、面试准备、意愿管理、谈判与推进策略。</p></article>
+          </div>
+
+          <aside class="agent-side quality">
+            <div class="index">1</div>
+            <h3>质量与证据审查 Agent</h3>
+            <p>检查无证据结论、过度推断、敏感标签、材料冲突、权限和必须停止的异常。</p>
+          </aside>
+        </div>
+
+        <div class="scenario reveal" aria-label="能力组合示例">
+          <div class="scenario-tabs" role="tablist" aria-label="选择业务场景">
+            <button class="scenario-tab" type="button" role="tab" aria-selected="true" data-key="jd">职位画像</button>
+            <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-key="source">AI Sourcing</button>
+            <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-key="eval">顾问评价</button>
+            <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-key="will">意愿管理</button>
+            <button class="scenario-tab" type="button" role="tab" aria-selected="false" data-key="coach">面试辅导</button>
+          </div>
+          <div class="scenario-body" role="tabpanel">
+            <div><div class="kicker" id="scenario-id">CP-JD</div><h3 id="scenario-title">把客户语言转成可验证的人才画像</h3><div class="scenario-combo" id="scenario-combo"><span class="chip">C1 证据理解</span><span class="chip">C3 企业洞察</span><span class="chip">C4 职位建模</span><span class="chip">C5 一致性核验</span></div></div>
+            <div class="scenario-output"><b>任务模板负责组装并输出</b><ul id="scenario-output"><li>岗位真正要解决的业务问题</li><li>必备、加分、排除与边界案例</li><li>待客户确认问题和画像版本变化</li></ul></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white" id="flows">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">03 / Workflow Tasks</div><h2>20 个节点<br>不是 20 个独立 Agent</h2></div>
+          <p class="section-intro">节点是业务发生的时机，任务模板是可检查的工作方法。每张模板明确开始条件、必需输入、能力组合、允许动作、人工确认、输出、写回位置和停止条件。</p>
+        </div>
+
+        <div class="control-lane reveal" aria-label="五个关键控制点">
+          <div class="control"><div class="control-dot">1</div><div><b>CP-JD</b><span>到底需要什么人</span></div></div>
+          <div class="control"><div class="control-dot">2</div><div><b>CP-TARGET</b><span>应该去哪里找</span></div></div>
+          <div class="control"><div class="control-dot">3</div><div><b>CP-EVAL</b><span>这个人是否值得推荐</span></div></div>
+          <div class="control"><div class="control-dot">4</div><div><b>CP-WILL</b><span>人选是否真的会推进</span></div></div>
+          <div class="control"><div class="control-dot">5</div><div><b>CP-COACH</b><span>如何让真实能力被看见</span></div></div>
+        </div>
+
+        <div class="flow-groups reveal">
+          <details class="flow">
+            <summary><span class="flow-id">F1</span><span class="flow-title">BD 获客与签约</span><span class="flow-desc">从线索到签约与客户建档，形成可执行的项目入口</span><span class="flow-plus">＋</span></summary>
+            <div class="node-list">
+              <div class="node"><b>F1-S1</b><strong>线索获取</strong><small>从公开信号、日常业务和关系网络中沉淀可验证线索。</small></div>
+              <div class="node"><b>F1-S2</b><strong>线索转化</strong><small>研究客户痛点、关键岗位和决策人，准备高质量接触材料。</small></div>
+              <div class="node"><b>F1-S3</b><strong>客户选择</strong><small>判断付费能力、意愿、真实性、紧急度和可操作性。</small></div>
+              <div class="node"><b>F1-S4</b><strong>费率／合同谈判</strong><small>准备价值说明和商务条件，但所有承诺由授权人员确认。</small></div>
+              <div class="node"><b>F1-S5</b><strong>客户建档</strong><small>归并公司、联系人、合同与职位，检查重复并触发 F2。</small></div>
+            </div>
+          </details>
+
+          <details class="flow" open>
+            <summary><span class="flow-id">F2</span><span class="flow-title">项目启动与寻访交付</span><span class="flow-desc">从职位理解到人才来源、专业评价和推荐，是首期主链</span><span class="flow-plus">＋</span></summary>
+            <div class="node-list">
+              <div class="node"><b>F2-S1</b><strong>接项目／分配</strong><small>核对客户、预算、难度与顾问负载，明确负责人和协作方式。</small></div>
+              <div class="node key"><b>F2-S2 · CP-JD</b><strong>JD 与人才画像</strong><small>把需求转成关键问题、成功标准、能力证据和可调整边界。</small></div>
+              <div class="node key"><b>F2-S3 · CP-TARGET</b><strong>目标公司</strong><small>按业务场景、产业链和组织环境分层，说明为什么从这里找。</small></div>
+              <div class="node"><b>F2-S4</b><strong>寻访与检索</strong><small>统一编排内部库、授权渠道、公开资料和 Referral，形成待评价批次。</small></div>
+              <div class="node key"><b>F2-S5 · CP-EVAL</b><strong>顾问评价</strong><small>基于事实判断匹配、风险和未知项，给出通过／淘汰／待定。</small></div>
+              <div class="node"><b>F2-S6</b><strong>推荐报告</strong><small>生成可追溯的推荐理由、风险披露和客户沟通材料。</small></div>
+            </div>
+          </details>
+
+          <details class="flow">
+            <summary><span class="flow-id">F3</span><span class="flow-title">人选推进与 Offer 闭环</span><span class="flow-desc">从触达到面试、Offer、入职和过保，持续管理真实意愿</span><span class="flow-plus">＋</span></summary>
+            <div class="node-list">
+              <div class="node"><b>F3-S1</b><strong>Float 触达</strong><small>生成个性化触达草稿、发送顺序、跟进时间与回复分类。</small></div>
+              <div class="node"><b>F3-S2</b><strong>人选／客户约见</strong><small>准备会前资料、谈话目标、问题清单与会后动作。</small></div>
+              <div class="node key"><b>F3-S3 · CP-WILL</b><strong>意愿管理</strong><small>区分显性说法与底层动机，维护多阶段意愿版本和推缓停策略。</small></div>
+              <div class="node key"><b>F3-S4 · CP-COACH</b><strong>面试辅导与陪面</strong><small>还原真实能力、个性化准备、模拟面试并回收双方反馈。</small></div>
+              <div class="node"><b>F3-S5</b><strong>Offer 与融入跟踪</strong><small>管理双方诉求、离职风险、背调、报到和融入提醒。</small></div>
+              <div class="node"><b>F3-S6</b><strong>入职过保／财务闭环</strong><small>连接入职、收费、回款、保证期、复盘与业绩归属。</small></div>
+            </div>
+          </details>
+
+          <details class="flow">
+            <summary><span class="flow-id">F4</span><span class="flow-title">Referral 内推获人</span><span class="flow-desc">利用关系网络获人，并把线索重新接入评价和意愿主链</span><span class="flow-plus">＋</span></summary>
+            <div class="node-list">
+              <div class="node"><b>F4-S1</b><strong>Referral 发起与沟通</strong><small>设计沟通顺序，逐层提取组织结构、汇报与人才线索。</small></div>
+              <div class="node"><b>F4-S2</b><strong>Referral 筛选</strong><small>回到 F2 的画像、目标公司和顾问评价，不因熟人推荐跳过判断。</small></div>
+              <div class="node"><b>F4-S3</b><strong>Referral 意愿</strong><small>二次核验推荐人提供的动机，进入 F3 或长期维护。</small></div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-2" id="cognition">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">04 / Insufficient Input</div><h2>信息不够时<br>Agent 不应该硬猜</h2></div>
+          <p class="section-intro">真实招聘中，输入不足是常态。系统保存多种可能解释，并随着新录音、新行为、新简历和客户反馈不断更新判断。贝叶斯方法在这里不是为了显示一个“神奇分数”，而是为了决定下一步最值得问什么。</p>
+        </div>
+
+        <div class="cognition-layout reveal">
+          <div class="cognition-copy">
+            <h3>从“缺信息”变成“主动补信息”</h3>
+            <p>每份认知状态都区分已确认事实、竞争性假设、支持证据、反向证据、来源可靠程度、可信程度、缺失原因和版本时间。</p>
+            <div class="plain-language"><span>大白话：</span>先承认我们还不知道，再找出哪一个问题最可能改变“推、缓、停”的决定。</div>
+            <p style="margin-top:20px">前台优先显示低／中／高和证据，不向顾问展示未经校准的精确百分比。拒绝回答是一条需要理解的信号，但不能直接推断为隐瞒或欺骗。</p>
+          </div>
+
+          <div class="state-panel" aria-label="候选人意愿认知状态示例">
+            <div class="state-head"><div><small>CP-WILL · 候选人意愿认知状态</small><h3 style="margin:5px 0 0">为什么愿意看这个机会？</h3></div><span class="confidence">当前整体可信程度：中</span></div>
+            <div class="hypotheses">
+              <div class="hypothesis"><div><b>假设 A：核心诉求是更大的发展空间</b><p>支持：主动追问职责范围；反向：尚未说明当前岗位具体受限在哪里。</p></div><span class="level">中</span></div>
+              <div class="hypothesis"><div><b>假设 B：当前组织变化带来不安全感</b><p>支持：提到领导调整；反向：仍表示对现公司整体满意。</p></div><span class="level">中偏低</span></div>
+              <div class="hypothesis"><div><b>假设 C：主要是在测试市场薪酬</b><p>支持：多次询问薪酬；反向：愿意投入时间了解业务。</p></div><span class="level">低至中</span></div>
+            </div>
+            <div class="evidence-row">
+              <div class="evidence-box"><b>已确认事实</b><p>在现公司 3 年；团队近期更换负责人；愿意参加首次沟通。</p></div>
+              <div class="evidence-box"><b>当前缺口</b><p>真实离职阈值、家庭影响、薪资与发展优先级、其他机会进展。</p></div>
+            </div>
+            <div class="next-question"><small>当前最有价值的问题</small><blockquote>“如果新机会的薪资与现在基本持平，但职责范围明显扩大，你还愿意继续推进吗？为什么？”</blockquote><p>这个问题可以同时区分发展诉求、薪酬诉求和礼貌性意愿，并直接影响下一步推／缓／停。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="light" id="sourcing">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">05 / AI Sourcing</div><h2>人才源头必须有<br>但不能变成独立名单工具</h2></div>
+          <p class="section-intro">Sourcing 位于 F2-S4。它必须读取已经确认的职位画像与目标公司，产出待评价的事实材料和市场反馈；人才随后进入 CP-EVAL，由专业判断决定能否推荐。</p>
+        </div>
+
+        <div class="sourcing-rail reveal" role="img" aria-label="AI Sourcing 执行服务链">
+          <article class="rail-card"><span class="rail-no">01 / STRATEGY</span><h3>寻访策略</h3><ul><li>读取当前职位与目标公司版本</li><li>生成必须、加分、排除与风险</li><li>组合关键词、语义与组织角度</li><li>顾问确认策略和资源上限</li></ul></article>
+          <div class="rail-arrow" aria-hidden="true">→</div>
+          <article class="rail-card"><span class="rail-no">02 / EXECUTION</span><h3>多来源执行</h3><ul><li>内部人才库与历史项目</li><li>授权招聘渠道与公开资料</li><li>Referral 与组织 Mapping</li><li>远程隔离虚拟机执行外部任务</li></ul></article>
+          <div class="rail-arrow" aria-hidden="true">→</div>
+          <article class="rail-card"><span class="rail-no">03 / FEEDBACK</span><h3>待评价与回流</h3><ul><li>身份去重与简历版本识别</li><li>多轮预筛和未知项标注</li><li>形成独立待评价批次</li><li>写回 ATS 并吸收顾问反馈</li></ul></article>
+        </div>
+
+        <div class="source-grid reveal">
+          <div class="source"><b>内部人才库</b><small>已有简历、项目、沟通与顾问关系优先复用</small></div>
+          <div class="source"><b>授权外部渠道</b><small>按账号、权益、频率和人数上限执行</small></div>
+          <div class="source"><b>Referral</b><small>通过可信关系获得人才与组织线索</small></div>
+          <div class="source"><b>公开资料与 Mapping</b><small>从组织、产业链和相邻场景扩展搜索角度</small></div>
+        </div>
+
+        <div class="guardrail reveal"><b>远程执行底座</b><p>外部渠道在远程服务器的隔离虚拟机中运行，固定账号与环境，小批次、低并发、可查看、可暂停、可接管。验证码、强制登录、安全提醒、页面重大变化或访问限制出现时立即停止并转人工，不绕过平台验证与安全机制。</p></div>
+
+        <div class="trigger-grid reveal" aria-label="自动搜索触发机制">
+          <div class="trigger"><b>项目首次启动</b><p>画像、目标公司和首轮策略确认后启动。</p></div>
+          <div class="trigger"><b>职位版本变化</b><p>只针对变化条件生成增量搜索任务。</p></div>
+          <div class="trigger"><b>结果不足</b><p>连续批次无新增时提出新角度与来源组合。</p></div>
+          <div class="trigger"><b>顾问评价反馈</b><p>同类淘汰原因集中出现时建议调整策略。</p></div>
+          <div class="trigger"><b>人才快报</b><p>按日、周或自定义频率监控新增与资料变化。</p></div>
+          <div class="trigger"><b>Mapping 更新／人工指令</b><p>新组织节点或顾问自然语言指令触发补充搜索。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark" id="interview">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">06 / Interview Loop</div><h2>帮助人选还原真实能力<br>让面试结果继续反哺判断</h2></div>
+          <p class="section-intro">面试支持不是教候选人背“标准答案”。系统从真实经历中还原能力证据，结合行业、职能、职级、企业阶段和本轮面试目的做个性化准备，并把真实面试产生的新证据重新写回人才、职位和企业认知。</p>
+        </div>
+
+        <div class="interview-path reveal">
+          <article class="interview-step"><span class="num">01</span><h3>真实能力还原</h3><p>回到具体事件，分清处境、角色、权限、动作、取舍、结果与个人贡献。</p><b>输出：能力证据卡</b></article>
+          <article class="interview-step"><span class="num">02</span><h3>企业与岗位认知</h3><p>理解企业阶段、团队现状、职位关键问题、文化与面试官关注点。</p><b>输出：面试认知卡</b></article>
+          <article class="interview-step"><span class="num">03</span><h3>个性化问题</h3><p>围绕本人经历、简历差异、风险与能力迁移，生成问题、目的和追问。</p><b>输出：准备问题集</b></article>
+          <article class="interview-step"><span class="num">04</span><h3>自适应模拟面试</h3><p>根据回答继续追问，识别表达不清、证据不足、前后矛盾和角色模糊。</p><b>输出：下一轮练习重点</b></article>
+          <article class="interview-step"><span class="num">05</span><h3>真实反馈回流</h3><p>收集候选人复盘和客户反馈，更新人才判断、职位画像和企业知识。</p><b>输出：下一步动作</b></article>
+        </div>
+
+        <div class="interview-note reveal">
+          <div class="note-card"><b>候选人可见</b><p>企业背景、岗位目标、能力证据、个性化问题、反向提问、面试提醒与反馈要求。</p></div>
+          <div class="note-card"><b>仅顾问可见</b><p>客户保密信息、内部风险判断、其他候选人信息、待核验冲突和沟通策略。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="white" id="workbench">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">07 / Consultant Experience</div><h2>前台不是一排 Agent<br>而是一张业务工作台</h2></div>
+          <p class="section-intro">顾问看到的是项目现在在哪一步、Agent 正在做什么、用了哪些材料、还缺什么、为什么给出建议、下一步需要谁确认。自然语言入口与可视化工作台共用同一套数据、权限和操作。</p>
+        </div>
+
+        <div class="workbench reveal" aria-label="顾问 Agent 工作台示意">
+          <aside class="wb-side">
+            <div class="mini-logo"><img src="assets/yunlue-logo.svg" alt="云略"></div>
+            <div class="wb-project"><small>当前项目</small><h3>华东区供应链总监</h3><div class="wb-progress"><div class="wb-stage done"><i>✓</i><span>接项目／分配</span></div><div class="wb-stage done"><i>✓</i><span>JD 与人才画像</span></div><div class="wb-stage done"><i>✓</i><span>目标公司</span></div><div class="wb-stage current"><i>4</i><span>AI Sourcing</span></div><div class="wb-stage"><i>5</i><span>顾问评价</span></div><div class="wb-stage"><i>6</i><span>推荐报告</span></div></div></div>
+          </aside>
+          <div class="wb-main">
+            <div class="wb-header"><div><small style="color:#728894">F2-S4 · AI Sourcing</small><h3 style="margin:4px 0 0">待评价批次 #07</h3></div><div class="wb-status"><span class="status-pill">正在运行</span><span class="status-pill">顾问待确认 3</span></div></div>
+            <div class="wb-content">
+              <div class="wb-card"><h3>项目总控建议</h3><div class="wb-list"><div class="wb-list-item"><b>本批新增 18 人，建议优先评价 6 人</b><small>使用画像 V4、目标公司 V3、寻访策略 V5</small></div><div class="wb-list-item"><b>3 位候选人的管理跨度仍需核验</b><small>现有材料只有岗位名称，没有团队人数和实际授权</small></div><div class="wb-list-item" style="border-left-color:#d8b26d"><b>连续两批在一梯队公司无新增</b><small>建议扩展至同客户群体、相同供应链复杂度的二梯队企业</small></div></div><div class="wb-evidence"><span class="evidence-tag">客户录音 08/16</span><span class="evidence-tag">画像 V4</span><span class="evidence-tag">简历版本 23</span><span class="evidence-tag">顾问反馈 12</span></div></div>
+              <div class="wb-card"><h3>为什么卡住</h3><p style="color:#617986;font-size:13px">调整搜索角度会改变目标公司范围，并增加外部渠道权益消耗，需要顾问确认。</p><h3 style="margin-top:22px">预计影响</h3><div class="wb-list"><div class="wb-list-item"><b>新增目标公司 14 家</b><small>不覆盖原策略，生成 V6</small></div><div class="wb-list-item"><b>预计读取 80 份摘要</b><small>简历查看上限 20 份</small></div></div></div>
+            </div>
+            <div class="wb-compose"><div class="command-box"><div class="command-text">“把客户昨天补充的跨区域团队管理要求写入画像，再按新方向搜一批华东区人才。”</div><div class="command-preview"><span>定位：当前项目</span><span>画像 V4 → V5</span><span>生成增量搜索</span><span>需要顾问确认</span></div><div class="command-actions"><button type="button">查看依据</button><button class="confirm" type="button">确认并执行</button></div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-2" id="governance">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">08 / Human Control</div><h2>逐级放开自动化<br>关键决定始终可控</h2></div>
+          <p class="section-intro">第一阶段不追求完全无人化。先确保输入不足时不硬猜、判断有证据、缺口能被主动补充、结果可确认可写回。自动化等级只有在真实项目中持续验证后才提高。</p>
+        </div>
+
+        <div class="governance-grid reveal">
+          <div class="automation" aria-label="Agent 自动化等级">
+            <div class="automation-row"><b>A0</b><span>记录</span><small>整理材料与摘要，不改变业务状态</small></div>
+            <div class="automation-row"><b>A1</b><span>建议</span><small>提出判断与草稿，必须人工确认</small></div>
+            <div class="automation-row"><b>A2</b><span>内部执行</span><small>完成可撤回的查重、标签、任务与内部检索</small></div>
+            <div class="automation-row"><b>A3</b><span>受控外部执行</span><small>在已批准对象、模板、频率和额度内执行</small></div>
+            <div class="automation-row"><b>A4</b><span>闭环执行</span><small>成熟场景自动接力，只在异常时请人处理</small></div>
+          </div>
+          <div class="stop-card"><h3>这些情况必须停止自动推进</h3><div class="stop-list"><div class="stop-item">找不到唯一客户、职位、项目或人才</div><div class="stop-item">关键材料缺失或事实相互冲突</div><div class="stop-item">画像、简历或策略已不是当前版本</div><div class="stop-item">关键控制点没有确认记录</div><div class="stop-item">首次对外触达或敏感信息披露</div><div class="stop-item">商务、薪酬、Offer 等重要承诺</div><div class="stop-item">验证码、账号安全与页面重大变化</div><div class="stop-item">超出频率、人数、时间或费用上限</div></div></div>
+          <div class="governance-callout">
+            <div class="gov-point"><b>所有结论能回到材料</b><p>原始录音、简历版本、客户反馈和公开资料与判断分开保存。</p></div>
+            <div class="gov-point"><b>顾问保留最终决定权</b><p>重要判断保存接受、修改、拒绝、修改原因和确认人。</p></div>
+            <div class="gov-point"><b>框架与模型可替换</b><p>能力卡、任务模板、本体、评价集和历史记录掌握在云略手中。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="light" id="roadmap">
+      <div class="container">
+        <div class="section-head reveal">
+          <div><div class="kicker">09 / Build Order</div><h2>从最难的判断开始验证<br>再跑通完整交付</h2></div>
+          <p class="section-intro">先用真实业务证明“Agent 能否在信息不足时做出有证据的判断”，再扩大到人才源头和完整项目主链。每一步都有真实样本、顾问修改和最终业务结果作为评价依据。</p>
+        </div>
+        <div class="roadmap reveal">
+          <article class="roadmap-step"><span class="tag">STEP 01 · COGNITION</span><h3>先验证水面下判断</h3><p>用人选沟通跑通从原始录音到主动追问的最小闭环。</p><ul><li>事实与陈述提取</li><li>动机的竞争性假设</li><li>最有价值的下一问题</li><li>顾问确认与版本写回</li></ul></article>
+          <article class="roadmap-step"><span class="tag">STEP 02 · F2 MAIN FLOW</span><h3>跑通人才源头与推荐</h3><p>连接职位理解、目标公司、AI Sourcing、评价和推荐。</p><ul><li>CP-JD 与 CP-TARGET</li><li>多来源人才发现</li><li>CP-EVAL 与风险判断</li><li>反馈驱动策略更新</li></ul></article>
+          <article class="roadmap-step"><span class="tag">STEP 03 · FULL LOOP</span><h3>扩展到面试与组织知识</h3><p>用真实面试、Offer、入职和关系网络持续校准判断。</p><ul><li>CP-WILL 与 CP-COACH</li><li>面试反馈回流</li><li>Referral 与组织 Mapping</li><li>按验证结果提高自动化</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="container reveal"><div class="kicker" style="color:#c7edf4">YUNLUE SONAR OS</div><h2>每完成一次真实业务动作<br>都在增加下一次 Agent 可以使用的能力</h2><p>真正的护城河不是某个模型，也不是某个渠道自动化，而是云略持续把专业方法、顾问修正和最终业务结果，变成一套越来越成熟的招聘 Agent 系统。</p><div class="closing-line"></div></div>
+    </section>
+  </main>
+
+  <footer><div class="container footer-inner"><span>云略鉴真 SONAR OS · Agent 系统客户交流稿</span><span>AI Native 猎头业务智能体操作系统 · 2026.08</span></div></footer>
+
+  <script>
+    const scenarioData = {
+      jd:{id:'CP-JD',title:'把客户语言转成可验证的人才画像',combo:['C1 证据理解','C3 企业洞察','C4 职位建模','C5 一致性核验'],output:['岗位真正要解决的业务问题','必备、加分、排除与边界案例','待客户确认问题和画像版本变化']},
+      source:{id:'F2-S4',title:'把画像与目标公司转成持续寻访任务',combo:['C3 企业洞察','C4 职位建模','C6 人才发现','C7 匹配决策'],output:['多角度搜索策略与来源组合','去重后的待评价批次和未知项','市场反馈、目标公司与策略调整建议']},
+      eval:{id:'CP-EVAL',title:'判断这个人是否值得推荐',combo:['C1 证据理解','C2 人物洞察','C5 一致性核验','C7 匹配决策'],output:['通过／淘汰／待定建议','匹配事实、风险事实与待核验问题','对画像、目标公司和 Sourcing 的反馈']},
+      will:{id:'CP-WILL',title:'理解人选为什么会动、是否真的推进',combo:['C1 证据理解','C2 人物洞察','C5 一致性核验','C8 推进策略'],output:['显性说法与底层动机假设','决策结构、主要顾虑与意愿版本','推／缓／停及下一次验证问题']},
+      coach:{id:'CP-COACH',title:'帮助真实能力被看见，并校准双方认知',combo:['C2 人物洞察','C3 企业洞察','C4 职位建模','C7 匹配决策','C8 推进策略'],output:['能力证据卡与企业岗位认知','个性化问题、模拟面试与反向提问','双方反馈、下一轮准备与认知更新']}
+    };
+
+    const tabs = document.querySelectorAll('.scenario-tab');
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => t.setAttribute('aria-selected','false'));
+      tab.setAttribute('aria-selected','true');
+      const data = scenarioData[tab.dataset.key];
+      document.querySelector('#scenario-id').textContent = data.id;
+      document.querySelector('#scenario-title').textContent = data.title;
+      document.querySelector('#scenario-combo').innerHTML = data.combo.map(item => `<span class="chip">${item}</span>`).join('');
+      document.querySelector('#scenario-output').innerHTML = data.output.map(item => `<li>${item}</li>`).join('');
+    }));
+
+    const progress = document.querySelector('.progress');
+    const navLinks = [...document.querySelectorAll('.nav a')];
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const updateScroll = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      progress.style.width = `${max > 0 ? (scrollY / max) * 100 : 0}%`;
+      const marker = scrollY + 150;
+      let current = sections[0]?.id;
+      sections.forEach(section => { if (section.offsetTop <= marker) current = section.id; });
+      navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${current}`));
+    };
+    addEventListener('scroll', updateScroll, {passive:true});
+    updateScroll();
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('.command-actions button').forEach(button => button.addEventListener('click', () => {
+      const original = button.textContent;
+      button.textContent = button.classList.contains('confirm') ? '演示：已进入确认队列' : '演示：已展开证据';
+      setTimeout(() => { button.textContent = original; }, 1800);
+    }));
+  </script>
+  <script type="module">
+    import { prepare, layout } from './assets/pretext.js';
+    await document.fonts.ready;
+    const prepared = new Map();
+    document.querySelectorAll('h1,h2,.hero-lead,.section-intro').forEach(el => {
+      try { prepared.set(el, prepare(el.textContent, getComputedStyle(el).font)); } catch (_) {}
+    });
+    const relayout = () => {
+      prepared.forEach((handle, el) => {
+        try { layout(handle, el.clientWidth, parseFloat(getComputedStyle(el).lineHeight)); } catch (_) {}
+      });
+    };
+    new ResizeObserver(relayout).observe(document.body);
+    relayout();
+  </script>
+</body>
+</html>
