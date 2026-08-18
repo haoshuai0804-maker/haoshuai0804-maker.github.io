@@ -179,8 +179,12 @@
     .node small { color:var(--muted); line-height:1.55; }
     .node.key { background:#edf7f9; box-shadow:inset 0 3px var(--cyan); }
 
+    /* “深度判断”单独给标题与说明留出足够宽度，避免长标题压到右侧说明。 */
+    #cognition .section-head { grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:48px; }
+    #cognition h2 { font-size:clamp(30px,3.35vw,40px); }
     .cognition-layout { display:grid; grid-template-columns:.84fr 1.16fr; gap:34px; align-items:start; }
-    .cognition-copy { position:sticky; top:104px; }
+    /* 不使用吸顶，避免滚动时左侧文案覆盖贝叶斯说明。 */
+    .cognition-copy { position:static; }
     .cognition-copy p { color:#b6c8d1; }
     .plain-language { padding:20px 22px; border-left:4px solid var(--gold); color:#fff; background:var(--navy-850); }
     .plain-language span { color:var(--gold-soft); }
@@ -327,7 +331,7 @@
       .print-btn { margin-left:auto; }
       .hero-inner { grid-template-columns:1fr; }
       .hero-panel { max-width:720px; }
-      .section-head { grid-template-columns:1fr; gap:20px; }
+      .section-head,#cognition .section-head { grid-template-columns:1fr; gap:20px; }
       .agent-shell { grid-template-columns:1fr 1fr; }
       .agent-grid { grid-column:1/-1; grid-row:2; }
       .sourcing-rail { grid-template-columns:1fr; }
