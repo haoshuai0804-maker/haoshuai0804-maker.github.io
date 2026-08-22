@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>云略招聘产品整体思考路径｜SONAR OS 产品方案</title>
+  <meta name="description" content="云略招聘产品的整体思考路径、SONAR OS 五层十七模块框架、业务流、智能体能力、系统架构与合作讨论。">
+  <style>
+    :root{
+      --brand:#004369;
+      --brand-2:#0f6a8b;
+      --brand-3:#62c1d8;
+      --brand-soft:#c7edf4;
+      --gold:#d8b26d;
+      --navy:#071827;
+      --navy-2:#0a2033;
+      --paper:#f3f7f9;
+      --paper-2:#e7eef2;
+      --ink:#132a3a;
+      --muted:#6c8190;
+      --line:#cad7de;
+      --white:#fff;
+      --warning:#c96b35;
+      --radius:18px;
+      --shadow:0 18px 52px rgba(1,34,52,.10);
+      --display:clamp(44px,5.4vw,68px);
+      --section:clamp(30px,3.2vw,40px);
+      --card:20px;
+      --body:15px;
+      --small:12px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:76px}
+    body{margin:0;color:var(--ink);background:var(--white);font-family:"PingFang SC","HarmonyOS Sans SC","Microsoft YaHei",Arial,sans-serif;font-size:var(--body);line-height:1.7}
+    a{color:inherit}
+    .shell{width:min(1180px,calc(100% - 48px));margin:0 auto}
+    .section{padding:100px 0}
+    .paper{background:var(--paper)}
+    .dark{color:var(--white);background:var(--navy)}
+    .topbar{position:sticky;top:0;z-index:20;height:68px;border-bottom:1px solid rgba(202,215,222,.85);background:rgba(255,255,255,.9);backdrop-filter:blur(16px)}
+    .topbar-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .brand{display:flex;align-items:center;text-decoration:none}
+    .brand img{display:block;width:154px;height:auto}
+    .nav{display:flex;align-items:center;gap:24px;color:#557080;font-size:var(--small)}
+    .nav a{text-decoration:none;font-weight:650}
+    .nav a:hover{color:var(--brand)}
+    .hero{min-height:680px;padding:94px 0 76px;background:radial-gradient(circle at 84% 8%,rgba(98,193,216,.20),transparent 27rem),linear-gradient(180deg,#fff 0%,#f8fbfc 100%)}
+    .kicker{display:flex;align-items:center;gap:10px;color:var(--brand-2);font-size:var(--small);font-weight:750;letter-spacing:.06em}
+    .kicker:before{content:"";width:34px;height:2px;background:var(--brand-3)}
+    h1{max-width:900px;margin:30px 0 28px;font-size:var(--display);line-height:1.08;letter-spacing:-.045em;font-weight:720}
+    h1 em{color:var(--brand);font-style:normal}
+    .hero-lead{max-width:840px;margin:0;color:#496675;font-size:18px;line-height:1.85}
+    .hero-bottom{margin-top:50px;padding-top:22px;display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;border-top:1px solid var(--line)}
+    .hero-bottom strong{color:var(--brand);font-size:var(--small)}
+    .hero-bottom p{margin:0;color:var(--muted)}
+    .section-head{margin-bottom:44px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px;align-items:start}
+    .section-index{padding-top:8px;color:var(--brand-2);font-size:var(--small);font-weight:750;letter-spacing:.05em}
+    h2{margin:0;font-size:var(--section);line-height:1.2;letter-spacing:-.035em;font-weight:720}
+    .section-head p{max-width:760px;margin:16px 0 0;color:var(--muted);line-height:1.8}
+    .dark .section-index{color:var(--brand-3)}
+    .dark .section-head p{color:#adc1cc}
+    .phase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .phase{position:relative;min-height:492px;padding:28px;border:1px solid var(--line);border-top:4px solid var(--brand-3);border-radius:var(--radius);background:var(--white);box-shadow:var(--shadow)}
+    .phase:nth-child(2){border-top-color:var(--brand-2)}
+    .phase:nth-child(3){border-top-color:var(--gold)}
+    .phase-top{display:flex;align-items:center;justify-content:space-between}
+    .phase-no{color:var(--brand);font-size:14px;font-weight:750}
+    .phase-state{padding:5px 10px;border-radius:99px;color:var(--muted);background:var(--paper);font-size:11px}
+    h3{margin:0;font-size:var(--card);line-height:1.35;letter-spacing:-.02em;font-weight:720}
+    .phase h3{margin:54px 0 28px}
+    .phase dl{margin:0}
+    .phase dl>div{padding:15px 0;border-top:1px solid #e5edf1}
+    .phase dt{margin-bottom:6px;color:#8aa0ac;font-size:11px;font-weight:750}
+    .phase dd{margin:0;color:#526d7c;font-size:13px;line-height:1.68}
+    .phase-arrow{position:absolute;right:-30px;top:48%;z-index:2;display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--line);border-radius:50%;color:var(--brand-2);background:#fff;font-size:18px}
+    .judgement{margin-top:34px;padding:24px 28px;display:grid;grid-template-columns:110px 1fr;gap:18px;border:1px solid rgba(15,106,139,.22);border-radius:14px;background:#eaf6f8}
+    .judgement span{color:var(--brand-2);font-size:var(--small);font-weight:750}
+    .judgement p{margin:0;font-size:16px}
+    .position-map{display:grid;grid-template-columns:1fr 40px 1.25fr 40px 1fr;align-items:stretch}
+    .position-box{min-height:218px;padding:26px;border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);background:var(--navy-2)}
+    .position-box small{color:#8eabb9;font-size:11px;font-weight:700}
+    .position-box h3{margin:54px 0 10px;color:#fff}
+    .position-box p{margin:0;color:#9fb5c0;font-size:13px}
+    .position-box.sonar{border-color:rgba(98,193,216,.65);background:linear-gradient(145deg,#0f5b77,#0a2940);box-shadow:0 18px 50px rgba(0,67,105,.28)}
+    .position-box.sonar small{color:var(--brand-soft)}
+    .map-arrow{display:grid;place-items:center;color:#668596;font-size:18px}
+    .boundary-grid{margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .boundary-grid>div{padding:22px;border-radius:14px;background:rgba(255,255,255,.055)}
+    .boundary-grid span{color:var(--brand-3);font-size:var(--small);font-weight:750}
+    .boundary-grid p{margin:9px 0 0;color:#afc2cc;font-size:13px}
+    .framework-stack{display:flex;flex-direction:column;gap:10px}
+    .framework-layer{padding:22px 24px;display:grid;grid-template-columns:120px 175px minmax(0,1fr);gap:18px;align-items:center;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:var(--navy-2)}
+    .framework-layer:nth-child(2){border-color:rgba(98,193,216,.55);background:linear-gradient(120deg,#0d4059,#0a2c43)}
+    .framework-layer>span{color:var(--brand-3);font-size:11px;font-weight:750}
+    .framework-layer h3{color:#fff}
+    .framework-layer p{margin:0;color:#aac0cb;font-size:12px;line-height:1.7}
+    .framework-base{margin-top:16px;padding:17px 22px;border:1px dashed rgba(98,193,216,.38);border-radius:13px;color:#b8cbd4;background:rgba(255,255,255,.04);font-size:12px;text-align:center}
+    .flow-list{border-top:1px solid var(--line)}
+    .flow{padding:32px 0;display:grid;grid-template-columns:265px minmax(0,1fr);gap:28px;border-bottom:1px solid var(--line)}
+    .flow-label b{color:var(--brand-2);font-size:var(--small)}
+    .flow-label h3{margin:8px 0}
+    .flow-label p{margin:0;color:var(--muted);font-size:12px;line-height:1.65}
+    .nodes{display:flex;align-items:stretch;gap:8px;overflow-x:auto;padding-bottom:4px}
+    .node{position:relative;min-width:108px;flex:1;padding:14px 12px;border:1px solid var(--line);border-radius:11px;background:#fbfcfd}
+    .node:not(:last-child):after{content:"›";position:absolute;right:-8px;top:50%;z-index:2;width:15px;height:20px;margin-top:-10px;display:grid;place-items:center;color:#8ca2ad;background:#fff}
+    .node small{display:block;margin-bottom:7px;color:#8ca2ad;font-size:9px}
+    .node strong{font-size:11px;line-height:1.5}
+    .node.key{border-color:rgba(15,106,139,.35);background:#eaf6f8;box-shadow:inset 0 3px var(--brand-3)}
+    .node.key small{color:var(--brand-2)}
+    .v4-band{margin-top:38px;padding:25px 28px;display:grid;grid-template-columns:110px 1fr;gap:7px 22px;border-radius:16px;color:#fff;background:linear-gradient(115deg,var(--brand),var(--brand-2))}
+    .v4-band span{grid-row:1/3;color:var(--brand-soft);font-size:var(--small);font-weight:750}
+    .v4-band strong{font-size:16px}
+    .v4-band p{margin:0;color:#d2e5eb;font-size:13px}
+    .zoom-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .zoom-panel{padding:27px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+    .zoom-panel.current{border-color:rgba(15,106,139,.38);box-shadow:var(--shadow)}
+    .panel-head{min-height:78px;border-bottom:1px solid var(--line)}
+    .panel-head span{color:var(--brand-2);font-size:11px;font-weight:750}
+    .panel-head h3{margin-top:9px}
+    .module{padding:17px 0;display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;border-bottom:1px solid #e5edf1}
+    .module:last-child{border-bottom:0}
+    .module>span{color:var(--brand-2);font-size:11px;font-weight:750}
+    .module h3{font-size:var(--card)}
+    .module p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.55}
+    .module small{padding:4px 7px;border-radius:99px;color:#6d8490;background:var(--paper);font-size:9px}
+    .plain-list{margin:10px 0 0;padding:0;list-style:none}
+    .plain-list li{padding:13px 4px;border-bottom:1px solid #e5edf1;color:var(--muted);font-size:13px}
+    .plain-list b{color:var(--ink)}
+    .scale-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .scale-card{min-height:146px;padding:24px;border:1px solid var(--line);border-radius:15px;background:#fff}
+    .scale-card strong{display:block;color:var(--brand);font-size:34px;line-height:1.1}
+    .scale-card h3{margin:14px 0 5px}
+    .scale-card p{margin:0;color:var(--muted);font-size:11px}
+    .design-relation{margin-top:20px;padding:26px;border:1px solid rgba(15,106,139,.28);border-radius:16px;background:#eaf6f8}
+    .design-relation>strong{display:block;margin-bottom:17px;color:var(--brand);font-size:14px}
+    .relation-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+    .relation-row div{position:relative;padding:15px 12px;border-radius:11px;background:#fff;text-align:center}
+    .relation-row div:not(:last-child):after{content:"›";position:absolute;right:-8px;top:50%;z-index:2;width:16px;margin-top:-12px;color:var(--brand-2);font-size:20px}
+    .relation-row span{display:block;color:var(--brand-2);font-size:10px;font-weight:750}
+    .relation-row b{display:block;margin-top:5px;font-size:12px}
+    .agent-chain{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .agent{position:relative;min-height:276px;padding:23px;border:1px solid var(--line);border-radius:16px;background:#fff}
+    .agent-id{color:var(--brand-2);font-size:var(--small);font-weight:750}
+    .agent h3{margin:28px 0 7px}
+    .agent>em{color:var(--muted);font-size:12px;font-style:normal}
+    .agent-output{margin-top:22px;padding:15px;border-radius:11px;background:var(--paper)}
+    .agent-output small{display:block;margin-bottom:6px;color:#8ca2ad;font-size:9px}
+    .agent-output strong{font-size:12px}
+    .agent>p{margin:19px 0 0;color:#718895;font-size:11px;line-height:1.6}
+    .agent-arrow{position:absolute;right:-23px;top:47%;z-index:2;display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:50%;color:var(--brand-2);background:#fff}
+    .decision-demo{margin-top:20px;padding:24px;display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;border:1px solid rgba(15,106,139,.25);border-radius:16px;background:#f5fbfc}
+    .demo-title span{color:var(--brand-2);font-size:11px;font-weight:750}
+    .demo-title h3{margin:9px 0 5px}
+    .demo-title small{color:var(--muted);font-size:10px}
+    .demo-content{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .demo-content>div{padding:14px;border-left:1px solid #d6e7ec}
+    .demo-content small{color:#8198a4;font-size:9px}
+    .demo-content p{margin:8px 0 0;font-size:11px;line-height:1.55}
+    .chip{display:inline-block;margin-top:8px;padding:5px 8px;border-radius:99px;color:#9d4c23;background:#f7e5da;font-size:11px}
+    .role-band{margin-top:18px;display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:12px}
+    .role-band>div{padding:20px;border:1px solid rgba(15,106,139,.24);border-radius:14px;background:#f2fafb}
+    .role-band span{color:var(--brand-2);font-size:10px;font-weight:750}
+    .role-band h3{margin:7px 0}
+    .role-band p{margin:0;color:var(--muted);font-size:11px}
+    .layer-stack{display:flex;flex-direction:column;gap:10px}
+    .layer{min-height:82px;padding:18px 22px;display:grid;grid-template-columns:45px 170px minmax(0,1fr) 250px;gap:14px;align-items:center;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:var(--navy-2)}
+    .layer:first-child{border-color:rgba(98,193,216,.55);background:#0c334b}
+    .layer>span{color:var(--brand-3);font-size:11px;font-weight:750}
+    .layer h3{font-size:var(--card)}
+    .layer p{margin:0;color:#b1c4ce;font-size:12px}
+    .layer small{color:#809eac;font-size:10px;text-align:right}
+    .principles{margin-top:18px;display:flex;flex-wrap:wrap;gap:9px}
+    .principles span{padding:8px 11px;border-radius:99px;color:#b8ccd5;background:rgba(255,255,255,.07);font-size:10px}
+    .questions{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+    .questions li{padding:27px 5px;display:grid;grid-template-columns:60px 100px minmax(0,1fr);gap:12px;align-items:start;border-bottom:1px solid var(--line)}
+    .questions li>span{color:var(--brand-2);font-size:11px;font-weight:750}
+    .questions h3{font-size:var(--card)}
+    .questions p{margin:0;color:var(--muted);font-size:14px}
+    footer{padding:42px 0;color:#9eb4bf;background:#05131e}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:36px}
+    .footer-brand{display:flex;align-items:center;gap:18px}
+    .footer-logo{padding:8px 12px;border-radius:8px;background:#fff}
+    .footer-logo img{display:block;width:126px}
+    .footer-brand p{margin:0;font-size:11px}
+    .source-note{max-width:560px;color:#748f9c;font-size:10px;line-height:1.7;text-align:right}
+    @media(max-width:960px){.nav{display:none}.phase-grid,.agent-chain{grid-template-columns:1fr 1fr}.phase:last-child{grid-column:1/-1}.phase-arrow,.agent-arrow{display:none}.position-map{grid-template-columns:1fr;gap:10px}.map-arrow{height:24px;transform:rotate(90deg)}.flow{grid-template-columns:1fr}.zoom-grid{grid-template-columns:1fr}.framework-layer{grid-template-columns:112px 155px minmax(0,1fr)}.layer{grid-template-columns:38px 150px minmax(0,1fr)}.layer small{display:none}.decision-demo{grid-template-columns:1fr}.role-band{grid-template-columns:1fr 1fr}.role-band>div:last-child{grid-column:1/-1}}
+    @media(max-width:680px){.shell{width:min(100% - 32px,1180px)}.section{padding:76px 0}.brand img{width:128px}.hero{min-height:auto;padding:72px 0}.hero-bottom,.section-head{grid-template-columns:1fr}.phase-grid,.agent-chain,.boundary-grid,.scale-grid,.role-band{grid-template-columns:1fr}.phase:last-child,.role-band>div:last-child{grid-column:auto}.phase{min-height:auto}.phase h3{margin-top:38px}.judgement,.v4-band{grid-template-columns:1fr}.v4-band span{grid-row:auto}.demo-content{grid-template-columns:1fr 1fr}.framework-layer{grid-template-columns:42px 1fr}.framework-layer p{grid-column:2}.relation-row{grid-template-columns:1fr}.relation-row div:not(:last-child):after{content:"⌄";right:50%;top:auto;bottom:-19px;margin:0 -8px 0 0}.layer{grid-template-columns:32px 1fr}.layer p{grid-column:2}.questions li{grid-template-columns:40px 1fr}.questions p{grid-column:2}.footer-inner{align-items:flex-start;flex-direction:column}.source-note{text-align:left}.nodes{padding-bottom:10px}.node{min-width:118px}}
+    @media print{.topbar{display:none}.section{padding:55px 0}.dark{print-color-adjust:exact;-webkit-print-color-adjust:exact}.phase,.zoom-panel,.agent{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="页面导航">
+    <div class="shell topbar-inner">
+      <a class="brand" href="#top" aria-label="返回顶部"><img src="./assets/yunlue-logo.svg" alt="云略 YUNLUE"></a>
+      <div class="nav"><a href="#evolution">思考路径</a><a href="#position">产品框架</a><a href="#flow">业务流</a><a href="#agents">智能体能力</a><a href="#architecture">系统架构</a><a href="#cooperation">合作讨论</a></div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="shell">
+      <div class="kicker">产品整体思考路径</div>
+      <h1>我们如何理解招聘，<br>并形成 <em>SONAR OS</em></h1>
+      <p class="hero-lead">这份材料呈现我们从招聘匹配问题出发，逐步厘清产品边界、业务主干、智能体能力与系统架构，最终形成云略鉴真 SONAR OS 产品方案的完整思考过程。</p>
+      <div class="hero-bottom"><strong>展示目的</strong><p>说明我们看到了什么问题、做过哪些判断、当前方案如何构成，以及接下来适合共同讨论与合作的方向。</p></div>
+    </div>
+  </header>
+
+  <section class="section paper" id="evolution">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">01｜思考路径</div><div><h2>从招聘匹配问题，逐步走向完整系统</h2><p>这里记录的不是几个孤立结论，而是我们如何不断识别约束、保留有效洞察，并把问题转成可运行的产品结构。</p></div></div>
+      <div class="phase-grid">
+        <article class="phase"><div class="phase-top"><span class="phase-no">01</span><span class="phase-state">最初构想</span></div><h3>双边能力匹配平台</h3><dl><div><dt>当时判断</dt><dd>企业看见真实能力，个人表达真实贡献，用同一种能力语言提高双方匹配质量。</dd></div><div><dt>继续推演后</dt><dd>两边都要冷启动；信任、使用动机、购买方式与数据授权完全不同。</dd></div><div><dt>保留下来</dt><dd>“岗位描述与简历都不足以完成真实匹配”的问题判断，以及统一能力语言。</dd></div></dl><span class="phase-arrow">→</span></article>
+        <article class="phase"><div class="phase-top"><span class="phase-no">02</span><span class="phase-state">关键拆分</span></div><h3>B端与C端成为独立产品</h3><dl><div><dt>当时判断</dt><dd>两套前台、用户关系与授权体系分开；底层能力模型和人工智能服务治理后复用。</dd></div><div><dt>继续推演后</dt><dd>两个产品同时建设，仍意味着两套研究、体验、运营和增长验证。</dd></div><div><dt>保留下来</dt><dd>双前台、共享底座、受控授权，以及两端之间只保留“虚线连接”。</dd></div></dl><span class="phase-arrow">→</span></article>
+        <article class="phase"><div class="phase-top"><span class="phase-no">03</span><span class="phase-state">当前方案</span></div><h3>先在真实业务中建设完整能力</h3><dl><div><dt>当前判断</dt><dd>用云略内部真实猎头业务验证系统，让数据、判断、动作和学习形成闭环。</dd></div><div><dt>方案演进</dt><dd>从单点招聘判断扩展为包含数据基座、业务本体、任务编排、专业能力与经营输出的完整操作系统。</dd></div><div><dt>长期连接</dt><dd>内部验证成熟后，再把筛选、判断、沟通、面试和人才发现能力标准化输出给企业。</dd></div></dl></article>
+      </div>
+      <div class="judgement"><span>核心脉络</span><p><strong>统一能力语言的长期洞察没有改变，</strong>变化的是产品边界、验证顺序，以及承载这些能力的系统形态。</p></div>
+    </div>
+  </section>
+
+  <section class="section dark" id="position">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">02｜产品总体框架</div><div><h2>云略鉴真 SONAR OS</h2><p>这不是在传统系统上增加几个智能功能，而是按照“数据进入—业务沉淀—统一理解—智能体执行—业务输出”重新建设猎头业务操作系统。</p></div></div>
+      <div class="framework-stack">
+        <div class="framework-layer"><span>第五层｜1 个模块</span><h3>业务输出</h3><p>对话入口、工作台与经营分析。</p></div>
+        <div class="framework-layer"><span>第四层｜7 个模块</span><h3>智能体系统</h3><p>总控与任务编排｜8 个专业能力智能体｜20 个任务模板与关键控制｜认知状态与主动补充信息｜人才发现｜面试准备与反馈｜组织图谱。</p></div>
+        <div class="framework-layer"><span>第三层｜2 个模块</span><h3>本体与知识</h3><p>统一业务本体｜知识、证据与版本。</p></div>
+        <div class="framework-layer"><span>第二层｜4 个模块</span><h3>业务数据基座</h3><p>客户、公司与联系人｜职位与搜索项目｜人才主档与简历版本｜交付与经营。</p></div>
+        <div class="framework-layer"><span>第一层｜3 个模块</span><h3>数据进入</h3><p>交流录音采集｜简历、附件和历史数据导入｜数据关联与材料依据。</p></div>
+      </div>
+      <div class="framework-base">权限、安全、审计、数据保留与模型管理贯穿全部五层</div>
+    </div>
+  </section>
+
+  <section class="section" id="flow">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">03｜业务流</div><div><h2>先看完整业务，再决定人工智能放在哪里</h2><p>现有业务被梳理为4条主流程、20个节点、5个关键控制点。智能体能力必须落在真实业务节点，而不是悬浮在流程之外。</p></div></div>
+      <div class="flow-list">
+        <article class="flow"><div class="flow-label"><b>F1</b><h3>业务拓展与签约</h3><p>从线索到签约客户，形成可执行项目入口。</p></div><div class="nodes"><div class="node"><small>第1步</small><strong>线索获取</strong></div><div class="node"><small>第2步</small><strong>线索转化</strong></div><div class="node"><small>第3步</small><strong>客户选择</strong></div><div class="node"><small>第4步</small><strong>费率与合同谈判</strong></div><div class="node"><small>第5步</small><strong>客户建档</strong></div></div></article>
+        <article class="flow"><div class="flow-label"><b>F2</b><h3>项目启动与寻访交付</h3><p>把岗位需求变成可寻访项目，经标准设定和筛选后输出推荐。</p></div><div class="nodes"><div class="node"><small>第1步</small><strong>接项目与分配</strong></div><div class="node key"><small>第2步｜控制点</small><strong>岗位与人才画像</strong></div><div class="node key"><small>第3步｜控制点</small><strong>目标公司设定</strong></div><div class="node"><small>第4步</small><strong>寻访与检索</strong></div><div class="node key"><small>第5步｜控制点</small><strong>顾问评价</strong></div><div class="node"><small>第6步</small><strong>推荐报告</strong></div></div></article>
+        <article class="flow"><div class="flow-label"><b>F3</b><h3>人选推进与录用闭环</h3><p>从触达人选到入职过保，先判断意愿，再做辅导与闭环。</p></div><div class="nodes"><div class="node"><small>第1步</small><strong>邮件与短信触达</strong></div><div class="node"><small>第2步</small><strong>人选与客户约见</strong></div><div class="node key"><small>第3步｜控制点</small><strong>意愿管理</strong></div><div class="node key"><small>第4步｜控制点</small><strong>面试辅导与陪面</strong></div><div class="node"><small>第5步</small><strong>录用与融入</strong></div><div class="node"><small>第6步</small><strong>入职过保</strong></div></div></article>
+        <article class="flow"><div class="flow-label"><b>F4</b><h3>内推获人</h3><p>通过关系网络发现水面下人才，但不绕过筛选与意愿管理。</p></div><div class="nodes"><div class="node"><small>第1步</small><strong>内推发起与沟通</strong></div><div class="node key"><small>第2步｜控制点</small><strong>进入F2筛选</strong></div><div class="node key"><small>第3步｜控制点</small><strong>进入F3意愿管理</strong></div></div></article>
+      </div>
+      <div class="v4-band"><span>V4.0业务主干</span><strong>业务事件 → 项目总控 → 任务模板 → 专业能力 → 人工确认 → 写回系统与本体</strong><p>四条业务流不是四套独立系统，它们共享同一套业务数据、对象关系、专业能力与评价体系。</p></div>
+    </div>
+  </section>
+
+  <section class="section paper">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">04｜当前产品方案</div><div><h2>V4.0 的完整系统结构</h2><p>以下内容统一依据《云略鉴真 SONAR OS 产品方案 V4.0（2026-08-17）》，不再沿用此前的单点方案或阶段性切口。</p></div></div>
+      <div class="scale-grid">
+        <div class="scale-card"><strong>5</strong><h3>层产品架构</h3><p>从数据进入到业务输出，形成完整系统。</p></div>
+        <div class="scale-card"><strong>17</strong><h3>个核心模块</h3><p>覆盖数据、业务、本体、智能体和工作台。</p></div>
+        <div class="scale-card"><strong>4</strong><h3>条主业务流</h3><p>业务拓展、寻访交付、人选推进和内推获人。</p></div>
+        <div class="scale-card"><strong>20</strong><h3>个业务节点</h3><p>每个节点对应一张可配置的任务模板。</p></div>
+        <div class="scale-card"><strong>5</strong><h3>个关键控制点</h3><p>重要判断必须保留材料、结论与人工确认。</p></div>
+        <div class="scale-card"><strong>10</strong><h3>个逻辑智能体角色</h3><p>1 个项目总控、8 个专业能力、1 个质量审查。</p></div>
+      </div>
+      <div class="design-relation"><strong>能力中心型智能体架构</strong><div class="relation-row"><div><span>节点</span><b>判断当前时机</b></div><div><span>任务模板</span><b>组合业务方法</b></div><div><span>专业能力</span><b>完成理解与判断</b></div><div><span>工具</span><b>执行确定性动作</b></div><div><span>项目总控</span><b>调度、暂停与写回</b></div></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="agents">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">05｜智能体能力</div><div><h2>8 个专业能力智能体</h2><p>智能体不按照 20 个业务节点逐一拆分，而是围绕稳定、可复用的专业判断建设，再由不同任务模板组合调用。</p></div></div>
+      <div class="agent-chain">
+        <article class="agent"><div class="agent-id">C1</div><h3>交流与证据理解</h3><em>材料真正说明了什么？</em><div class="agent-output"><small>核心职责</small><strong>事实、陈述、承诺与待核验项</strong></div><p>所有结论保留来源、时间和对象关联。</p></article>
+        <article class="agent"><div class="agent-id">C2</div><h3>利益相关人洞察</h3><em>对方为什么这样表达与行动？</em><div class="agent-output"><small>核心职责</small><strong>动机、顾虑、信任与决策结构</strong></div><p>不把输入不足或拒绝回答直接等同于负面判断。</p></article>
+        <article class="agent"><div class="agent-id">C3</div><h3>企业与组织洞察</h3><em>人和岗位处在怎样的组织环境？</em><div class="agent-output"><small>核心职责</small><strong>企业阶段、组织关系与人才流动</strong></div><p>结合来源时间理解组织成熟度和用人特点。</p></article>
+        <article class="agent"><div class="agent-id">C4</div><h3>职位与能力建模</h3><em>什么叫在这个岗位上成功？</em><div class="agent-output"><small>核心职责</small><strong>成功结果、能力模型与证据标准</strong></div><p>把客户语言转成可以验证的岗位判断。</p></article>
+        <article class="agent"><div class="agent-id">C5</div><h3>事实核验与一致性</h3><em>哪些地方冲突、缺失或待确认？</em><div class="agent-output"><small>核心职责</small><strong>版本差异、冲突线索与核验路径</strong></div><p>比较简历、口述、推荐、背调和业务记录。</p></article>
+        <article class="agent"><div class="agent-id">C6</div><h3>人才发现与组织图谱</h3><em>为什么搜、搜什么、从哪里扩展？</em><div class="agent-output"><small>核心职责</small><strong>搜索角度、来源组合与组织关系</strong></div><p>吸收市场反馈，持续修正画像与目标公司。</p></article>
+        <article class="agent"><div class="agent-id">C7</div><h3>匹配、风险与决策</h3><em>是否推荐，还需要补什么证据？</em><div class="agent-output"><small>核心职责</small><strong>匹配判断、风险缺口与验证建议</strong></div><p>区分已证明、推断、缺证和冲突。</p></article>
+        <article class="agent"><div class="agent-id">C8</div><h3>互动与推进策略</h3><em>下一步该问什么、如何推进？</em><div class="agent-output"><small>核心职责</small><strong>问题、沟通、面试、意愿与谈判策略</strong></div><p>根据关系、动机和业务阶段设计下一动作。</p></article>
+      </div>
+      <div class="role-band"><div><span>调度角色</span><h3>1 个项目总控智能体</h3><p>读取业务事件和流程状态，选择任务模板，控制暂停、退回、确认与写回。</p></div><div><span>审查角色</span><h3>1 个质量与证据审查智能体</h3><p>检查无证据结论、信息冲突、敏感推断、权限和异常停止条件。</p></div><div><span>需要明确区分</span><h3>20 个业务任务模板不是 20 个智能体</h3><p>任务模板定义场景、输入输出、能力组合、工具、人工确认和系统写回。</p></div></div>
+    </div>
+  </section>
+
+  <section class="section dark" id="architecture">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">06｜系统架构</div><div><h2>五层架构，共用一套对象、关系与审计</h2><p>上层页面和智能体只通过统一业务数据服务读取对象、关系和允许的业务操作，不直接依赖具体数据库表或单一模型。</p></div></div>
+      <div class="layer-stack"><div class="layer"><span>05</span><h3>业务输出</h3><p>自然语言入口、顾问与负责人工作台、任务结果、经营分析。</p><small>对话与业务界面共用数据和权限</small></div><div class="layer"><span>04</span><h3>智能体系统</h3><p>项目总控、8 个专业能力、质量审查、20 个任务模板、认知状态与评价学习。</p><small>能力、任务、工具和总控分开定义</small></div><div class="layer"><span>03</span><h3>本体与知识</h3><p>统一业务本体、知识方法、材料证据、规则案例与版本中心。</p><small>先统一业务含义，再设计数据与页面</small></div><div class="layer"><span>02</span><h3>业务数据基座</h3><p>客户、职位、人才、项目、流程、合同、回款和经营结果。</p><small>所有模块共用客户、职位和人才</small></div><div class="layer"><span>01</span><h3>数据进入</h3><p>录音、简历、附件、渠道资料、历史数据及其原始来源。</p><small>原始材料永久保留，结果带版本</small></div></div>
+      <div class="principles"><span>自然语言是主要入口</span><span>本体是统一业务语言</span><span>智能体是主要执行者</span><span>真实业务事件驱动流程</span><span>关键判断由人工确认</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="cooperation">
+    <div class="shell">
+      <div class="section-head"><div class="section-index">07｜合作讨论</div><div><h2>围绕系统、智能体与算法共同深化</h2><p>我们希望以现有业务方法、真实项目和产品框架为基础，与合作伙伴共同拆解工程边界、验证关键假设，并把适合共建的部分推进到可运行、可评价的系统。</p></div></div>
+      <ol class="questions"><li><span>01</span><h3>系统架构</h3><p>五层架构如何落到服务边界、数据流、事件机制、状态机、权限、审计与可恢复运行。</p></li><li><span>02</span><h3>智能体设计</h3><p>项目总控、8 个专业能力、质量审查和 20 个任务模板，如何定义稳定接口与组合方式。</p></li><li><span>03</span><h3>算法与模型</h3><p>证据抽取、贝叶斯认知状态、不确定性表达、问题价值排序和匹配判断，分别采用怎样的算法与模型。</p></li><li><span>04</span><h3>评价体系</h3><p>如何用真实案例建立评价集、错误分类、证据充分性、概率校准、顾问修改率和自动化放行门槛。</p></li><li><span>05</span><h3>合作方式</h3><p>明确可由云略提供的业务方法、数据和试点场景，以及适合共同设计、研发、验证与持续迭代的模块。</p></li></ol>
+    </div>
+  </section>
+
+  <footer><div class="shell footer-inner"><div class="footer-brand"><div class="footer-logo"><img src="./assets/yunlue-logo.svg" alt="云略 YUNLUE"></div><p>产品整体思考路径｜合作交流版</p></div><div class="source-note">当前产品框架依据：《云略鉴真 SONAR OS 产品方案 V4.0（2026-08-17）》；思考路径结合此前 B端与 C端产品讨论及主业务流梳理。</div></div></footer>
+</body>
+</html>
