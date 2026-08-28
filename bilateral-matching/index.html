@@ -214,6 +214,8 @@
     .signal.unknown i { background:#f0ce83; }
     .review-loop { margin-top:1rem; padding:1rem 1.4rem; border-left:3px solid var(--cyan-400); color:var(--ice-200); background:rgba(255,255,255,.035); }
     .light .review-loop { border-left-color:var(--navy-800); color:#365e74; background:rgba(255,255,255,.82); }
+    #slide-6 .review-loop { margin-top:.65rem; padding:.72rem 1rem; font-size:.88rem; line-height:1.45; }
+    #slide-6 .lead { margin-bottom:1.15rem !important; }
 
     .object-table { width:100%; border-collapse:collapse; }
     .object-table th,.object-table td { padding:.85rem 1rem; text-align:left; border-bottom:1px solid rgba(0,67,105,.15); vertical-align:top; }
@@ -418,7 +420,7 @@
           <div class="topline"><p class="eyebrow">03 · COGNITIVE ARCHITECTURE</p><span class="rule"></span><span class="section-no">04 / 12</span></div>
           <h2 class="title" id="title-4">5 个核心 Agent 能力 + 1 个学习 Agent</h2>
           <p class="lead">这里的 Agent 首先是独立的认知责任与输入输出边界，不预设未来必须如何部署</p>
-          <div class="review-loop"><strong>关键机制：</strong>任何阶段发现未知项，都能退回 A1 询证，再更新双方模型与匹配判断</div>
+          <div class="review-loop"><strong>关键机制：</strong>任何阶段发现未知项，都能退回 A1 获取信息价值最高的证据，再更新双方模型与匹配判断</div>
         </div>
         <div class="architecture" aria-label="Agent 协作关系">
           <div class="agent a1"><span class="id">A1</span><div><strong>证据获取与询证</strong><small>来源 · 授权 · 缺口 · 冲突</small></div></div>
@@ -453,9 +455,9 @@
         <div class="tri-process">
           <div class="process-row"><span class="num">01</span><div><strong>事实还原</strong><p>时间线、任职、项目、角色、责任、团队、结果与版本冲突</p></div><div class="output">输出：职业事实时间线与证据索引</div></div>
           <div class="process-row"><span class="num">02</span><div><strong>能力还原</strong><p>任务难度、行动、结果、个人贡献、环境贡献与迁移条件</p></div><div class="output">输出：能力事件、边界与环境依赖</div></div>
-          <div class="process-row"><span class="num">03</span><div><strong>心理学支持的动机与约束还原</strong><p>选择事件、取舍行为、趋近与回避、心理需要、价值预期、环境匹配与现实约束</p></div><div class="output">输出：选择、拒绝与持续投入的条件化动机模型</div></div>
+          <div class="process-row"><span class="num">03</span><div><strong>心理学 + 贝叶斯的动机与约束还原</strong><p>心理机制解释选择，竞争性假设、证据更新与敏感性管理不确定性</p></div><div class="output">输出：条件化动机模型 + Hypothesis Ledger</div></div>
         </div>
-        <div class="review-loop"><strong>知识底座：</strong>自我决定 · 期望价值 · 人境匹配 · 趋近/回避 · 职业身份与决策<br><strong>模型边界：</strong>心理学用于生成竞争性解释和验证问题，不做人格标签、临床诊断或自动淘汰</div>
+        <div class="review-loop"><strong>心理学底座：</strong>自我决定 · 期望价值 · 人境匹配 · 趋近/回避 · 职业身份与决策<br><strong>贝叶斯判断：</strong>透明先验 · 似然更新 · 后验区间 · 敏感性 · 下一条证据的信息价值<br><strong>证据不足：</strong>低成本可逆则带假设探索，高影响则停止判断，不制造精确概率</div>
       </div>
     </section>
 
