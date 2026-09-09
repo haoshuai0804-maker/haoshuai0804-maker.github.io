@@ -206,10 +206,17 @@ body.is-at-top .site-header {
 }
 
 .brand-tagline {
+  display: grid;
+  gap: 1px;
   color: var(--text-muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
+  line-height: 1.25;
   margin-top: 2px;
 }
+
+.brand-tagline > span { display: block; }
+.brand-tagline__en { color: var(--text); }
+.brand-tagline__accent { color: #00b77a; }
 
 .main-nav {
   display: flex;
@@ -1633,5 +1640,5 @@ body.is-scrolling .hero-scroll-hint {
   .education-panel { padding: 24px; }
 
   .site-footer__inner { flex-direction: column; }
-  .brand-tagline { display: none; }
+  .brand-tagline { font-size: 0.58rem; margin-top: 1px; }
 }
