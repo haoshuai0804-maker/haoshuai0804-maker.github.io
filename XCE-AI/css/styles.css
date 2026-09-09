@@ -1168,7 +1168,7 @@ body.is-scrolling .hero-scroll-hint {
 /* Markets */
 .market-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
@@ -1189,7 +1189,7 @@ body.is-scrolling .hero-scroll-hint {
 /* Audiences */
 .audience-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
 
