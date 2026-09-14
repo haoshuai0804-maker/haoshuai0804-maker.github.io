@@ -3865,12 +3865,10 @@ p,
   modal.className = "asset-modal";
   modal.hidden = true;
   modal.innerHTML = [
-    '<div class="asset-modal-backdrop" data-modal-close="true">
-</div>',
+    '<div class="asset-modal-backdrop" data-modal-close="true"></div>',
     '<div class="asset-modal-panel" role="dialog" aria-modal="true" aria-label="内容预览">',
     '<button class="asset-modal-close" type="button" data-modal-close="true">关闭 ×</button>',
-    '<div class="asset-modal-content">
-</div>',
+    '<div class="asset-modal-content"></div>',
     '</div>'
   ].join("");
   document.body.appendChild(modal);
