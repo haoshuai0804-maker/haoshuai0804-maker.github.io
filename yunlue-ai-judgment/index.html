@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>让好判断，成为团队的能力 · 云略 AI + 猎头</title>
+<style>
+
+  :root{
+    --bg:#EDE8E1;--panel:#F8F5F0;--white:#FFFDFA;
+    --ink:#1B232B;--ink2:#414C57;--ink3:#626D76;
+    --navy:#1B3A5C;--navy-soft:#E2E7EC;--bronze:#805A34;
+    --line:#D6CFC4;--line-strong:#BBB1A3;
+    --f1:clamp(42px,4.1vw,60px);--f2:clamp(26px,2.3vw,32px);
+    --f3:20px;--f4:18px;--f4b:22px;--f5:16.5px;--f6:15.5px;--f7:13px;
+    --w:960px;--nav:248px;
+    --s1:8px;--s2:16px;--s3:24px;--s4:32px;--s5:48px;--s6:64px;--s7:96px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;scroll-padding-top:32px;}
+  body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;font-size:var(--f4);line-height:1.8;-webkit-font-smoothing:antialiased;}
+  button,summary{font:inherit;}
+  button{cursor:pointer;}
+  a{color:var(--navy);}
+  a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--bronze);outline-offset:4px;}
+  p,li,td,dd,.dc,.chip{text-wrap:pretty;}
+  h1,h2,h3{text-wrap:balance;}
+  .skip-link{position:fixed;left:16px;top:-80px;padding:10px 16px;background:var(--white);z-index:100;}
+  .skip-link:focus{top:12px;}
+  #prog{position:fixed;top:0;left:0;height:3px;background:var(--navy);width:0;z-index:90;}
+
+  /* 章节目录：当前组自动展开，其他组可手动浏览。 */
+  #toc{position:fixed;inset:0 auto 0 0;width:var(--nav);padding:40px 22px 32px 28px;border-right:1px solid var(--line);background:var(--bg);overflow-y:auto;z-index:70;}
+  #toc .brand{display:block;color:var(--ink);font-size:17px;font-weight:600;line-height:1.6;text-decoration:none;padding-bottom:28px;border-bottom:1px solid var(--line);}
+  #toc .brand span{display:block;font-size:12px;color:var(--ink3);font-weight:400;letter-spacing:.12em;margin-top:12px;}
+  #nav{margin-top:20px;}
+  #nav a{display:block;text-decoration:none;color:var(--ink2);font-size:14px;line-height:1.5;padding:10px 8px 10px 14px;border-left:2px solid transparent;}
+  #nav a:hover{color:var(--navy);background:var(--panel);}
+  #nav a.on{color:var(--navy);border-left-color:var(--navy);background:var(--navy-soft);font-weight:600;}
+  .nav-group{margin-top:10px;}
+  .nav-group summary{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;list-style:none;cursor:pointer;font-size:14px;font-weight:600;color:var(--ink2);padding:8px 8px 8px 0;}
+  .nav-group summary::-webkit-details-marker{display:none;}
+  .nav-group summary::after{content:"+";font-size:18px;font-weight:400;color:var(--ink3);}
+  .nav-group[open] summary::after{content:"−";}
+  .nav-group.is-current summary{color:var(--navy);}
+  .nav-subnum{display:inline-block;min-width:24px;margin-right:5px;color:var(--ink3);font-size:11px;font-variant-numeric:tabular-nums;}
+  .nav-num{font-size:11px;color:var(--bronze);margin-right:8px;letter-spacing:.08em;}
+  .nav-note{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);line-height:1.8;}
+  #mobilebar{display:none;}
+
+  main{margin-left:var(--nav);padding:0 clamp(28px,4.5vw,76px) 96px;}
+  .wrap{max-width:var(--w);margin:0 auto;}
+  header{padding:80px 0 48px;border-bottom:1px solid var(--line-strong);}
+  .eyebrow{font-size:var(--f7);letter-spacing:.2em;color:var(--bronze);font-weight:600;margin-bottom:24px;}
+  header h1{font-size:var(--f1);line-height:1.23;letter-spacing:-.025em;font-weight:600;}
+  header h1 span{color:var(--navy);}
+  .hero-grid{display:grid;grid-template-columns:1.08fr 1fr;gap:40px;align-items:start;margin-top:32px;}
+  header .sub{font-size:20px;line-height:1.8;color:var(--ink2);margin:0;}
+  .hero-example{border-left:2px solid var(--navy);padding-left:24px;}
+  .hero-example .label{font-size:12px;color:var(--bronze);letter-spacing:.08em;margin-bottom:8px;}
+  .hero-example .question{font-size:18px;color:var(--ink);font-weight:600;line-height:1.7;margin-bottom:8px;}
+  .hero-example .answer{font-size:var(--f6);margin:0;line-height:1.75;}
+  header .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:36px;color:var(--ink3);font-size:12px;letter-spacing:.02em;}
+  header .meta span+span::before{content:"·";margin-right:22px;color:var(--line-strong);}
+  .hero-jump{display:inline-flex;align-items:center;gap:10px;font-size:14px;text-decoration:none;margin-top:24px;min-height:44px;font-weight:600;}
+  .hero-jump::after{content:"↓";}
+
+  /* 大章节负责转场，小节负责说明。 */
+  .chapter-intro{margin-top:88px;padding:28px 0 20px;border-top:2px solid var(--navy);display:grid;grid-template-columns:150px 1fr;column-gap:28px;align-items:baseline;}
+  .chapter-label{font-size:13px;color:var(--bronze);letter-spacing:.1em;margin:0;}
+  .chapter-intro h2{font-size:clamp(28px,2.5vw,36px);line-height:1.45;margin:0;}
+  .chapter-intro .chapter-desc{grid-column:2;font-size:16px;margin:10px 0 0;max-width:36em;}
+  section{padding:48px 0 40px;border-bottom:1px solid var(--line);}
+  .chapter-intro+section{padding-top:28px;}
+  section:last-of-type{border-bottom:none;}
+  .kick{font-size:var(--f7);letter-spacing:.1em;color:var(--bronze);font-weight:500;margin-bottom:12px;}
+  .kick i{font-style:normal;color:var(--ink3);letter-spacing:.04em;margin-right:10px;}
+  h2{font-size:var(--f2);line-height:1.45;font-weight:600;letter-spacing:-.015em;margin-bottom:20px;}
+  h3{font-size:var(--f3);font-weight:600;margin-bottom:8px;line-height:1.5;}
+  p{font-size:var(--f4);color:var(--ink2);margin-bottom:16px;}
+  section>p{max-width:43em;}
+  p.big{font-size:var(--f4b);line-height:1.7;color:var(--ink);}
+  .em{color:var(--ink);font-weight:600;}
+  .accent{color:var(--navy);font-weight:600;}
+  .muted{color:var(--ink2);font-size:var(--f6);line-height:1.8;}
+  .quote{border-left:3px solid var(--navy);padding:4px 0 4px 22px;margin:26px 0;font-size:var(--f4b);line-height:1.7;color:var(--ink);font-weight:500;max-width:36em;}
+  .focus-section>h2{color:var(--navy);}
+
+  .agenda{margin-top:24px;}
+  .arow{display:grid;grid-template-columns:120px 48px 1fr;gap:20px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line);}
+  .arow:first-child{border-top:1px solid var(--line);}
+  .arow .t{font-size:var(--f5);color:var(--ink2);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .arow .d{font-size:var(--f7);color:var(--ink3);text-align:right;}
+  .arow .n{font-size:var(--f4);color:var(--ink);font-weight:600;}
+  .arow .n small{display:block;font-weight:400;color:var(--ink2);font-size:var(--f6);margin-top:4px;line-height:1.7;}
+  .arow.now .n,.arow.now .t{color:var(--navy);}
+  .badge{display:inline-block;font-size:11px;color:var(--navy);background:var(--navy-soft);padding:2px 8px;margin-left:8px;vertical-align:2px;font-weight:500;}
+  .cols{display:grid;gap:32px;margin:28px 0;}
+  .c3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .c2{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .col .n{font-size:var(--f7);color:var(--bronze);margin-bottom:8px;font-weight:500;}
+  .col p{font-size:var(--f5);line-height:1.8;margin:0;}
+  table{width:100%;border-collapse:collapse;margin:26px 0;}
+  th,td{text-align:left;padding:16px 20px 16px 0;border-bottom:1px solid var(--line);vertical-align:top;font-size:var(--f5);}
+  th{font-size:var(--f7);color:var(--ink3);font-weight:500;border-bottom-color:var(--line-strong);}
+  td{color:var(--ink2);line-height:1.8;}
+  td:first-child{color:var(--ink);font-weight:600;}
+  table.plain td:first-child{font-weight:400;color:var(--bronze);font-size:var(--f7);letter-spacing:.08em;width:70px;}
+  .annotation-table th:first-child{width:140px;}
+  .annotation-table td:first-child{white-space:nowrap;}
+  .annotation-table th:nth-child(2){width:150px;}
+  .roles-table th:first-child{width:90px;}
+  .roles-table th:nth-child(2){width:42%;}
+
+  .chainwrap{background:var(--panel);padding:32px;margin:28px 0;}
+  .srcrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;}
+  .chip{border-bottom:1px solid var(--line-strong);padding:0 0 16px;font-size:var(--f5);font-weight:600;color:var(--ink);}
+  .chip small{display:block;color:var(--ink2);font-weight:400;font-size:14px;margin-top:6px;}
+  .down{display:flex;flex-direction:column;align-items:center;margin:20px 0;}
+  .down .ln{width:1px;height:12px;background:var(--line-strong);}
+  .down .lb{font-size:var(--f6);color:var(--bronze);margin:4px 0;}
+  .steprow{display:grid;grid-template-columns:1fr 22px 1fr 22px 1.2fr 22px 1.4fr;align-items:center;}
+  .box{border:1px solid var(--navy);background:var(--white);color:var(--navy);padding:16px 8px;text-align:center;font-size:var(--f5);font-weight:600;line-height:1.5;}
+  .box.solid{background:var(--navy);color:var(--white);}
+  .box.ghost{border-color:var(--line-strong);color:var(--ink2);font-weight:400;font-size:var(--f6);}
+  .ar{text-align:center;color:var(--bronze);font-size:15px;}
+  .scenes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:28px 0;}
+  .scenes .gt{font-size:15px;color:var(--navy);border-top:2px solid var(--navy);padding-top:12px;margin-bottom:12px;font-weight:600;}
+  .dc{font-size:var(--f5);color:var(--ink2);line-height:1.7;padding:8px 0;display:flex;gap:8px;}
+  .dc span{color:var(--ink3);font-size:12px;padding-top:3px;min-width:27px;}
+
+  .case-story{margin:28px 0;background:var(--panel);padding:28px 32px;}
+  .case-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--line-strong);font-size:16px;font-weight:600;color:var(--navy);}
+  .case-heading span{font-size:12px;color:var(--bronze);font-weight:400;white-space:nowrap;}
+  .case-facts>div{display:grid;grid-template-columns:64px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);}
+  .case-facts>div:last-child{border-bottom:none;padding-bottom:0;}
+  .case-facts dt{font-size:13px;color:var(--bronze);padding-top:3px;}
+  .case-facts dd{font-size:var(--f5);color:var(--ink2);}
+  .case-facts .move dd{font-size:21px;color:var(--navy);font-weight:600;line-height:1.7;}
+  .case-facts .purpose dd{color:var(--ink);font-weight:600;}
+  .steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px;margin:32px 0 28px;}
+  .step{border-top:2px solid var(--navy);padding-top:12px;}
+  .step .sn{font-size:12px;color:var(--bronze);margin-bottom:8px;}
+  .step h3{font-size:var(--f5);margin-bottom:8px;}
+  .step p{font-size:var(--f6);line-height:1.8;margin:0;}
+  .rulebar{border-left:3px solid var(--navy);background:var(--panel);padding:24px 28px;margin:24px 0 16px;font-size:var(--f5);line-height:1.9;color:var(--navy);}
+  .rule-output{background:var(--navy);color:var(--white);border:none;}
+  .rule-label{display:block;font-size:12px;letter-spacing:.08em;color:#D4DDE7;margin-bottom:10px;}
+
+  .success-grid{display:grid;grid-template-columns:1fr 1fr;margin:28px 0;border-top:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong);}
+  .success-item{padding:28px 28px 28px 0;}
+  .success-item+ .success-item{border-left:1px solid var(--line);padding-left:28px;padding-right:0;}
+  .success-item .label{font-size:13px;color:var(--bronze);margin-bottom:12px;}
+  .success-mark{min-height:72px;display:flex;align-items:baseline;gap:12px;margin-bottom:16px;}
+  .success-mark strong{font-size:48px;line-height:1.3;color:var(--navy);letter-spacing:-.03em;font-weight:600;}
+  .success-mark span{font-size:13px;color:var(--ink3);}
+  .success-item p{font-size:var(--f5);line-height:1.8;margin:0;}
+  .tl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin:36px 0 24px;}
+  .tl .t{border-top:1px solid var(--line-strong);padding-top:20px;position:relative;}
+  .tl .t::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:50%;background:var(--navy);}
+  .tl .when{font-size:var(--f7);color:var(--bronze);margin-bottom:8px;}
+  .tl p{font-size:var(--f6);line-height:1.8;margin:0;}
+  .loop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:24px 0;font-size:var(--f6);color:var(--ink2);}
+  .loop .n{border-bottom:1px solid var(--line-strong);padding:8px 10px;}
+  .loop .a{color:var(--bronze);}
+  .ask{margin:24px 0;counter-reset:q;}
+  .ask .q{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--line);align-items:baseline;}
+  .ask .q:first-child{border-top:1px solid var(--line-strong);}
+  .ask .q::before{counter-increment:q;content:"0" counter(q);font-size:var(--f7);color:var(--bronze);min-width:22px;}
+  .ask .q span{font-size:var(--f5);line-height:1.8;color:var(--ink2);}
+  .ask .q b{color:var(--ink);font-weight:600;}
+  footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--line-strong);font-size:12px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+  @media(max-width:1100px){
+    #toc{position:sticky;inset:0 0 auto;width:auto;max-height:100dvh;padding:0;border-right:none;border-bottom:1px solid var(--line-strong);overflow:visible;}
+    #toc .brand,.nav-note{display:none;}
+    #mobilebar{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;padding:8px 24px;}
+    .mobile-location{min-width:0;}
+    .mobile-location small{display:block;color:var(--bronze);font-size:11px;line-height:1.4;letter-spacing:.06em;}
+    #current-section{display:block;font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    #menu-toggle{display:flex;align-items:center;gap:8px;min-width:72px;min-height:44px;justify-content:center;background:none;border:1px solid var(--line-strong);font-size:14px;color:var(--navy);padding:6px 12px;}
+    #menu-toggle::after{content:"+";font-size:18px;}
+    .menu-open #menu-toggle::after{content:"−";}
+    #nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--panel);margin:0;padding:12px 24px 24px;max-height:calc(100dvh - 80px);overflow-y:auto;border-bottom:1px solid var(--line-strong);box-shadow:0 12px 24px #1B232B12;}
+    .menu-open #nav{display:block;}
+    #nav a{min-height:44px;padding-top:12px;padding-bottom:12px;}
+    .nav-group{margin-top:8px;}
+    .nav-group summary{min-height:48px;}
+    main{margin-left:0;padding:0 32px 64px;}
+    html{scroll-padding-top:88px;}
+    header{padding-top:48px;}
+    .chapter-intro{margin-top:64px;}
+    .scenes{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 32px;}
+  }
+  @media(max-width:700px){
+    :root{--f1:clamp(34px,8.7vw,44px);--f4:17px;--f4b:20px;--f5:16px;--f6:15px;}
+    main{padding:0 22px 48px;}
+    #mobilebar{padding:8px 22px;}
+    header{padding:32px 0;}
+    .eyebrow{font-size:11px;margin-bottom:20px;letter-spacing:.14em;}
+    header h1{line-height:1.3;letter-spacing:-.03em;}
+    .hero-grid{grid-template-columns:1fr;gap:24px;margin-top:24px;}
+    header .sub{font-size:18px;line-height:1.8;}
+    .hero-example{padding-left:18px;}
+    .hero-example .question{font-size:17px;}
+    .hero-example .answer{font-size:14px;}
+    header .meta{margin-top:24px;gap:4px 16px;font-size:11px;}
+    header .meta span+span::before{display:none;}
+    .hero-jump{margin-top:16px;}
+    .chapter-intro{margin-top:56px;padding-top:20px;grid-template-columns:1fr;gap:12px;}
+    .chapter-intro h2{font-size:28px;}
+    .chapter-intro .chapter-desc{grid-column:1;margin:0;font-size:15px;}
+    section{padding:36px 0 28px;}
+    .chapter-intro+section{padding-top:20px;}
+    .kick{font-size:12px;}
+    h2{font-size:25px;margin-bottom:18px;}
+    .cols{gap:24px;margin:24px 0;}
+    .c3,.c2{grid-template-columns:1fr;}
+    .c3 .col+.col,.c2 .col+.col{padding-top:20px;border-top:1px solid var(--line);}
+    .arow{grid-template-columns:92px 1fr;gap:12px;padding:14px 0;}
+    .arow .d{display:none;}
+    .arow .t{font-size:14px;}
+    .arow .n{font-size:16px;}
+    .arow .n small{font-size:14px;}
+    th,td{font-size:15px;padding:14px 12px 14px 0;}
+    th{font-size:12px;}
+    .annotation-table,.annotation-table tbody,.roles-table,.roles-table tbody{display:block;}
+    .annotation-table thead,.roles-table thead{display:none;}
+    .annotation-table,.roles-table{border-top:1px solid var(--line-strong);}
+    .annotation-table tr{display:grid;grid-template-columns:1fr auto;gap:10px 12px;padding:20px 0;border-bottom:1px solid var(--line);}
+    .annotation-table td,.roles-table td{display:block;padding:0;border:none;font-size:16px;}
+    .annotation-table td:nth-child(2){text-align:right;font-size:13px;max-width:142px;}
+    .annotation-table td:last-child{grid-column:1 / -1;}
+    .roles-table tr{display:grid;grid-template-columns:1fr;gap:12px;padding:20px 0;border-bottom:1px solid var(--line);}
+    .roles-table td:nth-child(2)::before,.roles-table td:nth-child(3)::before{display:block;font-size:12px;color:var(--bronze);margin-bottom:4px;}
+    .roles-table td:nth-child(2)::before{content:"得到什么";}
+    .roles-table td:nth-child(3)::before{content:"参与什么";}
+    .source-table,.source-table tbody{display:block;}
+    .source-table thead{display:none;}
+    .source-table{border-top:1px solid var(--line-strong);}
+    .source-table tr{display:grid;grid-template-columns:48px 1fr;gap:6px 16px;padding:18px 0;border-bottom:1px solid var(--line);}
+    .source-table td{padding:0;border:0;}
+    .source-table td:first-child{grid-row:1 / 3;color:var(--navy);}
+    .source-table td:last-child{grid-column:2;font-size:13px;color:var(--ink3);}
+    .source-table td:last-child::before{content:"来源 · ";}
+    .chainwrap{padding:24px 18px;}
+    .srcrow{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;}
+    .chip{font-size:15px;}
+    .chip small{font-size:13px;}
+    .steprow{grid-template-columns:1fr;gap:6px;}
+    .steprow .ar{transform:rotate(90deg);line-height:1.2;}
+    .box{padding:12px;}
+    .scenes{gap:24px 18px;}
+    .dc{font-size:15px;gap:6px;}
+    .dc span{font-size:11px;min-width:24px;}
+    .case-story{padding:20px 18px;}
+    .case-heading{font-size:15px;gap:8px;}
+    .case-facts>div{grid-template-columns:34px 1fr;gap:12px;}
+    .case-facts dd{font-size:15px;}
+    .case-facts .move dd{font-size:19px;}
+    .steps{grid-template-columns:1fr;gap:20px;}
+    .step{display:grid;grid-template-columns:100px 1fr;gap:4px 16px;border-top:1px solid var(--line-strong);padding-top:16px;}
+    .step .sn{grid-column:1;font-size:11px;margin:0;}
+    .step h3{grid-column:1;margin:0;}
+    .step p{grid-column:2;grid-row:1 / 3;}
+    .rulebar{padding:20px;font-size:15px;}
+    .success-grid{grid-template-columns:1fr;}
+    .success-item{padding:24px 0;}
+    .success-item+ .success-item{border-left:none;border-top:1px solid var(--line);padding:24px 0;}
+    .success-mark{min-height:0;margin-bottom:12px;}
+    .success-mark strong{font-size:40px;}
+    .tl{grid-template-columns:1fr;gap:28px;}
+    .quote{font-size:20px;padding-left:18px;}
+    .ask .q{gap:12px;}
+    .loop{gap:6px;font-size:13px;}
+    .loop .n{padding:6px;}
+    footer{margin-top:48px;}
+  }
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  @media print{
+    #toc,#prog,.skip-link,.hero-jump{display:none!important;}
+    body{background:#fff;}
+    main{margin:0;padding:0;}
+    header{padding-top:0;}
+    .chapter-intro{break-after:avoid;margin-top:32px;}
+    section{padding:24px 0;}
+    h2,h3,.kick{break-after:avoid;}
+    .case-story,.rulebar,.step,tr,.success-item{break-inside:avoid;}
+    .hero-grid{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#content">跳到正文</a>
+<div id="prog" aria-hidden="true"></div>
+
+<aside id="toc" aria-label="阅读导航">
+  <a class="brand" href="#top">让好判断<br>成为团队的能力<span>云略 · AI + 猎头</span></a>
+  <div id="mobilebar">
+    <div class="mobile-location"><small id="current-group">方案概览</small><span id="current-section" aria-live="off">让好判断，成为团队的能力</span></div>
+    <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav">目录</button>
+  </div>
+  <nav id="nav" aria-label="章节目录">
+    <a href="#agenda" data-group="开始">会议议程</a>
+    <details class="nav-group" data-name="第一章 · 为什么" open>
+      <summary><span><span class="nav-num">第一章</span>为什么</span></summary>
+      <a href="#lesson"><span class="nav-subnum">1.1</span> 最近的几点思考</a>
+      <a href="#buy"><span class="nav-subnum">1.2</span> 客户真正买什么</a>
+      <a href="#judge"><span class="nav-subnum">1.3</span> 结果由判断决定</a>
+      <a href="#why-not"><span class="nav-subnum">1.4</span> 判断为什么拿不出来</a>
+      <a href="#why-now"><span class="nav-subnum">1.5</span> 为什么现在可以开始</a>
+    </details>
+    <details class="nav-group" data-name="第二章 · 怎么做">
+      <summary><span><span class="nav-num">第二章</span>怎么做</span></summary>
+      <a href="#chain"><span class="nav-subnum">2.1</span> 一条链</a>
+      <a href="#source"><span class="nav-subnum">2.2</span> 四类素材</a>
+      <a href="#case"><span class="nav-subnum">2.3</span> 案例是锚点</a>
+      <a href="#scenes"><span class="nav-subnum">2.4</span> 十一个决策点</a>
+      <a href="#levels"><span class="nav-subnum">2.5</span> 三级标注</a>
+      <a href="#example"><span class="nav-subnum">2.6</span> 一个例子</a>
+      <a href="#success"><span class="nav-subnum">2.7</span> 怎么算成功</a>
+    </details>
+    <details class="nav-group" data-name="第三章 · 之后">
+      <summary><span><span class="nav-num">第三章</span>之后</span></summary>
+      <a href="#for-each"><span class="nav-subnum">3.1</span> 每个人得到什么</a>
+      <a href="#phases"><span class="nav-subnum">3.2</span> 三个阶段</a>
+      <a href="#exits"><span class="nav-subnum">3.3</span> 之后怎样对外交付</a>
+    </details>
+    <details class="nav-group" data-name="第四章 · 讨论">
+      <summary><span><span class="nav-num">第四章</span>讨论</span></summary>
+      <a href="#discuss"><span class="nav-subnum">4.1</span> 接下来讨论什么</a>
+    </details>
+  </nav>
+  <div class="nav-note">周日讨论会 · 内部讨论稿<br>2026 年 11 月 8 日</div>
+</aside>
+
+<main id="content">
+<div class="wrap">
+
+  <header id="top">
+    <div class="eyebrow">云略 · AI + 猎头 · 方案讨论</div>
+    <h1>让好判断，<br><span>成为团队的能力</span></h1>
+    <div class="hero-grid">
+      <p class="sub">把资深顾问的判断与做法，沉淀成每个人随时能问、能查、能用的助理。<br>先从见客户、见人选开始。</p>
+      <div class="hero-example">
+        <div class="label">未来的一次使用</div>
+        <p class="question">“客户坚持这个要求，我该怎么接？”</p>
+        <p class="answer">助理给出做法、理由、案例依据，<br>以及什么情况下要换做法。</p>
+      </div>
+    </div>
+    <div class="meta"><span>2026.11.08 · 周日讨论会</span><span>方案讲解 30 分钟</span><span>约 12 分钟读完</span></div>
+    <a class="hero-jump" href="#chain">先看整套方案怎么运作</a>
+  </header>
+
+  <!-- ================= 议程 ================= -->
+  <section id="agenda">
+    <div class="kick">会前 · 会议议程</div>
+    <h2>会议议程</h2>
+    <p>今天三件事：<span class="em">听方案、逐个场景讨论怎么做、定下一步。</span>方案只讲 30 分钟，剩下两个多小时全部给讨论。</p>
+
+    <div class="agenda">
+      <div class="arow">
+        <div class="t">13:30–13:40</div><div class="d">10′</div>
+        <div class="n">开场<small>说明今天干什么。一句边界：不讲系统怎么做，讲每个场景该怎么做</small></div>
+      </div>
+      <div class="arow now">
+        <div class="t">13:40–14:10</div><div class="d">30′</div>
+        <div class="n">方案讲解<span class="badge">本次方案</span><small>为什么做 → 怎么做 → 每个人要做什么</small></div>
+      </div>
+      <div class="arow">
+        <div class="t">14:10–14:55</div><div class="d">45′</div>
+        <div class="n">场景一：见客户<small>什么单该接、客户真正要谁、压价怎么接</small></div>
+      </div>
+      <div class="arow">
+        <div class="t">14:55–15:05</div><div class="d">10′</div>
+        <div class="n">茶歇</div>
+      </div>
+      <div class="arow">
+        <div class="t">15:05–15:50</div><div class="d">45′</div>
+        <div class="n">场景二：见人选<small>简历前 90 秒、必问问题、先推谁、会不会跑</small></div>
+      </div>
+      <div class="arow">
+        <div class="t">15:50–16:25</div><div class="d">35′</div>
+        <div class="n">场景三：跟进与交付<small>项目卡住怎么办、客户不反馈怎么推、入职后怎么跟</small></div>
+      </div>
+      <div class="arow">
+        <div class="t">16:25–16:45</div><div class="d">20′</div>
+        <div class="n">场景四：带教与新人<small>新人先会哪三件事、怎么判断真会假会</small></div>
+      </div>
+      <div class="arow">
+        <div class="t">16:45–17:00</div><div class="d">15′</div>
+        <div class="n">下一步<small>整理稿什么时候发、第一批从哪个组开始、下次碰头</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 为什么 ================= -->
+  <div class="chapter-intro" aria-labelledby="chapter-01">
+    <p class="chapter-label">第一章 · 为什么</p>
+    <h2 id="chapter-01">让顾问的经验，能够被传下去</h2>
+    <p class="chapter-desc">先看业务结果背后的判断，再看经验为什么难以复用。</p>
+  </div>
+
+  <section id="lesson">
+    <div class="kick"><i>1.1</i>为什么</div>
+    <h2>最近的几点思考</h2>
+    <p class="big">光做软件，很容易变成自嗨。</p>
+    <p>我们自己就走过一段：埋头做人岗匹配的工具，功能越堆越多，但离客户真正要的结果越来越远。而且说实话，<span class="em">我们还没走到「算法够准」那一步</span>——所以问题不在算法准不准，在于我们做出来的东西能不能带来结果。</p>
+    <p>一个东西如果不能改变客户的结果，客户不会为它买单。这个判断，改变了后面的所有选择。</p>
+
+    <table>
+      <thead><tr><th>原来的想法</th><th>现在的想法</th></tr></thead>
+      <tbody>
+        <tr><td>做一个好用的工具</td><td>让它带来结果</td></tr>
+        <tr><td>功能越做越全</td><td>关键动作做对就行</td></tr>
+        <tr><td>我们自己觉得好</td><td>客户拿到结果才算好</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="buy">
+    <div class="kick"><i>1.2</i>为什么</div>
+    <h2>客户真正买的是什么</h2>
+    <p class="big">不是匹配，是结果的安全感。</p>
+    <p>一个 HR 老大去跟老板申请十万块招一个人，他最怕的不是花钱，是老板想：<span class="em">这么点事你都办不了？</span></p>
+    <p>但这里有个绕不过去的事实：我们很难直接跟老板谈，<span class="em">HR 是必经之路</span>。所以真正要回答的是——HR 自己要什么。</p>
+
+    <div class="cols c3">
+      <div class="col"><div class="n">01</div><h3>帮他放大能力</h3><p>他提的人、他做的判断，被证明是对的。</p></div>
+      <div class="col"><div class="n">02</div><h3>不抢他的功劳</h3><p>成了是他的功劳，我们只是帮他把事做成。</p></div>
+      <div class="col"><div class="n">03</div><h3>让他省心</h3><p>不用他盯着，过程和结果都能向老板交代。</p></div>
+    </div>
+
+    <p class="muted">谁做到这三件事，谁才拿得到单。</p>
+  </section>
+
+  <section id="judge">
+    <div class="kick"><i>1.3</i>为什么</div>
+    <h2>结果由什么决定</h2>
+    <p class="big">关键时刻的<span class="accent">判断</span>，决定后面的力气往哪里使。</p>
+    <p>同样一个职位、同样一个候选人库、同样一天八小时，两个顾问的产出可以差很远。除了投入多少，还要看几个关键时刻怎么判断。</p>
+    <p>这里的「判断」，就是<span class="em">看到了什么信号，认为问题在哪里，因此选择什么动作，想达到什么目的。</span></p>
+
+    <div class="cols c3">
+      <div class="col"><div class="n">01</div><h3>这个单接不接</h3><p>预算、决策链、HC 是真的还是假的。</p></div>
+      <div class="col"><div class="n">02</div><h3>客户真正要谁</h3><p>不是 JD 上写的那个，是他缺的那个。</p></div>
+      <div class="col"><div class="n">03</div><h3>第一批推谁</h3><p>推几个、按什么顺序、怎么讲。</p></div>
+      <div class="col"><div class="n">04</div><h3>这人会不会跑</h3><p>什么信号出现，就要提前锁。</p></div>
+      <div class="col"><div class="n">05</div><h3>什么时候放弃</h3><p>止损点在哪里，卡多久算死。</p></div>
+      <div class="col"><div class="n">06</div><h3>压价怎么接</h3><p>让还是不让，让多少，怎么给台阶。</p></div>
+      <div class="col"><div class="n">07</div><h3>为什么是这个人</h3><p>同样的条件，为什么推他而不是别人。</p></div>
+      <div class="col"><div class="n">08</div><h3>怎么和客户同频</h3><p>他在意什么，我就用什么语言讲。</p></div>
+    </div>
+  </section>
+
+  <section id="why-not">
+    <div class="kick"><i>1.4</i>为什么</div>
+    <h2>判断为什么拿不出来</h2>
+    <p>有三处困难：回忆时难说准、发生时难留全、带教时难复用。</p>
+
+    <div class="cols c3">
+      <div class="col">
+        <div class="n">说不出来</div>
+        <p>很多判断已经变成习惯。只让顾问事后总结，容易漏掉当时真正起作用的信号和动作。</p>
+      </div>
+      <div class="col">
+        <div class="n">看不见</div>
+        <p>判断发生在电话里、见客户的现场、打开简历的那一刻。只看项目阶段和最终结果，很难还原当时为什么这样做。</p>
+      </div>
+      <div class="col">
+        <div class="n">传不动</div>
+        <p>现在主要靠跟着看、当面问。Leader 的时间有限，同一个问题反复讲，经验也难在需要时被找到。</p>
+      </div>
+    </div>
+
+    <p class="big" style="margin-top:30px;">从<span class="em">真实案例</span>开始：先留过程，再回放追问，最后验证能否复用。</p>
+    <p>顾问按日常方式做业务。整理时围绕具体片段追问，尽量保留她当时真实的判断依据。</p>
+  </section>
+
+  <section id="why-now">
+    <div class="kick"><i>1.5</i>为什么</div>
+    <h2>为什么现在可以开始</h2>
+    <p>录音、业务记录和 AI 处理能力，已经让我们有条件从真实案例起步。</p>
+
+    <table>
+      <thead><tr><th>条件</th><th>过去</th><th>现在</th></tr></thead>
+      <tbody>
+        <tr><td>数据</td><td>记录分散，难以对照</td><td>已有业务阶段和沟通记录，可作为案例整理的基础</td></tr>
+        <tr><td>素材</td><td>录音贵、转写不准</td><td>能录的都在录；转写、总结、人选提取已上线</td></tr>
+        <tr><td>模型</td><td>整理和对照主要靠人工</td><td>AI 可辅助整理对话、找出候选片段，再由本人确认判断与目的</td></tr>
+      </tbody>
+    </table>
+
+    <p class="big">已有<span class="em">采集与整理的基础</span>，接下来要把它连成可用的案例。</p>
+    <p>当前方案以已有的录音、转写、总结和业务关联能力起步。还要补齐上传与关联、关键动作记录、判断标注和规则验证，才能从「留了资料」走到「下次用得上」。</p>
+  </section>
+
+  <!-- ================= 怎么做 ================= -->
+  <div class="chapter-intro" aria-labelledby="chapter-02">
+    <p class="chapter-label">第二章 · 怎么做</p>
+    <h2 id="chapter-02">从一次真实沟通，到一条可用规则</h2>
+    <p class="chapter-desc">留下过程，确认目的，验证规则，再用于下一次业务。</p>
+  </div>
+
+  <section id="chain" class="focus-section">
+    <div class="kick"><i>2.1</i>怎么做</div>
+    <h2>整件事只做一条链</h2>
+    <p>把四类素材关联到同一个案例，找到其中的关键决策，提炼并验证规则，再让顾问在类似情况下调用。</p>
+
+    <div class="chainwrap">
+      <div class="srcrow">
+        <div class="chip">录音<small>她说了什么</small></div>
+        <div class="chip">系统记录<small>她做了什么</small></div>
+        <div class="chip">本人确认<small>她怎么想、想达到什么</small></div>
+        <div class="chip">结果<small>成了没有</small></div>
+      </div>
+
+      <div class="down"><div class="ln"></div><div class="lb">绑到同一个案例</div><div class="ln"></div></div>
+
+      <div class="steprow">
+        <div class="box">案 例</div>
+        <div class="ar">→</div>
+        <div class="box">决策点</div>
+        <div class="ar">→</div>
+        <div class="box solid">经验证的规则</div>
+        <div class="ar">→</div>
+        <div class="box ghost">见客户前能问<br>推人前能查</div>
+      </div>
+    </div>
+    <p>「资产」就是这些带案例依据、讲清适用条件的规则。以后换一个人、换一个类似项目，仍然能找到并使用。</p>
+  </section>
+
+  <section id="source">
+    <div class="kick"><i>2.2</i>怎么做</div>
+    <h2>四类素材，串起判断与结果</h2>
+
+    <table class="source-table">
+      <thead><tr><th>素材</th><th>回答什么</th><th>从哪来</th></tr></thead>
+      <tbody>
+        <tr><td>语言</td><td>她说了什么、怎么问</td><td>录音 + 转写</td></tr>
+        <tr><td>行为</td><td>她做了什么、什么顺序</td><td>系统操作与跟进记录，补齐关键动作</td></tr>
+        <tr><td>判断</td><td>她为什么这么做、想达到什么目的</td><td>会前预判、会后修正、回放确认</td></tr>
+        <tr><td>结果</td><td>成了没有、为什么</td><td>阶段、Offer、失败原因</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section id="case">
+    <div class="kick"><i>2.3</i>怎么做</div>
+    <h2>用一个案例，把四堆数据串起来</h2>
+    <p>一个<span class="em">案例</span>，就是围绕同一客户、同一职位的一次完整推进过程。录音、动作、判断和结果都放在一起；还没结束的，保留当前进展和待验证的问题。</p>
+
+    <table class="plain">
+      <tbody>
+        <tr><td>CASE</td><td><b>这段录音</b>　她怎么谈的，客户怎么回的</td></tr>
+        <tr><td></td><td><b>这些动作</b>　她怎么找的、什么时候推的</td></tr>
+        <tr><td></td><td><b>这张判断卡</b>　当时怎么想的，事后觉得哪里错了</td></tr>
+        <tr><td></td><td><b>这个结果</b>　成 / 败 / 停，为什么</td></tr>
+      </tbody>
+    </table>
+
+    <p>有了锚点，才能问出一句有价值的话：</p>
+    <div class="quote">在类似情况下，她这么做，是为了达到什么目的？</div>
+  </section>
+
+  <section id="scenes">
+    <div class="kick"><i>2.4</i>怎么做</div>
+    <h2>四组业务场景，十一个关键决策点</h2>
+    <p>「场景」是正在做哪类业务；「决策点」是其中需要作选择的关口。下面是完整分类，每个案例只标实际发生的关键决策。试点先聚焦见客户、见人选。</p>
+
+    <div class="scenes">
+      <div class="grp">
+        <div class="gt">见客户</div>
+        <div class="dc"><span>D01</span>这单接不接</div>
+        <div class="dc"><span>D02</span>客户真正要谁</div>
+        <div class="dc"><span>D06</span>先推谁、推几个、怎么讲</div>
+        <div class="dc"><span>D07</span>压价、改需求怎么接</div>
+      </div>
+      <div class="grp">
+        <div class="gt">见人选</div>
+        <div class="dc"><span>D03</span>从哪找、先找谁</div>
+        <div class="dc"><span>D04</span>这份简历推不推</div>
+        <div class="dc"><span>D05</span>电话里问什么</div>
+      </div>
+      <div class="grp">
+        <div class="gt">推进与交付</div>
+        <div class="dc"><span>D08</span>这人会不会跑</div>
+        <div class="dc"><span>D09</span>谈薪谁先出价</div>
+        <div class="dc"><span>D10</span>入职后怎么跟</div>
+      </div>
+      <div class="grp">
+        <div class="gt">带教</div>
+        <div class="dc"><span>D11</span>新人先会哪三件事</div>
+      </div>
+    </div>
+    <p>见客户这一组里，除了接不接、要谁、怎么谈价，还要讲清楚：为什么偏偏是这个人，怎么让对方觉得被理解。</p>
+  </section>
+
+  <section id="levels">
+    <div class="kick"><i>2.5</i>怎么做</div>
+    <h2>三级标注，把动作背后的判断标出来</h2>
+    <p>标注要让下一位顾问看懂：当时是什么情况，她为什么这样做，想达到什么目的。分三级逐步补齐，基础记录由全员留下，判断与规则由核心团队提炼。</p>
+
+    <table class="annotation-table">
+      <thead><tr><th>级别</th><th>谁</th><th>怎么标才有用</th></tr></thead>
+      <tbody>
+        <tr><td>L1 场景标注</td><td>全员</td><td><b>写清场景与目的。</b>把录音关联到对应案例，注明在什么情况下沟通、这次想推动什么具体变化。</td></tr>
+        <tr><td>L2 决策标注</td><td>Leader</td><td><b>圈出关键动作，关联决策点。</b>选出改变推进方向的一句问话或一个动作，关联 D01–D11，并补上对方的反应与实际结果；结果未定就标「待验证」。</td></tr>
+        <tr><td>L3 规则标注</td><td>Sophie + 4 位 Leader</td><td><b>还原判断，写清适用条件。</b>回放确认：看到什么信号 → 怎么判断 → 采取什么动作 → 想达到什么目的。对照实际结果，补上不适用的情况或反例，再提炼成规则。</td></tr>
+      </tbody>
+    </table>
+
+    <p>每条标注都要能回到原始录音或具体动作核对。目的由本人确认，结果按实际记录；尚未确认的判断标「待确认」。</p>
+    <p>标注有用的标准：下一次遇到类似情况，能据此判断该怎么做、为什么这样做，以及什么情况下要换做法。</p>
+  </section>
+
+  <section id="example" class="focus-section">
+    <div class="kick"><i>2.6</i>怎么做</div>
+    <h2>一个例子：这句话为什么要这样问</h2>
+    <p>以下是假设案例，用来说明怎么标、怎么提炼。消费品公司的供应链总监职位，Kelly 主谈，Sophie 陪访。客户不断追加背景要求，画像迟迟定不下来。</p>
+
+    <div class="case-story">
+      <div class="case-heading">D07 · 客户期望管理<span>假设案例</span></div>
+      <dl class="case-facts">
+        <div><dt>信号</dt><dd>客户追加条件，却没有区分哪些必须满足、哪些可以取舍。</dd></div>
+        <div><dt>判断</dt><dd>需要先弄清客户的取舍，才能调整找人方向。</dd></div>
+        <div class="move"><dt>动作</dt><dd>“如果找不到这样的人，你们会怎么办？”</dd></div>
+        <div class="purpose"><dt>目的</dt><dd>让客户说出优先级，明确真正不能放宽的条件。</dd></div>
+        <div><dt>反应</dt><dd>客户开始讨论哪些条件可以调整。</dd></div>
+        <div><dt>结果</dt><dd>能否按新画像推进，还要继续跟进。</dd></div>
+      </dl>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="sn">STEP 1 · L1</div><h3>留场景</h3><p>关联案例，记下客户要求反复增加、这次要明确取舍。</p></div>
+      <div class="step"><div class="sn">STEP 2 · L2</div><h3>圈动作</h3><p>圈出这句提问及客户回应，关联 D07，跟进后续结果。</p></div>
+      <div class="step"><div class="sn">STEP 3 · L3</div><h3>问目的</h3><p>回放时请本人确认：为什么这样问，希望推动什么变化。</p></div>
+      <div class="step"><div class="sn">STEP 4</div><h3>做验证</h3><p>与类似案例对照，检查是否反复有效，补上失败与不适用的情况。</p></div>
+      <div class="step"><div class="sn">STEP 5</div><h3>再调用</h3><p>下次遇到类似问题，给出动作、理由、案例依据和适用边界。</p></div>
+    </div>
+
+    <div class="rulebar rule-output">
+      <span class="rule-label">由案例提炼 · 待验证的规则</span>
+      当客户不断追加条件、没有明确优先级，且双方已有沟通信任时，<br>
+      可以先问「如果找不到这样的人，你们会怎么办？」引导客户说出取舍，再讨论市场供给。
+    </div>
+    <p class="muted">适用边界：关系尚未建立时，这样问可能被理解为推卸。本人确认了目的，说明这次判断被还原了；还需结合后续结果与其他案例，才能判断它是否值得复用。</p>
+  </section>
+
+  <section id="success" class="focus-section">
+    <div class="kick"><i>2.7</i>怎么做</div>
+    <h2>先看判断是否对齐，再看顾问能否用上</h2>
+    <div class="quote">希望做到：资深顾问认可它的关键判断，新顾问拿到后知道下一步怎么做。</div>
+
+    <p>如果 AI 的建议总需要重做，顾问就很难持续使用。95% 是本方案对判断对齐的目标，是否达到，需要用同一批真实案例测出来。</p>
+    <div class="success-grid">
+      <div class="success-item"><div class="label">01 / 判断对齐</div><div class="success-mark"><strong>95%</strong><span>一致率目标</span></div><h3>同一个案例，独立作答</h3><p>Sophie、相关 Leader 和 AI 看相同资料，互不看答案。比较结论、推荐名单、关键理由和风险提示。每月复测；样本、评分方式和分歧处理，在试点前统一。</p></div>
+      <div class="success-item"><div class="label">02 / 实际可用</div><div class="success-mark"><strong>能行动</strong><span>真实业务验证</span></div><h3>拿到建议，知道下一步</h3><p>看新顾问能否据此采取下一步动作，Leader 需要修改多少，后续是否推进。资料不足时，应能明确指出缺什么、下一步问什么。</p></div>
+    </div>
+    <p class="muted">推荐名单的重合度只是其中一项。纪要等基础功能可先试用；判断建议通过验证后，再扩大使用。</p>
+  </section>
+
+  <!-- ================= 之后 ================= -->
+  <div class="chapter-intro" aria-labelledby="chapter-03">
+    <p class="chapter-label">第三章 · 之后</p>
+    <h2 id="chapter-03">先在团队里用，再验证客户价值</h2>
+    <p class="chapter-desc">讲清每个人怎样参与，以及试点如何一步步扩大。</p>
+  </div>
+
+  <section id="for-each">
+    <div class="kick"><i>3.1</i>之后</div>
+    <h2>五类人，分别得到什么</h2>
+    <p>把得到的帮助和参与的动作放在一起看。以下是试点分工建议，结合今天讨论再细化。</p>
+
+    <table class="roles-table">
+      <thead><tr><th>谁</th><th>得到什么</th><th>参与什么</th></tr></thead>
+      <tbody>
+        <tr><td>新顾问</td><td>遇到具体问题，可以随时查做法、看案例</td><td>留下录音，关联案例，写清场景与目的；试用后反馈哪里用得上</td></tr>
+        <tr><td>Leader</td><td>用真实案例带教，让经验在自己不在场时也能被调用</td><td>选关键片段，补决策点与结果，参与回放和建议评审</td></tr>
+        <tr><td>Sophie</td><td>把自己的判断沉淀成可调用的助理，减少重复解释</td><td>结合真实片段，确认判断、目的和适用条件，审阅提炼出的规则</td></tr>
+        <tr><td>公司</td><td>积累案例与规则，支持新人培养和持续交付</td><td>承接整理、工具建设与验证，让顾问能查到、用起来</td></tr>
+        <tr><td>客户</td><td>看清市场选择、推荐依据与风险，降低招聘决策的不确定性</td><td>在后续试点中，用真实需求和反馈检验交付价值</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">采集内容与蒸馏结论用于业务辅助和带教，不纳入个人 KPI。助理可以传递判断与做法；客户关系和信任仍需要顾问亲自建立。</p>
+  </section>
+
+  <section id="phases">
+    <div class="kick"><i>3.2</i>之后</div>
+    <h2>先跑通一个案例，再逐步扩大</h2>
+    <p>以下为拟议节奏。每阶段先检查产出是否可用，再决定扩大范围。</p>
+
+    <div class="tl">
+      <div class="t">
+        <div class="when">13 周</div>
+        <h3>内部跑通</h3>
+        <p>先聚焦见客户、见人选。产出首批 10 张决策卡、一个案例库、纪要和人才市场分析原型，完成一次判断对齐测试。</p>
+      </div>
+      <div class="t">
+        <div class="when">3–6 个月</div>
+        <h3>全公司用</h3>
+        <p>根据试点结果逐步扩到客户开发、客户管理、人选沟通和团队管理，带教同步使用案例与问答。</p>
+      </div>
+      <div class="t">
+        <div class="when">6–12 个月</div>
+        <h3>对外交付</h3>
+        <p>先与熟悉的客户试用人才市场分析和推荐依据，再验证服务包与招聘团队工作台的价值。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="exits">
+    <div class="kick"><i>3.3</i>之后</div>
+    <h2>先用于内部，再验证对外交付的价值</h2>
+    <p>对外优先验证<span class="em">人才市场分析（mapping）+ 案例依据</span>：市场上有哪些人、各自优势和风险是什么、为什么推荐这几位。客户拿到的是一份支持招聘决策的市场判断。</p>
+
+    <div class="cols c3">
+      <div class="col">
+        <div class="n">出口一 · 降成本</div>
+        <h3>内部提效</h3>
+        <p>从纪要、跟进建议和推荐理由入手，减少重复整理，让顾问把精力放回沟通与判断。</p>
+      </div>
+      <div class="col">
+        <div class="n">出口二 · 验证付费</div>
+        <h3>客户 AI + 服务</h3>
+        <p>用已有案例与市场资料，形成带依据的分析；通过客户试用，验证是否帮助决策、是否愿意付费。</p>
+      </div>
+      <div class="col">
+        <div class="n">出口三 · 做资产</div>
+        <h3>产品化</h3>
+        <p>决策卡和案例库做成工作台，给客户自己的招聘团队、给同行。</p>
+      </div>
+    </div>
+
+    <p>这也接回前面 HR 的需求：让他有依据说明为什么找这些人、为什么这样取舍，能向老板交代招聘判断。</p>
+
+    <div class="loop">
+      <div class="n">蒸馏</div><div class="a">→</div>
+      <div class="n">案例库</div><div class="a">→</div>
+      <div class="n">人才市场分析</div><div class="a">→</div>
+      <div class="n">客户试用与反馈</div><div class="a">→</div>
+      <div class="n">更多案例</div><div class="a">↺</div>
+    </div>
+  </section>
+
+  <!-- ================= 讨论 ================= -->
+  <div class="chapter-intro" aria-labelledby="chapter-04">
+    <p class="chapter-label">第四章 · 讨论</p>
+    <h2 id="chapter-04">带着真实案例，把做法讲具体</h2>
+    <p class="chapter-desc">围绕四组业务场景，留下共识和需要验证的问题。</p>
+  </div>
+
+  <section id="discuss">
+    <div class="kick"><i>4.1</i>讨论</div>
+    <h2>接下来，讲我们每个场景实际怎么做</h2>
+    <p>以下四组问题，按顺序过。每组先拿一个真实案例，围绕当时的信号、动作和目的讲清楚，再讨论怎么留下可用的记录。</p>
+
+    <div class="ask">
+      <div class="q"><span><b>见客户</b>　什么单该接、什么单不该接？客户说要的人和他真正缺的人，差在哪？压价、改需求时你一般怎么接？</span></div>
+      <div class="q"><span><b>见人选</b>　简历前 90 秒你看哪三样？哪个问题是你特有、别人不一定会问的？先推谁、推几个？</span></div>
+      <div class="q"><span><b>推进与交付</b>　项目卡两周没动静，第一步做什么？客户不反馈怎么推？人入职后你跟多久？</span></div>
+      <div class="q"><span><b>带教</b>　新人第一个月先会哪三件事？你怎么判断他是真会还是假会？</span></div>
+    </div>
+    <div class="quote">每个案例追问：你看到了什么？为什么这么做？想达到什么目的？对方怎么反应？换什么情况就不能这样做？</div>
+    <p>白板统一记三栏：<span class="em">关键动作 / 最容易错的地方 / 要留下什么。</span>已有共识和待验证的问题分开记录。</p>
+    <p>散会前只定三件事：整理稿什么时候发、第一批从哪个组和哪些案例开始、下次什么时候碰头。</p>
+  </section>
+
+  <footer>
+    <div>让好判断，成为团队的能力 · 云略 AI + 猎头</div>
+    <div>2026-11-08 · 内部讨论稿</div>
+  </footer>
+
+</div>
+</main>
+
+<script>
+
+(function(){
+  var toc=document.getElementById('toc');
+  var nav=document.getElementById('nav');
+  var toggle=document.getElementById('menu-toggle');
+  var label=document.getElementById('current-section');
+  var groupLabel=document.getElementById('current-group');
+  var prog=document.getElementById('prog');
+  var links=Array.from(nav.querySelectorAll('a'));
+  var groups=Array.from(nav.querySelectorAll('details'));
+  var sections=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var mobile=window.matchMedia('(max-width:1100px)');
+  var lastGroup=null;
+  var ticking=false;
+  function closeMenu(){toc.classList.remove('menu-open');toggle.setAttribute('aria-expanded','false');}
+  toggle.addEventListener('click',function(){
+    var open=toggle.getAttribute('aria-expanded')!=='true';
+    toc.classList.toggle('menu-open',open);
+    toggle.setAttribute('aria-expanded',String(open));
+    if(open){groups.forEach(function(g){g.open=true;});}
+  });
+  nav.addEventListener('click',function(e){if(e.target.closest('a')){closeMenu();}});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&toc.classList.contains('menu-open')){closeMenu();toggle.focus();}});
+  document.addEventListener('click',function(e){if(!toc.contains(e.target)){closeMenu();}});
+  function onScroll(){
+    var y=window.scrollY;
+    var h=document.documentElement.scrollHeight-window.innerHeight;
+    prog.style.width=(h>0?Math.min(100,y/h*100):0)+'%';
+    var idx=-1;
+    var threshold=mobile.matches?112:150;
+    for(var i=0;i<sections.length;i++){
+      var intro=sections[i].previousElementSibling;
+      var start=intro&&intro.classList.contains('chapter-intro')?intro:sections[i];
+      if(start.getBoundingClientRect().top<=threshold){idx=i;}
+    }
+    links.forEach(function(a,i){a.classList.toggle('on',i===idx);if(i===idx){a.setAttribute('aria-current','location');}else{a.removeAttribute('aria-current');}});
+    var current=idx>=0?links[idx]:null;
+    var group=current?current.closest('details'):null;
+    label.textContent=current?current.textContent:'让好判断，成为团队的能力';
+    groupLabel.textContent=group?group.dataset.name:current?'开始':'方案概览';
+    groups.forEach(function(g){g.classList.toggle('is-current',g===group);});
+    if(group!==lastGroup&&!toc.classList.contains('menu-open')){
+      groups.forEach(function(g){g.open=g===group;});
+      lastGroup=group;
+    }
+    ticking=false;
+  }
+  function schedule(){if(!ticking){ticking=true;requestAnimationFrame(onScroll);}}
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',function(){closeMenu();lastGroup=null;onScroll();});
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
