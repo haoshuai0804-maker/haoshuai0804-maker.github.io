@@ -288,6 +288,12 @@
     .case-story,.rulebar,.step,tr,.success-item{break-inside:avoid;}
     .hero-grid{grid-template-columns:1fr 1fr;}
   }
+  .touch-group{margin:28px 0 36px;}
+  .touch-group .muted{margin-bottom:10px;color:var(--bronze);}
+  .touch-group dl>div{display:grid;grid-template-columns:minmax(112px,9em) 1fr;gap:16px;border-top:1px solid var(--line);padding:12px 0;}
+  .touch-group dt{color:var(--navy);font-weight:600;font-size:var(--f5);}
+  .touch-group dd{color:var(--ink2);font-size:var(--f5);max-width:40em;}
+  @media(max-width:700px){.touch-group dl>div{grid-template-columns:1fr;gap:3px;}}
 </style>
 </head>
 <body>
@@ -316,7 +322,7 @@
       <a href="#chain"><span class="nav-subnum">2.1</span> 一条链</a>
       <a href="#source"><span class="nav-subnum">2.2</span> 四类素材</a>
       <a href="#case"><span class="nav-subnum">2.3</span> 案例是锚点</a>
-      <a href="#scenes"><span class="nav-subnum">2.4</span> 十一个决策点</a>
+      <a href="#scenes"><span class="nav-subnum">2.4</span> 四组场景的采集触点</a>
       <a href="#levels"><span class="nav-subnum">2.5</span> 三级标注</a>
       <a href="#example"><span class="nav-subnum">2.6</span> 一个例子</a>
       <a href="#success"><span class="nav-subnum">2.7</span> 怎么算成功</a>
@@ -566,9 +572,38 @@
 
   <section id="scenes">
     <div class="kick"><i>2.4</i>怎么做</div>
-    <h2>四组业务场景，十一个关键决策点</h2>
-    <p>「场景」是正在做哪类业务；「决策点」是其中需要作选择的关口。下面是完整分类，每个案例只标实际发生的关键决策。试点先聚焦见客户、见人选。</p>
-
+    <h2>四组业务场景，各在哪些触点采集什么</h2>
+    <p>场景说明正在做哪类业务。触点是可以回看的具体互动或动作，如一次能力介绍、一句追问或一次推荐反馈。决策点说明顾问在这里需要作什么选择。同一触点可以关联多个决策点。</p>
+    <div class="touch-group"><h3>见客户</h3><p class="muted">首轮建议采集 · 展示公司能力</p><dl>
+<div><dt>初次接单</dt><dd>记录客户为什么现在要招、谁参与决定，以及顾问接单前还要核实什么。</dd></div>
+<div><dt>澄清需求</dt><dd>保留客户原话、顾问的追问，以及追问后明确或改变的条件。</dd></div>
+<div><dt>展示公司能力</dt><dd>记录客户的顾虑、顾问选用的证据、展示目的和客户回应。若客户担心找不到人，可展示人才分布和搜索路径；若担心推荐不准，可展示脱敏推荐样例。</dd></div>
+<div><dt>确认画像与合作方式</dt><dd>记下双方同意的优先条件、由谁反馈、下一步做什么。</dd></div>
+<div><dt>压价或改需求</dt><dd>记录哪个前提发生变化，顾问据此调整了什么，客户是否接受。</dd></div>
+</dl></div>
+    <div class="touch-group"><h3>见人选</h3><p class="muted">首轮建议采集 · 一句追问改变判断</p><dl>
+<div><dt>确定搜索路径</dt><dd>留下先从哪类公司或岗位找，以及什么发现促使顾问换方向。</dd></div>
+<div><dt>决定是否联系</dt><dd>圈出值得约谈的一条经历和需要核实的一处疑点。</dd></div>
+<div><dt>首次接触</dt><dd>记录顾问怎样开场、想了解什么，以及人选的实际回应。</dd></div>
+<div><dt>深聊验证</dt><dd>保留关键问答，对照追问前后对能力或动机的判断。</dd></div>
+<div><dt>确认推荐意愿</dt><dd>区分人选表达的兴趣、仍有的顾虑和实际同意的下一步。</dd></div>
+</dl></div>
+    <div class="touch-group"><h3>推进与交付</h3><p class="muted">首轮建议采集 · 首批推荐后的反馈</p><dl>
+<div><dt>送出首批推荐</dt><dd>记录为什么先推这几位，希望通过客户反馈验证哪项要求。</dd></div>
+<div><dt>收到面试或退回反馈</dt><dd>保留客户原话，说明要调整的是岗位画像、对人选的判断，还是推荐依据。</dd></div>
+<div><dt>项目停滞</dt><dd>记录停滞信号、顾问判断卡在哪里、决定找谁，以及跟进结果。</dd></div>
+<div><dt>谈薪与 Offer</dt><dd>留下双方在意的条件、顾问选择的沟通顺序和实际回应。</dd></div>
+<div><dt>入职后回访</dt><dd>对照入职前的判断与实际体验，记录新风险及后续动作。</dd></div>
+</dl></div>
+    <div class="touch-group"><h3>带教与新人</h3><p class="muted">首轮建议采集 · 同案独立判断与点评</p><dl>
+<div><dt>选择示范片段</dt><dd>说明为什么选这段录音，希望新人留意哪句话或哪个信号。</dd></div>
+<div><dt>新人独立判断</dt><dd>在听点评前，留下新人自己的判断、理由和下一步动作。</dd></div>
+<div><dt>Leader 点评</dt><dd>记录双方在哪个信号上看法不同，以及它为什么会改变做法。</dd></div>
+<div><dt>换案例再应用</dt><dd>观察新人能否在另一个案例里自己识别信号、解释目的、采取行动。</dd></div>
+</dl></div>
+    <h3>一次触点，留一条记录</h3>
+    <p>发生了什么 → 顾问怎么看 → 做了什么、想达到什么目的 → 对方如何回应 → 后续结果如何。关联录音、推荐记录或阶段反馈。当场反应先记，后续结果发生后再补，尚未确认的目的由本人回放确认。</p>
+    <h3>用 D01–D11 标记这次涉及的判断</h3>
     <div class="scenes">
       <div class="grp">
         <div class="gt">见客户</div>
