@@ -294,6 +294,39 @@
   .touch-group dt{color:var(--navy);font-weight:600;font-size:var(--f5);}
   .touch-group dd{color:var(--ink2);font-size:var(--f5);max-width:40em;}
   @media(max-width:700px){.touch-group dl>div{grid-template-columns:1fr;gap:3px;}}
+
+  /* 逐句证据卡：五层结构使用折叠阅读，避免整页堆叠长文。 */
+  .evidence-guide{background:var(--navy-soft);padding:22px 26px;margin:24px 0;border-radius:8px;}
+  .evidence-guide p{font-size:var(--f5);margin:10px 0 0;}
+  .evidence-notice{font-size:14px;color:var(--ink3);line-height:1.8;margin:18px 0;}
+  .evidence-links{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 32px;}
+  .evidence-links a{padding:9px 16px;border:1px solid var(--line-strong);border-radius:5px;text-decoration:none;font-size:15px;}
+  .evidence-turn{border-left:3px solid var(--navy);padding:16px 24px;margin:22px 0 28px;background:var(--panel);}
+  .evidence-turn>span{font-size:13px;color:var(--bronze);}
+  .evidence-turn blockquote{font-size:19px;line-height:1.8;margin-top:8px;}
+  .evidence-card{border:1px solid var(--line);border-radius:6px;background:var(--panel);margin:10px 0;overflow:hidden;scroll-margin-top:90px;}
+  .evidence-card summary{display:grid;grid-template-columns:38px 1fr 20px;gap:10px;align-items:center;cursor:pointer;list-style:none;padding:19px 22px;font-size:17px;font-weight:600;line-height:1.6;}
+  .evidence-card summary::-webkit-details-marker{display:none;}
+  .evidence-card summary:hover{background:var(--navy-soft);}
+  .evidence-id{font-size:13px;color:var(--bronze);font-weight:500;}
+  .evidence-expand::after{content:'+';font-weight:400;font-size:24px;color:var(--navy);}
+  .evidence-card[open] .evidence-expand::after{content:'−';}
+  .evidence-body{padding:0 24px 14px;border-top:1px solid var(--line);background:var(--white);}
+  .evidence-field{padding:22px 0;border-bottom:1px solid var(--line);}
+  .evidence-field:last-child{border-bottom:0;}
+  .evidence-field h4{font-size:15px;color:var(--navy);margin-bottom:12px;}
+  .evidence-field h4 small{font-size:12px;font-weight:400;color:var(--ink3);margin-left:6px;}
+  .evidence-field p{font-size:16px;margin:12px 0 0;max-width:none;}
+  .evidence-field blockquote{font-size:18px;line-height:1.85;overflow-wrap:anywhere;}
+  .evidence-field .evidence-cite{font-size:12px;color:var(--ink3);margin-top:7px;font-variant-numeric:tabular-nums;}
+  .response-quote{padding:14px 18px;background:var(--panel);border-radius:4px;}
+  .response-quote>span{font-size:12px;color:var(--bronze);}
+  .response-quote blockquote{font-size:16px;margin-top:7px;}
+  .evidence-field .evidence-boundary{font-size:14px;color:var(--ink3);}
+  .evidence-case-title{margin-top:56px;scroll-margin-top:90px;}
+  #case-founder{scroll-margin-top:90px;}
+  @media(max-width:700px){.evidence-card summary{padding:16px 14px;grid-template-columns:32px 1fr 16px;font-size:16px;gap:6px;}.evidence-body{padding:0 16px 8px;}.evidence-guide{padding:18px;}.evidence-turn{padding:14px 18px;}.evidence-turn blockquote,.evidence-field blockquote{font-size:17px;}}
+
 </style>
 </head>
 <body>
@@ -355,7 +388,7 @@
         <p class="answer">助理给出做法、理由、案例依据，<br>以及什么情况下要换做法。</p>
       </div>
     </div>
-    <div class="meta"><span>2026.11.08 · 周日讨论会</span><span>方案讲解 30 分钟</span><span>约 12 分钟读完</span></div>
+    <div class="meta"><span>2026.11.08 · 周日讨论会</span><span>方案讲解 30 分钟</span><span>主线约 12 分钟 · 案例按需展开</span></div>
     <a class="hero-jump" href="#chain">先看整套方案怎么运作</a>
   </header>
 
@@ -554,52 +587,236 @@
 
   <section id="case">
     <div class="kick"><i>2.3</i>怎么做</div>
-    <h2>Sophie 见客户：两次拜访中的判断与动作</h2>
-    <p><a href="#case-founder">案例一 · 判断关键人选</a>　 <a href="#case-delivery">案例二 · 找出交付卡点</a></p>
-    <h3 id="case-founder">案例一 · 怎样陪创始人判断一位关键人选</h3>
-    <p>一位跨境电商创始人看中了一位懂业务的 HR 负责人，希望对方能一起搭团队、承担经营责任。她拿不准的是，两个人还没有共事过，现在谈合伙和激励，凭什么判断彼此合适？</p>
-    <h3>把 Sophie 的做法拆成五个动作</h3>
-    <p class="muted">以下按业务逻辑整理。动作来自会谈纪要和会后建议，各动作的目的属于复盘解读，留待 Sophie 本人确认。</p>
-    <div class="touch-group"><dl>
-      <div><dt>一、把招人问题放回业务里</dt><dd><b>客户信号</b>　多个部门仍由创始人亲自做决定，她需要有人能与她讨论经营、接住责任。<br><b>Sophie 的动作</b>　建议从未来三年的业务目标倒推团队要具备的能力，再写清楚这位负责人需要独立承担什么。<br><b>目的</b>　先形成衡量人选的尺度。后面谈到某项履历时，双方能判断它是否支持这份具体责任。</dd></div>
-      <div><dt>二、用案例展示云略怎么做</dt><dd><b>客户信号</b>　创始人以前拿到过难以落地的咨询方案，对只看简历的推荐也有顾虑。<br><b>Sophie 的动作</b>　结合既往客户案例，说明老板心里的画像可能和实际面试标准有出入，并建议用轻量的岗位画像工具梳理当前职位。<br><b>目的</b>　让创始人看见合作的具体产出：一份能拿去和人选谈责任、也能用来比较人选的画像。</dd></div>
-      <div><dt>三、把动机留给见面核实</dt><dd><b>客户信号</b>　人选主动从 HR 转向业务。创始人猜测对方想要事业机会，但还没听到人选自己怎么定义这个机会。<br><b>Sophie 的动作</b>　提醒创始人同时看能力和动机。会后她把这项判断落实为“至少再见两次”，并给出两个谈话方向：自己先讲事业目标，再听对方讲成长经历、价值取向和职业目标。<br><b>目的</b>　让双方都能判断：创始人愿意交出的责任，是不是人选真正愿意承担的责任？</dd></div>
-      <div><dt>四、把信任顾虑变成一道真实业务题</dt><dd><b>客户信号</b>　创始人欣赏人选，也担心过早绑定合伙关系，日后才发现双方做事方式不同。<br><b>Sophie 的动作</b>　提出一个可供双方商谈的安排：先做三个月或半年的付费类顾问合作，按拟任岗位的职责和要求承担真实任务，并提前约定怎样评价。<br><b>目的</b>　让双方有机会观察对方如何决策、调动资源和承担结果，再决定长期任职与激励安排。</dd></div>
-      <div><dt>五、把建议交给下一次工作会</dt><dd><b>待解决的问题</b>　岗位边界和合作任务仍要结合企业实际细化。<br><b>Sophie 的动作</b>　提出先与同事沟通，再与创始人三方开会，共同梳理岗位画像和磨合方案。<br><b>目的</b>　让下一次沟通有明确产出，创始人能带着具体的职责、任务和评价方式去见人选。</dd></div>
-    </dl></div>
-    <h3>创始人接下来怎么做</h3>
-    <p>Sophie 建议由创始人继续约见人选。下面是接下来要做的事，两次见面的内容可以随对方的回应调整。</p>
-    <div class="touch-group"><dl>
-      <div><dt>让人选了解创始人</dt><dd>创始人主动讲自己的事业目标、对业务和管理的思考，以及为什么现在需要有人共同承担责任。目的是让人选有足够的信息来判断：这件事值不值得投入，我有没有发挥空间？</dd></div>
-      <div><dt>听人选讲自己的选择</dt><dd>留出时间听对方的成长经历，尤其是几次主动转岗时看重什么。可以顺着对方从 HR 走向业务的经历追问：“那次变化，你最想争取的是什么？下一段工作里，你希望真正对什么结果负责？”目的是听清人选的价值取向和职业目标，核实双方对“事业机会”的理解是否一致。</dd></div>
-      <div><dt>一起做一件真实的事</dt><dd>如果前面的沟通显示双方目标相合，可以提议三个月或半年的类顾问合作。按约定付费，工作职责和要求与拟任岗位保持一致。双方先商定一道真实业务题，例如梳理核心团队需要哪些岗位、各自承担什么责任。人选有机会检验自己能否推动事情，创始人也能观察对方怎样判断、如何与团队协作，再谈长期任职和激励。</dd></div>
-    </dl></div>
-
-    <h3>这次案例可以记到哪一步</h3>
-    <p><b>已有依据：</b>创始人表达了组织瓶颈、对人选的欣赏和对合作风险的顾虑。Sophie 提出了继续约见、共做岗位画像和设计磨合方案的建议，并计划与同事及创始人再开一次会。</p>
-    <p><b>待回填：</b>后续是否见面、人选本人怎样描述职业目标、双方是否同意试合作、真实任务推进如何，都要根据实际反馈补记。当前记录到“已提出建议”。</p>
-    <div class="quote">在类似情况下，她这么做，是为了达到什么目的？</div>
-    <p>在这个案例里，再见两次的价值在于让双方各自弄清一件事：创始人想把什么责任交出去，人选愿意为什么结果负责。两者吻合，才有依据设计下一步合作。</p>
-
-    <h3 id="case-delivery" style="margin-top:48px">案例二 · 一个急缺的董秘岗位，究竟卡在哪里？</h3>
-    <p>Sophie 到访一家集团企业前，听到的解释是岗位难、要求高、省内人选已盘过。客户人资负责人却说，自己早已同意全国寻访，也接受更早年份的上市经验。两种说法会导向完全不同的下一步：继续在原范围里找，还是先弄清已经搜过哪里、漏了哪里？</p>
-    <p class="muted">以下动作据拜访纪要整理。每项动作的目的属于复盘解读，待 Sophie 本人确认。</p>
-    <div class="touch-group"><dl>
-      <div><dt>一、说清自己的来意，让客户校正前提</dt><dd><b>信号</b>　客户已经给过扩大范围的方向，也愿意亲自初面，但一直没看到更新的寻访数据。<br><b>Sophie 的动作</b>　她为迟到承担责任，并向客户说明自己来之前听到的省内寻访情况。客户由此能指出，地域从来不是他设的硬门槛。<br><b>目的</b>　把双方掌握的信息摆在一起，确定接下来要核实的是客户要求，还是团队的执行范围。</dd></div>
-      <div><dt>二、当场连线顾问，核实实际覆盖</dt><dd><b>信号</b>　“全国可找”和“省内盘完”可以同时为真，却不能据此判断全国都找过。<br><b>Sophie 的动作</b>　她现场致电负责顾问。顾问确认系统梳理主要集中在省内，也提到部分外地人选有迁移意愿障碍，但尚未系统梳理异地人选。<br><b>目的</b>　分清“已经接触但不愿来”和“尚未系统寻访”两类情况。前者要核实意愿，后者要补寻访覆盖。</dd></div>
-      <div><dt>三、用面试反馈校准董秘画像</dt><dd><b>信号</b>　客户要求人选真正主导过成功上市。此前一位人选有上市项目经历，但反馈显示其职责偏执行。<br><b>Sophie 的动作</b>　她听客户说明哪些候选人没有通过，以及哪些条件可以放宽。会谈明确了主导上市的经历必须核实，地域和经历年份可以扩展。客户表示可以提供此前的简历与面试评估供团队参考。<br><b>目的</b>　让下一轮寻访扩大范围，同时让顾问用人选实际承担的责任判断是否值得推荐。</dd></div>
-      <div><dt>四、逐岗确认需求，再说明团队怎样承接</dt><dd><b>信号</b>　另外三个岗位各有不同卡点，无法靠给同一位顾问增加任务来解决。<br><b>Sophie 的动作</b>　她逐一与客户核对岗位状态，并指出哪些需求可以交给销售专业团队、哪些适合定向寻访。<br><b>目的</b>　把公司能力具体落实到每个岗位的下一步，让客户能判断团队的配置是否匹配。</dd></div>
-      <div><dt>五、约定下一次怎样检查进展</dt><dd><b>信号</b>　客户此前只收到过一张寻访截图，无法判断之后覆盖了哪些人，卡在什么地方。<br><b>Sophie 的动作</b>　她承诺当晚整理需求并分发，建立客户、顾问与自己直接沟通的群，至少增配两人，每周跟进数据，争取周六前有交付进展。<br><b>目的</b>　让客户和团队能基于同一份进度讨论问题，也让 Sophie 能尽早发现执行偏差。</dd></div>
-    </dl></div>
-    <h3>同一次拜访，四个岗位分别怎么推进</h3>
-    <div class="touch-group"><dl>
-      <div><dt>董秘</dt><dd>最紧急。补上省外寻访，逐人核实在上市项目中的职责、本人作过的决定和结果，单独记录迁移意愿。</dd></div>
-      <div><dt>法务总监</dt><dd>客户澄清仍在寻访，也没有人选进入谈薪。下一轮重点验证能否搭建风控体系，仅有处理单个案件的经验不足以说明胜任。</dd></div>
-      <div><dt>营销总监</dt><dd>岗位由高层代管，需要兼顾大客户、渠道和营销体系建设，还要能支持各业务基地。Sophie 表示有具备分销经验的销售专业团队，答应回去安排。</dd></div>
-      <div><dt>业务总经理</dt><dd>现有基地已经构成客户基础，岗位更看重完整经营、生产管理和服务基地的能力。客户可以提供岗位说明，Sophie 表示可以安排定向寻访同类企业的一把手。</dd></div>
-    </dl></div>
-    <p><b>截至拜访结束，</b>已经完成的是现场核实寻访范围、澄清岗位状态和约定后续动作。增配人员是否到位、周六前交付了什么、客户怎样反馈，仍需回填。</p>
-    <div class="quote">复盘时可以问 Sophie：听到客户说“全国都可以找”时，为什么选择当场连线顾问？电话核实后，你改变了哪个判断？</div>
+    <h2>从客户原话，看见判断怎样形成</h2>
+    <p>两次 Sophie 客户拜访，24 个关键片段。沿着客户原话，追踪她怎样理解、回应、修正判断，再把方法提炼出来。</p>
+    <div class="evidence-guide"><b>客户原话 → 底层想法 → 解读逻辑 → Sophie 原话 → 总结与验证</b><p>原话保留逐字稿措辞，并标注发言段的起始时间。底层想法与解读逻辑属于复盘解读，待本人确认。客户的认可、反驳和补充，是验证理解的重要证据。</p></div>
+    <p class="evidence-notice">原稿 A 对应第一案，原稿 B 对应第二案。两稿日期标注存在差异，因此以相对时间定位。引文尚未核听音频，口语与疑似转写错误保留原样。〔顾问〕为匿名替换，其他引文未作润色。</p>
+    <div class="evidence-links"><a href="#case-founder">案例一 · 合作磨合</a><a href="#case-delivery">案例二 · 交付校准</a></div>
+    <h3 id="case-founder">案例一 · 从岗位画像，转向双方怎样磨合</h3>
+    <p>Sophie 起初沿着业务目标与岗位画像推进。客户反复说明已有人选、希望逐步合作。她随后明确修正理解，把解法转向真实业务中的付费磨合。</p>
+    <div class="evidence-turn"><span>关键转折 · 原稿 A · 02:50:55</span><blockquote>不是说你对画像要求不清晰，是你很清楚你想要什么人，只是在这个阶段，你也想试探他，他可能也想试探你。</blockquote></div>
+    <p class="evidence-notice">展开片段查看五层拆解。A01—A10 是案例片段编号，与章节号和 D 类决策点编号分开。</p>
+<details class="evidence-card" id="evidence-A01">
+<summary><span class="evidence-id">A01</span><span>先问现有核心团队，再讨论激励</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我的整个的一个组织建设，以及包括我的这种利益分配机制吧，应该是。首先就是说这一块你有什么建议吗？</blockquote><p class="evidence-cite">原稿 A · 01:16:40</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户希望引入能推动组织发展的关键人，同时需要让这些人愿意投入的分配安排。后续谈到事业型人才，为这一理解提供了依据。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>先把抽象的机制问题落到现有角色与能力。随后在 01:18:35 区分培养现有主管与引入成熟高管，两类安排不能直接套用同一机制。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>你现在公司有几个核心的人？除了你之外，分别是什么岗位？</blockquote><p class="evidence-cite">原稿 A · 01:17:16</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>首先我现在会觉得我跟我们团队之间是一种老和。操作干活的主管之间的关系。</blockquote><p class="evidence-cite">原稿 A · 01:17:22</p></div><p><b>观察到的变化</b><br>客户补充现有团队主要承担操作，Sophie 随后复述为缺少能对话的人。</p><p><b>可复用方法</b><br>先采集关键岗位由谁承担、能独立解决什么，再讨论对应的激励。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“老和”为转写原样，不据此判断准确措辞。此时仍是组织架构方向的初步诊断。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A02">
+<summary><span class="evidence-id">A02</span><span>把创始人忙碌定位为责任层缺口</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我是我们公司所有的一号位，你知道吗？有 10 个部门，所有的一号位都是我，并且还是给指挥他干活的，而不是我干。</blockquote><p class="evidence-cite">原稿 A · 01:24:20</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户需要有人独立承担判断和结果。她描述的是自己持续指挥各部门，而不仅是工作量多。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>将“所有部门都要我指挥”概括为中间责任层不足，以便把招聘目标从增加执行人员推进到补齐能承担责任的关键角色。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>就等于你现在没有腰部，你只有手和脚。</blockquote><p class="evidence-cite">原稿 A · 01:24:36</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>最近不是也在谈一个人吗？</blockquote><p class="evidence-cite">原稿 A · 01:24:44</p></div><p><b>观察到的变化</b><br>客户立即把话题带回正在接触的人选。这个回应提示她更希望讨论具体人选如何合作。</p><p><b>可复用方法</b><br>概括组织症状后，跟进客户把话题带向何处，检验诊断是否回应眼前问题。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“没有腰部”是 Sophie 的现场概括，不能据此断言所有管理者均无能力。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A03">
+<summary><span class="evidence-id">A03</span><span>客户说画像清楚时，保留她的异议</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>这个我倒是比较清楚，我觉得这个画像我自己。</blockquote><p class="evidence-cite">原稿 A · 02:34:47</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户认为自己对岗位已有判断，期待讨论接触中的人选和具体合作建议。02:34:56 她再次追问建议。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 此时仍按“业务目标—组织能力—岗位能力”路径推进，希望用工具形成共同标准。但客户尚未认同问题在画像，这一步只能标为尝试，不能标为需求已确认。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>我觉得按照我们那个岗位画像，半个小时稍微梳理一下。</blockquote><p class="evidence-cite">原稿 A · 02:35:27</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我说 HR 必须要非常懂业务，你知道吗？</blockquote><p class="evidence-cite">原稿 A · 02:36:51</p></div><p><b>观察到的变化</b><br>客户继续列举业务型 HR、组织助推业务、核心团队搭建等标准，补充了自己已有的岗位理解。</p><p><b>可复用方法</b><br>客户说“我清楚”时，先让她展示已明确的标准，再验证缺口。</p><p class="evidence-boundary"><b>边界与待核实</b><br>总结是复盘建议。原文中的 Sophie 当时仍坚持画像工具，不能改写成她已经切换了路径。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A04">
+<summary><span class="evidence-id">A04</span><span>从履历变化提出动机假设</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>他可能是从那边又开始去申请去调的，去做商业。</blockquote><p class="evidence-cite">原稿 A · 02:42:54</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户在解释为什么欣赏这位人选，并想知道这样的事业型人才怎样进入自己的组织。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>把主动走向业务的经历当作动机线索，提出人选可能需要更大的事业空间。02:43:58 又将能力、动机与企业能提供的版图放在一起比较。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>那他的动机可能不止想要个 HR 职位。</blockquote><p class="evidence-cite">原稿 A · 02:43:26</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我的这个目前这种组织架构，我说他不适合承载，有一些要做事业的这种</blockquote><p class="evidence-cite">原稿 A · 02:43:28</p></div><p><b>观察到的变化</b><br>客户把承载事业型人才与期权、分阶段发展联系起来，支持继续讨论合作条件。</p><p><b>可复用方法</b><br>履历可以触发动机假设，最终要问人选本人想承担什么、期待什么回报。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“可能”必须保留。没有人选直接陈述，不能认定他已要求合伙人身份。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A05">
+<summary><span class="evidence-id">A05</span><span>用复述锁定“先磨合，再绑定”</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>并不是说我直接去界定你是合伙人。</blockquote><p class="evidence-cite">原稿 A · 02:46:44</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户愿意引入事业型人才，但不希望一开始就确定长期身份和利益绑定，希望有可控的观察过程。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>把客户反复表达的“一步两步”复述成可讨论的合作问题，区分是否欣赏人选与是否准备立即绑定。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>我懂你的意思，你的意思是这个人，看，你可能看上他人，但是你希望有一个激励制度，对，能给他一一定的磨，给你们俩磨合的时间周期。</blockquote><p class="evidence-cite">原稿 A · 02:47:05</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>是的，我觉得所有接下来之后</blockquote><p class="evidence-cite">原稿 A · 02:47:17</p></div><p><b>观察到的变化</b><br>客户明确认可复述，随后说明找错合伙人会引发内耗。02:47:40 Sophie 再次将问题概括为合伙人类高管的信任磨合机制。</p><p><b>可复用方法</b><br>复述时同时说清客户想得到什么和暂时不愿承担什么，邀请客户校正。</p><p class="evidence-boundary"><b>边界与待核实</b><br>这里比早期画像判断有更直接的客户确认，但具体激励条件尚未形成。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A06">
+<summary><span class="evidence-id">A06</span><span>解释“顾问合作”到底怎样做事</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>真的，我觉得就是说真的是没有太多用</blockquote><p class="evidence-cite">原稿 A · 02:48:57</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户担心外部顾问花时间了解后只给建议，仍无法落地。此处她把“顾问”理解成此前体验过的服务形式。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 识别到双方对“顾问”的含义不同，解释付费形式、实际工作与双向考察。把抽象名称还原到谁做什么。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>不是以入职的方式合作，他可能做的是现在这个事，但是你付的是按时间买断的。他对你做考察，你对他做考察</blockquote><p class="evidence-cite">原稿 A · 02:49:14</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>就是通过类似于这种，只是没有入职的方式。</blockquote><p class="evidence-cite">原稿 A · 02:49:56</p></div><p><b>观察到的变化</b><br>客户用自己的话复述合作形式，说明双方对概念的理解在此接近。</p><p><b>可复用方法</b><br>客户否定一个方案名词时，先检查双方说的是不是同一种实际安排。</p><p class="evidence-boundary"><b>边界与待核实</b><br>这里只确认概念理解。合同关系、工作边界和评价标准仍需另行约定。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A07">
+<summary><span class="evidence-id">A07</span><span>承认初步判断需要改变</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我是不是要去找到那种股权激励或者期权的公司？</blockquote><p class="evidence-cite">原稿 A · 02:50:22</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户想借制度控制用人风险，但对只产出 PPT 的服务缺少信心，正寻找可执行的安排。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 明确修正前面的画像诊断，把当前卡点重新定位为双方了解不足与合作风险，建议先做真实工作中的磨合。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>不是说你对画像要求不清晰，是你很清楚你想要什么人，只是在这个阶段，你也想试探他，他可能也想试探你。</blockquote><p class="evidence-cite">原稿 A · 02:50:55</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我觉得你是只是说以前的话就正式入职嘛，你现在就是要把这个东西变成这种。</blockquote><p class="evidence-cite">原稿 A · 02:52:40</p></div><p><b>观察到的变化</b><br>客户继续沿着合作形式理解方案。02:54:50 Sophie 再次承认自己此前理解错了。</p><p><b>可复用方法</b><br>记录哪条新信息让顾问改变诊断，以及改变前后各自会采取什么动作。</p><p class="evidence-boundary"><b>边界与待核实</b><br>不能把整场会谈写成 Sophie 一开始就准确识别了磨合需求。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A08">
+<summary><span class="evidence-id">A08</span><span>用类似项目解释如何观察，而不只报客户名</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我只要看上的人，他基本上一定是属于，还是属于在这个里面是属于比较棒，一定是。</blockquote><p class="evidence-cite">原稿 A · 02:51:49</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户对人选能力有信心，需要解决的是把欣赏转成可验证的合作。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 提及既往项目中的付费磨合安排，并把价值落到真实解题能力、投入和第一反应。展示方法所带来的观察机会。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>试一下他在解决问题的真正的解题能力，试一下他的，他真正的那个passion，那个热情</blockquote><p class="evidence-cite">原稿 A · 02:51:56</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>你现在就是要把这个东西变成这种。</blockquote><p class="evidence-cite">原稿 A · 02:52:40</p></div><p><b>观察到的变化</b><br>客户尝试概括合作形式。记录没有证明她已经同意具体费用或任务。</p><p><b>可复用方法</b><br>展示公司能力时，把类似项目的做法和可观察结果连起来。</p><p class="evidence-boundary"><b>边界与待核实</b><br>既往客户经历为 Sophie 自述，未独立核验，也不构成此案成功保证。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A09">
+<summary><span class="evidence-id">A09</span><span>把磨合方案落到一道真实任务</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>就出题就是说希望你解，帮我解决什么问题？</blockquote><p class="evidence-cite">原稿 A · 02:54:19</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户开始把合作方式转成执行问题，希望知道具体让人选解决什么。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 在 02:53:44 提醒任务设计要能体现挑战与诚意，在此确认人选需要进入真实业务，双方才有可观察的行为。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>这是真的是进来做点事的。</blockquote><p class="evidence-cite">原稿 A · 02:54:21</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>一个一个特殊的服务方式。内部人也有安全感。</blockquote><p class="evidence-cite">原稿 A · 02:55:31</p></div><p><b>观察到的变化</b><br>客户补充内部团队接受度这一考虑，说明她开始思考方案在组织内如何落地。</p><p><b>可复用方法</b><br>磨合任务要写明业务问题、责任、可用资源与评价方式，才能产生判断依据。</p><p class="evidence-boundary"><b>边界与待核实</b><br>任务、权限和评价清单是待设计项。原文没有已经完成的任务书。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-A10">
+<summary><span class="evidence-id">A10</span><span>把观察指标和下一次沟通接起来</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>他也没有说他一定看机会嘛</blockquote><p class="evidence-cite">原稿 A · 02:55:50</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户提醒人选并未明确求职，担心方案建立在人选已经愿意加入的假设上。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>先确认双方意愿，再推进合作。02:55:36 Sophie 已提出观察价值观、真实落地能力和动机，02:53:07 提议与同事和客户再开会。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>那前提就是跟这个人要达成一致。那你可能就要把你自己的商业版图的目标跟他讲讲再细点。</blockquote><p class="evidence-cite">原稿 A · 02:56:16</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><p><b>观察到的变化</b><br>会谈结束时仍是后续工作安排。用户另行提供的“至少再见两次”属于会后建议，不作为这份逐字稿中的原话。</p><p><b>可复用方法</b><br>把方案成立的前提也写进闭环，特别是人选本人是否愿意参与。</p><p class="evidence-boundary"><b>边界与待核实</b><br>尚无后续会面、试合作或入职结果。</p></div>
+</div></details>
+    <p class="evidence-notice">会后补充建议包括至少再见两次，先讲事业目标、听对方的成长与价值取向，再谈磨合安排。这部分单独作为会后材料，未写成逐字稿原话。</p>
+    <h3 id="case-delivery" class="evidence-case-title">案例二 · 从岗位很难，转向核实交付事实</h3>
+    <p>客户持续要求解释搜了哪里、进展如何、为什么推荐不对。现场连线和逐岗核实揭示了覆盖不足、能力标准偏差与状态误传，也暴露了 Sophie 初始理解中需要修正的部分。</p>
+    <div class="evidence-turn"><span>关键转折 · 原稿 B · 11:27</span><blockquote>我得到的信息不是这样子的，对，可能这是我和〔顾问〕之间的沟通问题。</blockquote></div>
+<details class="evidence-card" id="evidence-B01">
+<summary><span class="evidence-id">B01</span><span>客户先问“执行顾问为什么不在”</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>肯定要么整个团队，要么就是核心操作的顾问要沟通。</blockquote><p class="evidence-cite">原稿 B · 01:33</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户期待能核对实际执行、推动交付的人参与。02:25 他又追问本次沟通重点，说明会议有效性正受到质疑。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 初始把拜访定位为策略调整。客户要先核对执行事实，两人的议题尚未对齐。后来 05:14 她选择现场连线，才补上关键参与者。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>但关键岗位，如果这个职位很难解决的话，有些策略调整一下也可以。</blockquote><p class="evidence-cite">原稿 B · 01:51</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>你们调整吗？</blockquote><p class="evidence-cite">原稿 B · 02:00</p></div><p><b>观察到的变化</b><br>客户追问谁需要调整，并未接受原来的议题设定。</p><p><b>可复用方法</b><br>开场先确认客户这次最希望解决的问题，以及谁必须参与。</p><p class="evidence-boundary"><b>边界与待核实</b><br>这是议题未对齐的片段。不能把客户的追问直接标为合作意愿低。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B02">
+<summary><span class="evidence-id">B02</span><span>从提出方案转向核查进度</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>其实我更想要了解，现在全盘摸了什么？怎么摸的？对。是。现在的问题点在哪些？我听不到这些。</blockquote><p class="evidence-cite">原稿 B · 04:46</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户要可核验的覆盖范围、工作进度和障碍，用来判断为什么岗位仍无结果。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>客户在 05:05 指出数据已经过时后，Sophie 改为让执行顾问进入现场对话，核实双方掌握的是否为同一批数据。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>我直接给〔顾问〕打电话吧。</blockquote><p class="evidence-cite">原稿 B · 05:14</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>所谓的对过，也就是几周前截了个图给我看了一下。</blockquote><p class="evidence-cite">原稿 B · 05:18</p></div><p><b>观察到的变化</b><br>客户补充证据的形式和时效，电话核查随后开始。</p><p><b>可复用方法</b><br>客户索要过程证据时，先还原工作事实，再讨论改变策略。</p><p class="evidence-boundary"><b>边界与待核实</b><br>引文中的顾问姓名以〔顾问〕替代，其他文字保留逐字稿原样。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B03">
+<summary><span class="evidence-id">B03</span><span>分清覆盖不足与人选意愿障碍</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>如果只看广东省，然后告诉我很少，那怎么说嘞？</blockquote><p class="evidence-cite">原稿 B · 06:17</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户怀疑“人少”的结论建立在过窄的寻访范围上，要求扩展已约定的市场。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 追问扩大地域的具体障碍。07:29 顾问承认没有系统梳理异地，07:45 她将断层定位到达成共识后没有扩展范围。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>那〔顾问〕我们从外省找的话，有什么样的困难？人选没有意愿，是吗？还是怎么样？</blockquote><p class="evidence-cite">原稿 B · 06:36</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>这个因为几周前我就给过这样的答复了。</blockquote><p class="evidence-cite">原稿 B · 08:16</p></div><p><b>观察到的变化</b><br>客户确认扩范围并非现场新增要求。顾问提到的个别人选拒绝不能替代完整覆盖证据。</p><p><b>可复用方法</b><br>把没搜过、已搜无匹配、已联系不愿来分开记录，各自对应不同动作。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“长三角/珠三角”在现场有纠正，不能把二十几个人当作全国覆盖。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B04">
+<summary><span class="evidence-id">B04</span><span>解释投入原因受到反驳时，回到事实</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>但是现在没按这个做出来，没按这个方向 mapping 啊。</blockquote><p class="evidence-cite">原稿 B · 09:13</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户要求对已约定的执行负责，不接受用外部竞争或顾问信心替代工作完成情况。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 此时尝试用投入机制解释停滞。客户在 09:36 明确反驳，10:34 继续要求按渠道过结果。应记录为尚未获得支持的解释。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>是，我们如果要做很重的mapping，一些客户是有预付费的，我知道他卡在哪了。</blockquote><p class="evidence-cite">原稿 B · 09:30</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我觉得不是。</blockquote><p class="evidence-cite">原稿 B · 09:36</p></div><p><b>观察到的变化</b><br>该解释未获客户认同。11:27 Sophie 承认内部沟通信息可能有问题。</p><p><b>可复用方法</b><br>为团队解释原因之前，核查承诺、动作和证据。被否定的假设要保留为被否定。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“预付费影响投入”在此没有被证实，不能提炼为项目停滞的确定原因。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B05">
+<summary><span class="evidence-id">B05</span><span>把“要求高”拆成具体排除条件</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我觉得你问他这句话已经有偏差跟误解了。</blockquote><p class="evidence-cite">原稿 B · 13:40</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户认为合理的专业能力要求被误解为过高门槛，想排除仅靠身份或信任挂名的人。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 在客户补充挂名情形后重新复述标准，并在 14:05 认可其合理性。这是对前面“专业出身占比”问题的修正。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>就是我们要的是职业董秘嘛。</blockquote><p class="evidence-cite">原稿 B · 14:09</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>是啊。对。我觉得这是很合理的要求吧。</blockquote><p class="evidence-cite">原稿 B · 14:11</p></div><p><b>观察到的变化</b><br>客户认可新的表述。随后仍需通过职责和成果核实是否真正主导上市。</p><p><b>可复用方法</b><br>遇到“要求高”，问清究竟哪条能力是硬条件，哪些背景只是替代指标。</p><p class="evidence-boundary"><b>边界与待核实</b><br>职业出身也不能自动证明真实主导经验，最终需要具体责任证据。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B06">
+<summary><span class="evidence-id">B06</span><span>听出增加人手背后的交付压力</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>人手不足的背后其实是在讲你们推进的进度很慢。</blockquote><p class="evidence-cite">原稿 B · 15:36</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户直接解释了委婉表达。他需要更快的实际推进，也承担着来自内部的交付压力。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 对新增投诉线索追问，希望了解专业性问题。但客户在 28:12 说明自己没有收到直接投诉细节，证据范围必须据此收窄。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>候选人投诉的具体内容是什么？</blockquote><p class="evidence-cite">原稿 B · 16:30</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>至于具体的内容是什么，我没有办法告诉你，是因为不是投诉到我这来</blockquote><p class="evidence-cite">原稿 B · 28:12</p></div><p><b>观察到的变化</b><br>投诉为客户转述。不能据此编造具体不专业行为，也不能当作已完成调查。</p><p><b>可复用方法</b><br>把委婉诉求翻译为业务影响，同时追问新增负面信息的来源和可核实范围。</p><p class="evidence-boundary"><b>边界与待核实</b><br>顾问性格、动机等解释是 Sophie 的判断，没有足够依据作为事实标签。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B07">
+<summary><span class="evidence-id">B07</span><span>从职位名称追到持续要承担的工作</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我们希望这个人冰山以下的画像呢，他可以偏外联一点。</blockquote><p class="evidence-cite">原稿 B · 29:34</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户需要能持续处理资本市场外部事务的人，上市经历只是门槛的一部分。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 把“偏外联”的性格描述转成投融资、外部沟通等实际工作，并用问句确认其业务必要性。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>即使我们现在除了上市以外。投融资，对外的外联，这个工作也是个刚需了，对吧？</blockquote><p class="evidence-cite">原稿 B · 30:12</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>对，也是要推进的。</blockquote><p class="evidence-cite">原稿 B · 30:19</p></div><p><b>观察到的变化</b><br>客户直接确认。这一项可以作为经过现场确认的职责要求。</p><p><b>可复用方法</b><br>抽象特质要对应工作场景与责任，再由客户确认。</p><p class="evidence-boundary"><b>边界与待核实</b><br>对候选人外联能力的判断仍需行为案例，不能仅靠性格印象。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B08">
+<summary><span class="evidence-id">B08</span><span>把法务总的层级差异说成能力证据</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>法务总，我们希望他是一个能搭建风控体系的人。</blockquote><p class="evidence-cite">原稿 B · 31:51</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户要有人建立长期风控体系，现有推荐主要停留在处理单个案件，达不到岗位责任。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 把职位头衔转为是否做过体系建设，并在 32:38 指出当前推荐没有保证这项能力。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>就核心他是要建能力、建体系的能力，要做过这个事。</blockquote><p class="evidence-cite">原稿 B · 32:26</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>就风控体系。</blockquote><p class="evidence-cite">原稿 B · 32:31</p></div><p><b>观察到的变化</b><br>客户进一步限定要建设的体系类型，形成更具体的筛选条件。</p><p><b>可复用方法</b><br>用做过什么、负责到哪一层验证岗位级别，不能拿头衔替代能力。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“做过”仍要核实主导程度、适用业务背景和实际产出。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B09">
+<summary><span class="evidence-id">B09</span><span>让预算假设接受反证</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>现在推的很多法务走，其实有很多是钱到那个数了。能力没到那个。</blockquote><p class="evidence-cite">原稿 B · 34:27</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户没有把高薪作为绝对障碍，真正不接受的是价格已经提高但能力仍不匹配。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 说明自己为何核查预算。客户用已有高薪推荐反证，35:14 她转回缺少法务和风控体系经验。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>我担心他可能会卡在薪资上，我是这个担心，所以我问你一嘴。</blockquote><p class="evidence-cite">原稿 B · 34:46</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>他招，他找的人，钱都到位了。上百万的没少。</blockquote><p class="evidence-cite">原稿 B · 35:01</p></div><p><b>观察到的变化</b><br>薪酬限制不能解释眼前全部问题。需优先修正推荐质量。</p><p><b>可复用方法</b><br>明确说出正在验证的假设，让客户用实际记录支持或否定。</p><p class="evidence-boundary"><b>边界与待核实</b><br>转写“法务走”保留原样。薪资数字只代表会谈所述，不作为市场价格结论。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B10">
+<summary><span class="evidence-id">B10</span><span>把“不着急”与“关闭”分开核实</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>他不着急，是我们要找到合适的人。不是说不看了。</blockquote><p class="evidence-cite">原稿 B · 37:00</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户宁缺毋滥，仍要求持续寻找合适人选。节奏与质量取舍不等于撤销需求。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 将含混的优先级表述重新核实为岗位状态，同时追问“有人在流程”被传成“可能谈薪”的信息来源。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>所以法务的需求正常，还在看。</blockquote><p class="evidence-cite">原稿 B · 39:57</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>没有，我只是说我们同步有候选人在看。</blockquote><p class="evidence-cite">原稿 B · 40:49</p></div><p><b>观察到的变化</b><br>客户否认复试或谈薪推定。岗位开放与候选阶段都需要回写。</p><p><b>可复用方法</b><br>分别记录岗位状态、紧急度、候选阶段、更新时间和确认人。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“有候选人在看”不能自动升级成复试、谈薪或即将关闭。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B11">
+<summary><span class="evidence-id">B11</span><span>先确认能力可迁移，再说明专业团队</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>大客户的管理能力。是。然后渠道建设能力。渠道建设能力。营销体系的搭建能力。</blockquote><p class="evidence-cite">原稿 B · 43:38</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户愿意看跨行业人才，核心要求是大客户、渠道和体系建设，同时要适应总部管控与赋能的职责。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 将客户任务与公司销售专业线连接。49:58 又说明有专门做销售方向的团队，形成针对具体问题的能力展示。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>这些人能力都可以迁移，他都可以迁移</blockquote><p class="evidence-cite">原稿 B · 43:22</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>同行我们也看，跨行我们也看。</blockquote><p class="evidence-cite">原稿 B · 45:30</p></div><p><b>观察到的变化</b><br>客户确认行业可开放，尚未确认某位人选能力可迁移。</p><p><b>可复用方法</b><br>能力展示要说清客户任务、相似经验和实际承接团队。</p><p class="evidence-boundary"><b>边界与待核实</b><br>“可迁移”为待验证判断，行业经验、渠道机制和组织权限仍需逐人比较。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B12">
+<summary><span class="evidence-id">B12</span><span>从经营模式确定总经理的任务与搜寻路径</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>经营生产，还有内部这些基地的关系拉通。</blockquote><p class="evidence-cite">原稿 B · 01:04:21</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户已明确岗位同时要承担经营、生产与内部客户协同，不能只按销售经历选人。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>这是前序澄清后的归纳。01:04:15 Sophie 已概括经营和生产体系，客户补上基地关系，之后她提出定向寻找相似经营模式的一把手。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>你这个其实很适合定向化去找人，就那几家公司。</blockquote><p class="evidence-cite">原稿 B · 01:04:53</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>就是有没有花心思去找。</blockquote><p class="evidence-cite">原稿 B · 01:04:57</p></div><p><b>观察到的变化</b><br>客户把注意力再次放回实际寻访。定向策略形成，但名单和触达仍未展示。</p><p><b>可复用方法</b><br>用岗位的经营条件决定目标公司类型，再匹配相应的寻访人员。</p><p class="evidence-boundary"><b>边界与待核实</b><br>公开版只保留一般岗位要求，不引用原文明确要求不对外讲的选人过程与内部评价。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B13">
+<summary><span class="evidence-id">B13</span><span>独家诉求未获同意，记录客户提供的其他保障</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>我没有办法给你独家，是因为这个岗位我们已经放出去了。</blockquote><p class="evidence-cite">原稿 B · 01:09:55</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>客户要保留已启动的招聘渠道，同时愿意用快速流程、紧急需求和直接对接支持交付。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>这里是 Sophie 先提出独家、客户随后回应。她尝试让团队投入与交付要求匹配，但未取得独家承诺。01:11:22 又提出每周最小交付。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>能否给我们一个独家的？你可以要求我推的简历的质量和数量。</blockquote><p class="evidence-cite">原稿 B · 01:09:45</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我可以给到你一个保障，就是我们的招聘流程的进度第一非常快。</blockquote><p class="evidence-cite">原稿 B · 01:12:05</p></div><p><b>观察到的变化</b><br>客户提出流程保障并确认合适就进。须保留这条不同于独家的实际回应。</p><p><b>可复用方法</b><br>把提出的合作条件、客户拒绝项和实际认可项分别记录。</p><p class="evidence-boundary"><b>边界与待核实</b><br>本段 Sophie 原话早于客户原话，不能伪装成对客户这句话的即时回答。</p></div>
+</div></details>
+<details class="evidence-card" id="evidence-B14">
+<summary><span class="evidence-id">B14</span><span>把修复信任的安排写成可检查承诺</span><span class="evidence-expand" aria-hidden="true"></span></summary>
+<div class="evidence-body">
+<div class="evidence-field"><h4>01　客户原话</h4><blockquote>帮我加大一些力度吧。</blockquote><p class="evidence-cite">原稿 B · 01:13:06</p></div>
+<div class="evidence-field"><h4>02　客户底层想法 <small>复盘解读</small></h4><p>结合前文，客户要看到资源投入、及时进度和符合要求的推荐，期待本次对齐真正改变交付。</p></div>
+<div class="evidence-field"><h4>03　Sophie 解读逻辑 <small>复盘解读</small></h4><p>Sophie 提出增员和需求分发，38:37 承诺每周看数据，01:16:06 提出加入销售线负责人。形成资源、信息和检查节奏的安排。</p></div>
+<div class="evidence-field"><h4>04　Sophie 原话</h4><blockquote>今天晚上我把其他团队往里面加，至少两个人，至少两个人</blockquote><p class="evidence-cite">原稿 B · 02:01:54</p></div>
+<div class="evidence-field"><h4>05　总结与验证</h4><div class="response-quote"><span>客户后续表达</span><blockquote>我觉得今天沟通挺好的，起码你听明白我的诉求是什么，以及现在的关键核心点是什么</blockquote><p class="evidence-cite">原稿 B · 01:15:41</p></div><p><b>观察到的变化</b><br>客户对当场理解改善给出正面反馈。该反馈早于最后增员承诺，不能写成已认可后续交付效果。</p><p><b>可复用方法</b><br>把谁做、做什么、何时检查与客户即时反馈分别记录，后续再补执行证据。</p><p class="evidence-boundary"><b>边界与待核实</b><br>增员、拉群、周六进展仍是承诺。没有推荐或到岗记录，不能宣布交付已恢复。</p></div>
+</div></details>
+    <div class="evidence-guide"><b>真正要留下来的判断过程</b><p>客户说了什么 → 顾问当时怎样理解 → 哪条回应支持或否定了理解 → 顾问怎样调整动作 → 后续结果如何。</p><p>两个案例都出现了理解修正。磨合方案、增员和进度检查仍要补充执行证据，才能检验方法是否有效。</p></div>
   </section>
 
   <section id="scenes">
