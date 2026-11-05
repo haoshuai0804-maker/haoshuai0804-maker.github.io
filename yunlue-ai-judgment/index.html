@@ -327,6 +327,13 @@
   #case-founder{scroll-margin-top:90px;}
   @media(max-width:700px){.evidence-card summary{padding:16px 14px;grid-template-columns:32px 1fr 16px;font-size:16px;gap:6px;}.evidence-body{padding:0 16px 8px;}.evidence-guide{padding:18px;}.evidence-turn{padding:14px 18px;}.evidence-turn blockquote,.evidence-field blockquote{font-size:17px;}}
 
+
+  .buyer-values dt{line-height:1.6;}
+  .scenario-evidence dd p{font-size:var(--f5);margin:8px 0 0;}
+  .capture-status{display:inline-block;padding:2px 8px;border:1px solid var(--line-strong);border-radius:4px;font-size:12px;color:var(--bronze);margin-right:8px;}
+  .arow .n .agenda-output{color:var(--navy);margin-top:8px;}
+  #purpose .big{max-width:34em;}
+
 </style>
 </head>
 <body>
@@ -341,12 +348,13 @@
     <button id="menu-toggle" type="button" aria-expanded="false" aria-controls="nav">目录</button>
   </div>
   <nav id="nav" aria-label="章节目录">
+    <a href="#purpose" data-group="开始">会议目的</a>
     <a href="#agenda" data-group="开始">会议议程</a>
     <details class="nav-group" data-name="第一章 · 为什么" open>
       <summary><span><span class="nav-num">第一章</span>为什么</span></summary>
-      <a href="#lesson"><span class="nav-subnum">1.1</span> 最近的几点思考</a>
+      <a href="#lesson"><span class="nav-subnum">1.1</span> 先看客户为什么付费</a>
       <a href="#buy"><span class="nav-subnum">1.2</span> 客户真正买什么</a>
-      <a href="#judge"><span class="nav-subnum">1.3</span> 结果由判断决定</a>
+      <a href="#judge"><span class="nav-subnum">1.3</span> 哪些判断带来价值</a>
       <a href="#why-not"><span class="nav-subnum">1.4</span> 判断为什么拿不出来</a>
       <a href="#why-now"><span class="nav-subnum">1.5</span> 为什么现在可以开始</a>
     </details>
@@ -355,7 +363,7 @@
       <a href="#chain"><span class="nav-subnum">2.1</span> 一条链</a>
       <a href="#source"><span class="nav-subnum">2.2</span> 四类素材</a>
       <a href="#case"><span class="nav-subnum">2.3</span> Sophie 见客户</a>
-      <a href="#scenes"><span class="nav-subnum">2.4</span> 四组场景的采集触点</a>
+      <a href="#scenes"><span class="nav-subnum">2.4</span> 案例对应的采集触点</a>
       <a href="#levels"><span class="nav-subnum">2.5</span> 三级标注</a>
       <a href="#example"><span class="nav-subnum">2.6</span> 一个例子</a>
       <a href="#success"><span class="nav-subnum">2.7</span> 怎么算成功</a>
@@ -388,109 +396,113 @@
         <p class="answer">助理给出做法、理由、案例依据，<br>以及什么情况下要换做法。</p>
       </div>
     </div>
-    <div class="meta"><span>2026.11.08 · 周日讨论会</span><span>方案讲解 30 分钟</span><span>主线约 12 分钟 · 案例按需展开</span></div>
+    <div class="meta"><span>2026.11.08 · 周日讨论会</span><span>方案讲解 30 分钟</span><span>原话与采集触点按需展开</span></div>
     <a class="hero-jump" href="#chain">先看整套方案怎么运作</a>
   </header>
 
   <!-- ================= 议程 ================= -->
+  <section id="purpose">
+    <div class="kick">会前 · 会议目的</div>
+    <h2>把资深顾问的做法，变成团队能用的第一批案例</h2>
+    <p class="big">这次会议要一起讲清客户要什么、好判断怎样形成，并定下第一轮怎么做。</p>
+    <p>我们已经有原始讨论、两次客户拜访和逐句拆解。接下来需要 Sophie 与 Leader 核对解读，用自己真实经历补充或反驳，再把采集与使用的方法落到具体的人和案例上。</p>
+    <div class="cols c3">
+      <div class="col"><div class="n">形成共识</div><h3>客户价值说得具体</h3><p>选一个正在服务的客户，说清他的任务、顾虑、我们补上的能力，以及如何判断交付有用。</p></div>
+      <div class="col"><div class="n">共同完成</div><h3>一张可回查的案例卡</h3><p>现场核对原话、理解、动作、目的和回应，保留分歧，注明缺失证据，验证别人是否看得懂、用得上。</p></div>
+      <div class="col"><div class="n">约定行动</div><h3>一份能执行的试点表</h3><p>确定首批场景、具体案例、负责人、参与人、材料提交日和复盘日，并写下第一轮验收标准。</p></div>
+    </div>
+    <h3>每个人怎么参与</h3>
+    <p><b>Sophie 与案例当事人</b>确认当时的判断、目的与实际后续。<b>各 Leader</b>带一个真实片段，指出类似情境下的不同做法。<b>方案负责人</b>记录共识、分歧和行动项。讨论尽量回到具体话语与动作。</p>
+    <p class="evidence-notice">建议会前看 1.1–1.3 和 2.3 的两个关键转折，并准备一段可回查的沟通记录。素材不足可以明确提出。方案中未验证的解读、服务设想和效果目标，由本次会议逐项确认。</p>
+  </section>
+
+
   <section id="agenda">
     <div class="kick">会前 · 会议议程</div>
-    <h2>会议议程</h2>
-    <p>今天三件事：<span class="em">听方案、逐个场景讨论怎么做、定下一步。</span>方案只讲 30 分钟，剩下两个多小时全部给讨论。</p>
-
+    <h2>每一段讨论，都留下明确产出</h2>
+    <p>建议安排为 13:30–17:00，共 3 小时 30 分钟，含 10 分钟茶歇。方案讲解控制在 30 分钟，其余时间用于案例核对、现场练习与行动确认。以下产出是本次会议目标，尚未代表已经达成共识。</p>
     <div class="agenda">
-      <div class="arow">
-        <div class="t">13:30–13:40</div><div class="d">10′</div>
-        <div class="n">开场<small>说明今天干什么。一句边界：不讲系统怎么做，讲每个场景该怎么做</small></div>
-      </div>
-      <div class="arow now">
-        <div class="t">13:40–14:10</div><div class="d">30′</div>
-        <div class="n">方案讲解<span class="badge">本次方案</span><small>为什么做 → 怎么做 → 每个人要做什么</small></div>
-      </div>
-      <div class="arow">
-        <div class="t">14:10–14:55</div><div class="d">45′</div>
-        <div class="n">场景一：见客户<small>什么单该接、客户真正要谁、压价怎么接</small></div>
-      </div>
-      <div class="arow">
-        <div class="t">14:55–15:05</div><div class="d">10′</div>
-        <div class="n">茶歇</div>
-      </div>
-      <div class="arow">
-        <div class="t">15:05–15:50</div><div class="d">45′</div>
-        <div class="n">场景二：见人选<small>简历前 90 秒、必问问题、先推谁、会不会跑</small></div>
-      </div>
-      <div class="arow">
-        <div class="t">15:50–16:25</div><div class="d">35′</div>
-        <div class="n">场景三：跟进与交付<small>项目卡住怎么办、客户不反馈怎么推、入职后怎么跟</small></div>
-      </div>
-      <div class="arow">
-        <div class="t">16:25–16:45</div><div class="d">20′</div>
-        <div class="n">场景四：带教与新人<small>新人先会哪三件事、怎么判断真会假会</small></div>
-      </div>
-      <div class="arow">
-        <div class="t">16:45–17:00</div><div class="d">15′</div>
-        <div class="n">下一步<small>整理稿什么时候发、第一批从哪个组开始、下次碰头</small></div>
-      </div>
+<div class="arow"><div class="t">13:30–13:40</div><div class="d">10′</div><div class="n">对齐会议目标与产出<small><b>怎么讨论</b>　确认三项产出，选定现场要共填的 <a href="#evidence-B10">B10</a> 案例卡。</small><small class="agenda-output"><b>现场产出</b>　列清要确认的问题，确定主持与记录分工。</small></div></div>
+<div class="arow now"><div class="t">13:40–14:10</div><div class="d">30′</div><div class="n">讲清客户价值与整套做法<small><b>怎么讨论</b>　前 10 分钟过 1.1–1.3，接着 10 分钟看两案转折，最后 10 分钟过 2.4 采集与试点。</small><small class="agenda-output"><b>现场产出</b>　形成一版客户价值表，记录待讨论的解读与边界。</small></div></div>
+<div class="arow"><div class="t">14:10–14:55</div><div class="d">45′</div><div class="n">见客户 · 怎样听懂并回应真实诉求<small><b>怎么讨论</b>　用 <a href="#evidence-A03">A03</a>→<a href="#evidence-A07">A07</a> 看诊断怎样改变，用 <a href="#evidence-A08">A08</a>、<a href="#evidence-B11">B11</a> 看公司能力怎样展示。Leader 补充一个类似或相反案例。</small><small class="agenda-output"><b>现场产出</b>　核对一条判断变化，确认本组优先采集的触点与必要字段。</small></div></div>
+<div class="arow"><div class="t">14:55–15:05</div><div class="d">10′</div><div class="n">茶歇<small><b>怎么讨论</b>　休息，整理尚未解决的问题。</small></div></div>
+<div class="arow"><div class="t">15:05–15:50</div><div class="d">45′</div><div class="n">见人选 · 怎样验证能力和真实意愿<small><b>怎么讨论</b>　从 <a href="#evidence-A04">A04</a>、<a href="#evidence-A10">A10</a> 的动机假设出发，拟定要向人选核实的问题。请 Leader 补充一段本人真实回应。</small><small class="agenda-output"><b>现场产出</b>　形成待核实问题与补采清单。人选原话缺失的地方明确留空。</small></div></div>
+<div class="arow"><div class="t">15:50–16:25</div><div class="d">35′</div><div class="n">推进与交付 · 用什么证据判断卡点<small><b>怎么讨论</b>　用 <a href="#evidence-B02">B02</a>、<a href="#evidence-B03">B03</a> 核实寻访覆盖，用 <a href="#evidence-B10">B10</a> 区分状态，现场共同填写 2.4 的 <a href="#evidence-B10">B10</a> 案例卡。</small><small class="agenda-output"><b>现场产出</b>　完成一张核对过的案例卡，列出后续结果需要谁回填。</small></div></div>
+<div class="arow"><div class="t">16:25–16:45</div><div class="d">20′</div><div class="n">带教 · 检验别人能否用这个案例<small><b>怎么讨论</b>　暂不展示 <a href="#evidence-A06">A06</a> 的回应，请参与者先写下一句与理由，再对照原话。讨论哪些证据改变了判断。</small><small class="agenda-output"><b>现场产出</b>　确定一轮“先独立判断、再点评”的练习方式与评价依据。</small></div></div>
+<div class="arow"><div class="t">16:45–17:00</div><div class="d">15′</div><div class="n">定试点 · 明确谁做、何时交、怎样验收<small><b>怎么讨论</b>　逐项填写首批场景、案例、负责人、材料提交日、复盘日。检查未决问题是否有跟进人。</small><small class="agenda-output"><b>现场产出</b>　确认试点行动表与第一轮验收标准。没有定下的事项注明责任人与确认日期。</small></div></div>
     </div>
+    <p class="evidence-notice">案例编号点击可回到 2.3 原话。每段临结束时，由记录人复述共识、分歧和缺失证据，再由在场当事人确认。</p>
   </section>
 
   <!-- ================= 为什么 ================= -->
   <div class="chapter-intro" aria-labelledby="chapter-01">
     <p class="chapter-label">第一章 · 为什么</p>
     <h2 id="chapter-01">让顾问的经验，能够被传下去</h2>
-    <p class="chapter-desc">先看业务结果背后的判断，再看经验为什么难以复用。</p>
+    <p class="chapter-desc">从客户愿意付费的价值出发，找到值得学习和复用的判断。</p>
   </div>
 
   <section id="lesson">
     <div class="kick"><i>1.1</i>为什么</div>
-    <h2>最近的几点思考</h2>
-    <p class="big">光做软件，很容易变成自嗨。</p>
-    <p>我们自己就走过一段：埋头做人岗匹配的工具，功能越堆越多，但离客户真正要的结果越来越远。而且说实话，<span class="em">我们还没走到「算法够准」那一步</span>——所以问题不在算法准不准，在于我们做出来的东西能不能带来结果。</p>
-    <p>一个东西如果不能改变客户的结果，客户不会为它买单。这个判断，改变了后面的所有选择。</p>
-
-    <table>
-      <thead><tr><th>原来的想法</th><th>现在的想法</th></tr></thead>
-      <tbody>
-        <tr><td>做一个好用的工具</td><td>让它带来结果</td></tr>
-        <tr><td>功能越做越全</td><td>关键动作做对就行</td></tr>
-        <tr><td>我们自己觉得好</td><td>客户拿到结果才算好</td></tr>
-      </tbody>
-    </table>
+    <h2>先把客户为什么付费想清楚</h2>
+    <p class="big">我们要把客户愿意付费的价值，变成团队能稳定交付的能力。</p>
+    <p>10 月 31 日的两场讨论，把问题拉回了业务现场。客户什么时候需要外部帮助？HR 为什么愿意把我们介绍给老板？顾问做了什么，能让招聘真正往前走？这些问题决定 AI 应该帮助我们做什么。</p>
+    <div class="cols c3">
+      <div class="col"><div class="n">01 · 从谁的处境出发</div><h3>看清使用者与决策者</h3><p>HR 要完成招聘任务，也要解释外部费用。老板要关键岗位解决业务问题。先弄清谁提出需求、谁评估服务、谁决定付费。</p></div>
+      <div class="col"><div class="n">02 · 给业务增加什么</div><h3>把资源变成可用的选择</h3><p>人才地图要讲清人才在哪里、谁值得接触、有什么风险。推荐要说明筛选依据，让客户少做无效面试，能据此决定下一步。</p></div>
+      <div class="col"><div class="n">03 · 让团队怎样用起来</div><h3>在真实任务中支持顾问</h3><p>见客户前能准备，沟通中知道要核实什么，遇到异议后能调整。用实际动作和客户反馈检验助理是否有用。</p></div>
+    </div>
+    <div class="evidence-guide"><b>这件事的业务顺序</b><p>客户的任务与顾虑 → 顾问怎样帮他完成 → 留下真实判断与动作 → AI 辅助更多人做到 → 用业务结果回验。</p></div>
+    <p>因此先从见客户、见人选的真实片段起步。记录当时的信号、判断、动作和目的，也记录客户的纠正。系统与 AI 用来整理、检索和辅助应用，顾问仍需对事实核实与业务判断负责。</p>
+    <p class="evidence-notice">依据 10 月 31 日《用户需求讨论》及《业务与 AI 工具落地规划讨论》。以下是供本次会议确认的工作理解，具体服务组合和收费方式仍需客户验证。</p>
   </section>
 
   <section id="buy">
     <div class="kick"><i>1.2</i>为什么</div>
     <h2>客户真正买的是什么</h2>
-    <p class="big">不是匹配，是结果的安全感。</p>
-    <p>一个 HR 老大去跟老板申请十万块招一个人，他最怕的不是花钱，是老板想：<span class="em">这么点事你都办不了？</span></p>
-    <p>但这里有个绕不过去的事实：我们很难直接跟老板谈，<span class="em">HR 是必经之路</span>。所以真正要回答的是——HR 自己要什么。</p>
-
+    <p class="big">值得见的人选、能做决定的依据，以及把关键岗位持续推进到位的能力。</p>
+    <p>“结果的安全感”要落在可检查的交付上。客户能看到哪些选择、为什么推荐、风险在哪里、接下来谁做什么，才有依据相信这笔钱花得值。</p>
+    <h3>先分清谁需要什么</h3>
     <div class="cols c3">
-      <div class="col"><div class="n">01</div><h3>帮他放大能力</h3><p>他提的人、他做的判断，被证明是对的。</p></div>
-      <div class="col"><div class="n">02</div><h3>不抢他的功劳</h3><p>成了是他的功劳，我们只是帮他把事做成。</p></div>
-      <div class="col"><div class="n">03</div><h3>让他省心</h3><p>不用他盯着，过程和结果都能向老板交代。</p></div>
+      <div class="col"><div class="n">业务与老板</div><h3>关键岗位能接住业务</h3><p>这个人能解决什么问题？用错的风险是什么？岗位空着还会影响哪些事？</p></div>
+      <div class="col"><div class="n">HR 与招聘负责人</div><h3>把招聘做好，也能交代</h3><p>外部服务补上了什么？推荐为什么可信？进度能否掌握？拿到的信息能否支持自己判断和内部沟通？</p></div>
+      <div class="col"><div class="n">预算与采购决策者</div><h3>看清投入换来什么</h3><p>自己找和请外部帮助有什么差别？费用对应什么工作与交付？合作范围、节奏和责任能否说清？</p></div>
     </div>
-
-    <p class="muted">谁做到这三件事，谁才拿得到单。</p>
+    <p class="evidence-notice">同一个人可能承担多个角色。HR 主导招聘时，要尊重其职责和对接口径。创始人直接对接时，则围绕其业务与用人判断展开，不能假设每个客户都有相同决策链。</p>
+    <h3>客户什么时候更有理由付费</h3>
+    <p>原始讨论提出了一种典型情境——内部招聘已经充分投入，仍缺少合适人选，HR 与老板认同需要扩展人才接触范围。此时我们要展示能补上的资源和判断，让使用猎头成为有依据的招聘选择。</p>
+    <h3>把购买价值拆成五项具体交付</h3>
+    <div class="touch-group buyer-values"><dl>
+      <div><dt>① 接触到合适的人</dt><dd><b>客户的问题</b>　靠现有渠道找不到，或者不知道还应该去哪里找。<br><b>我们交付</b>　目标公司与人才范围、已核实的接触情况、人选意愿和仍未覆盖的方向。<br><b>客户怎样判断有用</b>　新增了值得接触、实际能推进的选择。见 <a href="#evidence-B03">B03 · 核实寻访覆盖</a>。</dd></div>
+      <div><dt>② 少而值得见的推荐</dt><dd><b>客户的问题</b>　简历不少，面了才发现职责或能力不对。<br><b>我们交付</b>　经过核实的少量人选，逐人说明相关责任、成果、推荐理由与待核实点。<br><b>客户怎样判断有用</b>　减少明显不符要求的面试，关键能力经得起追问。见 <a href="#evidence-B08">B08 · 风控体系能力</a>。</dd></div>
+      <div><dt>③ 有依据地做取舍</dt><dd><b>客户的问题</b>　人不错，但不知道适不适合自己，或该怎样合作。<br><b>我们交付</b>　能力、动机与企业条件的对应关系，讲清风险、未知信息及下一步验证方式。<br><b>客户怎样判断有用</b>　能决定继续了解、调整合作方式或暂缓。见 <a href="#evidence-A05">A05</a>、<a href="#evidence-A07">A07 · 先磨合再绑定</a>。</dd></div>
+      <div><dt>④ 过程有人主动推进</dt><dd><b>客户的问题</b>　没有新进度，也不知道卡点，更不知道该配合什么。<br><b>我们交付</b>　约定周期的覆盖与反馈、卡点依据、调整建议、下一步责任人。<br><b>客户怎样判断有用</b>　不用反复追问也能掌握进展，方向变化能及时对齐。见 <a href="#evidence-B02">B02</a>、<a href="#evidence-B14">B14 · 核查与跟进承诺</a>。</dd></div>
+      <div><dt>⑤ 支持 HR 做好自己的工作</dt><dd><b>客户的问题</b>　既要争取预算，又要向老板解释人选与风险，还要组织内部协同。<br><b>我们交付</b>　可用于汇报的人才地图、筛选与取舍依据，以及经授权可共享的人选顾虑和入职关注点。<br><b>客户怎样判断有用</b>　自己更有依据地决策和推动，职责与沟通主导权得到尊重。是否代做融入辅导，应按客户需要单独约定。</dd></div>
+    </dl></div>
+    <p class="evidence-notice">讨论中“首批三到五人、每周见两到三位”是 HR 角色演练中的举例，表达对质量与节奏的期待。具体数量和周期，要结合岗位难度、市场供给与双方投入约定。</p>
+    <h3>让客户看懂公司能力，可以这样展示</h3>
+    <p>围绕一个真实岗位，拿出一份人才地图和一段相关案例。地图讲清目标公司、关键能力、覆盖进度、接触状态与更新时间。案例讲清遇到什么问题、怎样判断、采取什么动作，以及已有结果或仍待验证的部分。HR 能据此向老板解释为什么需要这项服务。</p>
+    <div class="touch-group"><dl>
+      <div><dt>一般资讯</dt><dd>公开薪酬信息、公开人事变动能节省搜集时间，也能维持联系。客户觉得有用，仍不等于愿意单独付费。</dd></div>
+      <div><dt>岗位相关的判断</dt><dd>信息经过核实，并能回答“谁值得接触、为什么、有什么风险”，价值才进一步进入招聘决策。信息来源与可共享范围需要明确。</dd></div>
+      <div><dt>可检验的服务</dt><dd>围绕约定岗位提供筛选、接触、反馈与推进，让客户看到具体交付。轻信息与完整服务如何组合、如何收费，属于后续验证项。</dd></div>
+    </dl></div>
+    <div class="evidence-guide"><b>这一节要形成的共识</b><p>针对手上的客户，说清他要完成的任务、我们补上的能力、约定交付与验收依据。再确认哪些是当前就能做到的，哪些仍需要试点。</p></div>
   </section>
 
   <section id="judge">
     <div class="kick"><i>1.3</i>为什么</div>
-    <h2>结果由什么决定</h2>
-    <p class="big">关键时刻的<span class="accent">判断</span>，决定后面的力气往哪里使。</p>
-    <p>同样一个职位、同样一个候选人库、同样一天八小时，两个顾问的产出可以差很远。除了投入多少，还要看几个关键时刻怎么判断。</p>
-    <p>这里的「判断」，就是<span class="em">看到了什么信号，认为问题在哪里，因此选择什么动作，想达到什么目的。</span></p>
-
-    <div class="cols c3">
-      <div class="col"><div class="n">01</div><h3>这个单接不接</h3><p>预算、决策链、HC 是真的还是假的。</p></div>
-      <div class="col"><div class="n">02</div><h3>客户真正要谁</h3><p>不是 JD 上写的那个，是他缺的那个。</p></div>
-      <div class="col"><div class="n">03</div><h3>第一批推谁</h3><p>推几个、按什么顺序、怎么讲。</p></div>
-      <div class="col"><div class="n">04</div><h3>这人会不会跑</h3><p>什么信号出现，就要提前锁。</p></div>
-      <div class="col"><div class="n">05</div><h3>什么时候放弃</h3><p>止损点在哪里，卡多久算死。</p></div>
-      <div class="col"><div class="n">06</div><h3>压价怎么接</h3><p>让还是不让，让多少，怎么给台阶。</p></div>
-      <div class="col"><div class="n">07</div><h3>为什么是这个人</h3><p>同样的条件，为什么推他而不是别人。</p></div>
-      <div class="col"><div class="n">08</div><h3>怎么和客户同频</h3><p>他在意什么，我就用什么语言讲。</p></div>
-    </div>
+    <h2>哪些判断，让客户拿到这些价值</h2>
+    <p class="big">把客户的一句话，转成有依据、能验证的下一步。</p>
+    <p>判断决定投入的方向，执行让方向变成进展。招聘结果还受岗位条件、市场供给和双方决策影响。我们要沉淀的是其中可学习、可检查的做法。</p>
+    <div class="touch-group"><dl>
+      <div><dt>判断当前真正的卡点</dt><dd>客户说自己已经清楚要什么人，却反复问怎么合作。Sophie 后来把判断转向双方先磨合。要留下促使判断改变的原话。<a href="#evidence-A03">A03</a> → <a href="#evidence-A07">A07</a>。</dd></div>
+      <div><dt>判断信息是否充分</dt><dd>团队说人才少，客户说早已同意扩大范围。现场核实后，才分清已联系不愿来与尚未系统寻找。要保留覆盖范围和实际工作证据。<a href="#evidence-B02">B02</a> → <a href="#evidence-B03">B03</a>。</dd></div>
+      <div><dt>判断能力与意愿是否匹配</dt><dd>法务总的头衔不能代替建体系经历，走向业务的履历只能提示事业动机。分别核实做过什么、人选自己想要什么、公司能提供什么。<a href="#evidence-B08">B08</a> · <a href="#evidence-A04">A04</a>。</dd></div>
+      <div><dt>判断怎样回应才能推进</dt><dd>客户否定“顾问”时，先解释实际承担的工作与合作方式。客户要进度时，明确资源、记录和检查安排。观察回应是否真正消除了顾虑。<a href="#evidence-A06">A06</a> · <a href="#evidence-B14">B14</a>。</dd></div>
+    </dl></div>
+    <div class="evidence-guide"><b>每次都记录这条判断链</b><p>原话与信号 → 当前理解 → 待核实的问题 → 动作与目的 → 对方回应 → 判断修正与后续结果。</p></div>
+    <p>10 月 31 日讨论中特别强调了真实过程和事后回放。优秀顾问也会先理解偏，再被客户纠正。把这些转折留下来，其他人才能学会根据证据调整，而不只记住一句话术。</p>
+    <p>AI 助理的目标，是让顾问面对类似情境时有案例可查、有问题可问、有动作可选。验证时同时看建议是否有依据、是否减少核查负担、能否帮助推进。讨论中的能力百分比和一致率是设想与目标，不能当作已达到的能力或结果承诺。</p>
   </section>
 
   <section id="why-not">
@@ -821,37 +833,45 @@
 
   <section id="scenes">
     <div class="kick"><i>2.4</i>怎么做</div>
-    <h2>四组业务场景，各在哪些触点采集什么</h2>
-    <p>场景说明正在做哪类业务。触点是可以回看的具体互动或动作，如一次能力介绍、一句追问或一次推荐反馈。决策点说明顾问在这里需要作什么选择。同一触点可以关联多个决策点。</p>
-    <div class="touch-group"><h3>见客户</h3><p class="muted">首轮建议采集 · 展示公司能力</p><dl>
-<div><dt>初次接单</dt><dd>记录客户为什么现在要招、谁参与决定，以及顾问接单前还要核实什么。</dd></div>
-<div><dt>澄清需求</dt><dd>保留客户原话、顾问的追问，以及追问后明确或改变的条件。</dd></div>
-<div><dt>展示公司能力</dt><dd>记录客户的顾虑、顾问选用的证据、展示目的和客户回应。若客户担心找不到人，可展示人才分布和搜索路径；若担心推荐不准，可展示脱敏推荐样例。</dd></div>
-<div><dt>确认画像与合作方式</dt><dd>记下双方同意的优先条件、由谁反馈、下一步做什么。</dd></div>
-<div><dt>压价或改需求</dt><dd>记录哪个前提发生变化，顾问据此调整了什么，客户是否接受。</dd></div>
+    <h2>把两个案例，落到四组场景的采集触点</h2>
+    <p>沿用前面案例的 A01—A10、B01—B14 编号，点击即可展开对应原话。每个触点明确案例依据、采集字段与证据状态。</p>
+    <div class="evidence-guide"><b>先看这条记录属于什么</b><p>现场发生的动作可以直接复盘。客户转述、人选动机假设、后续承诺要分别标明。缺少现场记录的触点列入补采清单，带教部分作为练习设计。</p></div>
+<div class="touch-group scenario-evidence"><h3>见客户</h3><p class="muted">两次拜访可直接用于复盘，优先形成第一批记录。</p><dl>
+<div><dt>初次接单与合作入口</dt><dd><span class="capture-status">部分覆盖</span> <a href="#evidence-B01">B01</a> · <a href="#evidence-B13">B13</a><p><b>案例对应</b>　已有客户质疑本次拜访能解决什么，后续拒绝独家并说明流程保障。</p><p><b>要采集什么</b>　客户任务、当前合作状态、会议目标、决策链与可承诺的投入。这里是存量客户沟通，新客户首次接单仍需补样本。</p></dd></div>
+<div><dt>澄清需求</dt><dd><span class="capture-status">现场片段</span> <a href="#evidence-A03">A03</a> · <a href="#evidence-A07">A07</a> · <a href="#evidence-B05">B05</a> · <a href="#evidence-B08">B08</a><p><b>案例对应</b>　创始人说画像已清楚，最后确认卡在合作磨合。另一客户把法务总要求限定为风控体系建设。</p><p><b>要采集什么</b>　客户原话、初步理解、纠正信息、最终确认条件。保留判断改变前后的差别。</p></dd></div>
+<div><dt>展示公司能力</dt><dd><span class="capture-status">现场片段</span> <a href="#evidence-A08">A08</a> · <a href="#evidence-B11">B11</a><p><b>案例对应</b>　Sophie 用类似项目说明如何观察人选，又把营销需求与销售专业团队连接。</p><p><b>要采集什么</b>　客户顾虑、展示的具体经验与承接能力、适用条件、客户回应。不能把自述案例当成本案结果。</p></dd></div>
+<div><dt>确认画像与合作方式</dt><dd><span class="capture-status">现场片段</span> <a href="#evidence-A05">A05</a> · <a href="#evidence-A06">A06</a> · <a href="#evidence-A09">A09</a> · <a href="#evidence-A10">A10</a><p><b>案例对应</b>　客户希望逐步合作，Sophie 解释按真实岗位做事的磨合方式，并提醒先与人选达成一致。</p><p><b>要采集什么</b>　职责、合作前提、真实任务、评价办法和待确认事项。任务书、费用与人选同意情况后续补齐。</p></dd></div>
+<div><dt>压价或改需求</dt><dd><span class="capture-status">待补现场素材</span> <a href="#evidence-B09">B09</a> · <a href="#evidence-B13">B13</a><p><b>案例对应</b>　已有片段涉及预算核实与独家条件讨论，尚未覆盖真实压价或中途改需求。</p><p><b>要采集什么</b>　补录价格或需求变化的原话、原约定、顾问取舍、双方确认的新条件。不要把独家异议当成压价案例。</p></dd></div>
 </dl></div>
-    <div class="touch-group"><h3>见人选</h3><p class="muted">首轮建议采集 · 一句追问改变判断</p><dl>
-<div><dt>确定搜索路径</dt><dd>留下先从哪类公司或岗位找，以及什么发现促使顾问换方向。</dd></div>
-<div><dt>决定是否联系</dt><dd>圈出值得约谈的一条经历和需要核实的一处疑点。</dd></div>
-<div><dt>首次接触</dt><dd>记录顾问怎样开场、想了解什么，以及人选的实际回应。</dd></div>
-<div><dt>深聊验证</dt><dd>保留关键问答，对照追问前后对能力或动机的判断。</dd></div>
-<div><dt>确认推荐意愿</dt><dd>区分人选表达的兴趣、仍有的顾虑和实际同意的下一步。</dd></div>
+<div class="touch-group scenario-evidence"><h3>见人选</h3><p class="muted">当前两案均为客户拜访。以下主要提供待核实问题，尚不能证明 Sophie 已与人选完成这些沟通。</p><dl>
+<div><dt>确定搜索路径</dt><dd><span class="capture-status">已有寻访决策</span> <a href="#evidence-B03">B03</a> · <a href="#evidence-B12">B12</a><p><b>案例对应</b>　先核实省外覆盖，再考虑定向寻找经营模式相近企业的一把手。</p><p><b>要采集什么</b>　目标公司与岗位池、选择理由、已搜范围、实际触达与反馈。后续补执行记录。</p></dd></div>
+<div><dt>决定是否联系</dt><dd><span class="capture-status">客户侧间接线索</span> <a href="#evidence-A04">A04</a> · <a href="#evidence-B08">B08</a><p><b>案例对应</b>　人选走向业务的经历触发动机假设，客户要求核实法务体系建设能力。</p><p><b>要采集什么</b>　简历证据、值得联系的原因、关键疑点与准备核实的问题。不能仅凭头衔或履历变化下结论。</p></dd></div>
+<div><dt>首次接触</dt><dd><span class="capture-status">待补人选原话</span> <a href="#evidence-A10">A10</a><p><b>案例对应</b>　客户说人选尚未明确看机会，Sophie 提醒先就目标和合作达成一致。</p><p><b>要采集什么</b>　真实开场、介绍的机会、希望了解什么、人选如何回应。当前片段只提供准备方向。</p></dd></div>
+<div><dt>深聊验证</dt><dd><span class="capture-status">待补人选原话</span> <a href="#evidence-A04">A04</a> · <a href="#evidence-A08">A08</a> · <a href="#evidence-A09">A09</a><p><b>案例对应</b>　现有讨论提出验证动机、真实解题能力和价值取向，并建议用业务任务观察。</p><p><b>要采集什么</b>　关键问答、具体行为证据、追问前后的判断。客户与顾问对人选的推测单独标注。</p></dd></div>
+<div><dt>确认推荐意愿</dt><dd><span class="capture-status">待补本人确认</span> <a href="#evidence-A10">A10</a><p><b>案例对应</b>　尚未获得人选对参与合作的明确表态。</p><p><b>要采集什么</b>　本人同意推进到哪一步、仍在意什么、哪些信息可以对客户共享。认识或感兴趣不等于接受推荐。</p></dd></div>
 </dl></div>
-    <div class="touch-group"><h3>推进与交付</h3><p class="muted">首轮建议采集 · 首批推荐后的反馈</p><dl>
-<div><dt>送出首批推荐</dt><dd>记录为什么先推这几位，希望通过客户反馈验证哪项要求。</dd></div>
-<div><dt>收到面试或退回反馈</dt><dd>保留客户原话，说明要调整的是岗位画像、对人选的判断，还是推荐依据。</dd></div>
-<div><dt>项目停滞</dt><dd>记录停滞信号、顾问判断卡在哪里、决定找谁，以及跟进结果。</dd></div>
-<div><dt>谈薪与 Offer</dt><dd>留下双方在意的条件、顾问选择的沟通顺序和实际回应。</dd></div>
-<div><dt>入职后回访</dt><dd>对照入职前的判断与实际体验，记录新风险及后续动作。</dd></div>
+<div class="touch-group scenario-evidence"><h3>推进与交付</h3><p class="muted">已有客户反馈、现场核实和行动承诺，后续交付结果仍需回填。</p><dl>
+<div><dt>送出首批推荐</dt><dd><span class="capture-status">只有回溯反馈</span> <a href="#evidence-B02">B02</a> · <a href="#evidence-B08">B08</a> · <a href="#evidence-B09">B09</a><p><b>案例对应</b>　客户指出推荐少、能力与要求不符，但原稿没有完整的首批筛选与排序过程。</p><p><b>要采集什么</b>　补上当时名单、为什么先推这几位、逐人依据与希望验证的要求，再对照客户反馈。</p></dd></div>
+<div><dt>收到面试或退回反馈</dt><dd><span class="capture-status">现场片段</span> <a href="#evidence-B05">B05</a> · <a href="#evidence-B07">B07</a> · <a href="#evidence-B08">B08</a> · <a href="#evidence-B09">B09</a><p><b>案例对应</b>　客户澄清职业董秘、外联职责、风控体系等要求，指出薪酬与能力不对应。</p><p><b>要采集什么</b>　原始反馈、被否定的判断、要补的证据、下一轮筛选变化。不能把退回一律解释成客户要求高。</p></dd></div>
+<div><dt>项目停滞</dt><dd><span class="capture-status">现场片段与承诺</span> <a href="#evidence-B02">B02</a> · <a href="#evidence-B03">B03</a> · <a href="#evidence-B10">B10</a> · <a href="#evidence-B14">B14</a><p><b>案例对应</b>　旧截图被当作进度，需求状态也出现误传。Sophie 现场核查并提出增员和定期过数据。</p><p><b>要采集什么</b>　最后动作时间、实际覆盖、停滞原因的证据、谁做下一步、检查时间与完成记录。</p></dd></div>
+<div><dt>谈薪与 Offer</dt><dd><span class="capture-status">待补真实谈判</span> <a href="#evidence-B10">B10</a><p><b>案例对应</b>　“有候选人在看”被传成可能谈薪，客户当场否认。</p><p><b>要采集什么</b>　先核实是否真的进入谈薪，再记录双方条件、沟通顺序、顾虑和确认结果。此案可教状态核实，不能教谈薪已成功。</p></dd></div>
+<div><dt>入职后回访</dt><dd><span class="capture-status">待补后续素材</span> <a href="#evidence-A09">A09</a> · <a href="#evidence-A10">A10</a><p><b>案例对应</b>　第一案讨论了磨合与观察，但没有开始合作或入职后的记录。</p><p><b>要采集什么</b>　以后对照入职前预期、真实职责和双方体验，记录偏差、责任人与跟进结果。当前不标记为已交付。</p></dd></div>
 </dl></div>
-    <div class="touch-group"><h3>带教与新人</h3><p class="muted">首轮建议采集 · 同案独立判断与点评</p><dl>
-<div><dt>选择示范片段</dt><dd>说明为什么选这段录音，希望新人留意哪句话或哪个信号。</dd></div>
-<div><dt>新人独立判断</dt><dd>在听点评前，留下新人自己的判断、理由和下一步动作。</dd></div>
-<div><dt>Leader 点评</dt><dd>记录双方在哪个信号上看法不同，以及它为什么会改变做法。</dd></div>
-<div><dt>换案例再应用</dt><dd>观察新人能否在另一个案例里自己识别信号、解释目的、采取行动。</dd></div>
+<div class="touch-group scenario-evidence"><h3>带教与新人</h3><p class="muted">以下是使用现有案例的练习设计，尚未发生实际带教。</p><dl>
+<div><dt>选择示范片段</dt><dd><span class="capture-status">建议练习</span> <a href="#evidence-A03">A03</a> · <a href="#evidence-A07">A07</a><p><b>案例对应</b>　先播放客户说画像清楚的部分，暂不展示 Sophie 后来的修正。</p><p><b>要采集什么</b>　为什么选这段、希望新人识别的信号，以及哪些后续信息暂时隐藏。</p></dd></div>
+<div><dt>新人独立判断</dt><dd><span class="capture-status">建议练习</span> <a href="#evidence-A06">A06</a><p><b>案例对应</b>　给出客户对“顾问”表示没用的原话，让新人先判断顾虑并拟定下一句回应。</p><p><b>要采集什么</b>　点评前锁定新人自己的理解、依据、待问问题、动作和目的，保留原答案。</p></dd></div>
+<div><dt>Leader 点评</dt><dd><span class="capture-status">建议练习</span> <a href="#evidence-A07">A07</a> · <a href="#evidence-B04">B04</a> · <a href="#evidence-B10">B10</a><p><b>案例对应</b>　对照诊断修正、解释被反驳和阶段误传，让新人说明哪条证据改变了判断。</p><p><b>要采集什么</b>　分歧落在哪个信号、为什么改、什么情况下不适用。不能仅按措辞是否像 Sophie 打分。</p></dd></div>
+<div><dt>换案例再应用</dt><dd><span class="capture-status">建议练习</span> <a href="#evidence-A07">A07</a> · <a href="#evidence-B10">B10</a><p><b>案例对应</b>　第一案找出真实合作卡点，第二案辨清不着急与关闭，练习在不同情境核实客户原意。</p><p><b>要采集什么</b>　独立作答再复盘。后续补新案例和真实执行反馈，验证能否迁移到未见过的问题。</p></dd></div>
 </dl></div>
-    <h3>一次触点，留一条记录</h3>
-    <p>发生了什么 → 顾问怎么看 → 做了什么、想达到什么目的 → 对方如何回应 → 后续结果如何。关联录音、推荐记录或阶段反馈。当场反应先记，后续结果发生后再补，尚未确认的目的由本人回放确认。</p>
+    <h3>现场试填一条 · B10 岗位状态被误传</h3>
+    <div class="touch-group"><dl>
+      <div><dt>原话与定位</dt><dd>原稿 B · 客户 37:00<br>“他不着急，是我们要找到合适的人。不是说不看了。”</dd></div>
+      <div><dt>理解与目的</dt><dd>客户强调质量优先，岗位仍开放。Sophie 需要把岗位状态、紧急度与候选阶段分别核实。此处目的为复盘解读，待本人确认。</dd></div>
+      <div><dt>动作与原话</dt><dd>原稿 B · Sophie 39:57<br>“所以法务的需求正常，还在看。”</dd></div>
+      <div><dt>回应与状态</dt><dd>客户确认仍正常招聘，40:49 又说明“我们同步有候选人在看”。现场完成口径澄清，系统是否纠正、后续是否恢复推荐仍待回填。</dd></div>
+      <div><dt>下次怎样用</dt><dd>遇到“不着急”“有人在看”，分别确认岗位是否开放、优先级和人选实际阶段。关联 <a href="#evidence-B10">B10 完整拆解</a>。本片段主要涉及 D02，不因提到谈薪就贴成 D09。</dd></div>
+    </dl></div>
+    <p>一条触点记录关联原话、理解、动作、目的、回应和后续结果。原文先保留，目的由本人确认，承诺完成后再补证据。D 标签只说明判断主题，不能替代案例和事实。</p>
     <h3>用 D01–D11 标记这次涉及的判断</h3>
     <div class="scenes">
       <div class="grp">
@@ -878,7 +898,7 @@
         <div class="dc"><span>D11</span>新人先会哪三件事</div>
       </div>
     </div>
-    <p>见客户这一组里，除了接不接、要谁、怎么谈价，还要讲清楚：为什么偏偏是这个人，怎么让对方觉得被理解。</p>
+    <p>D01—D11 是可复用的判断主题，同一片段可跨组关联。例 A07 对应 D02，B03 对应 D03，B08 可关联 D02 与 D04，带教练习对应 D11。没有对应证据的标签，不强行补齐。</p>
   </section>
 
   <section id="levels">
@@ -1037,18 +1057,23 @@
 
   <section id="discuss">
     <div class="kick"><i>4.1</i>讨论</div>
-    <h2>接下来，讲我们每个场景实际怎么做</h2>
-    <p>以下四组问题，按顺序过。每组先拿一个真实案例，围绕当时的信号、动作和目的讲清楚，再讨论怎么留下可用的记录。</p>
-
+    <h2>把讨论结果，写进案例卡和试点表</h2>
+    <p>按照前面的<a href="#agenda">会议议程</a>逐组讨论。每组先看原话，再给出自己的理解，最后明确应保留的动作与证据。方案中的解读可以被修正。</p>
     <div class="ask">
-      <div class="q"><span><b>见客户</b>　什么单该接、什么单不该接？客户说要的人和他真正缺的人，差在哪？压价、改需求时你一般怎么接？</span></div>
-      <div class="q"><span><b>见人选</b>　简历前 90 秒你看哪三样？哪个问题是你特有、别人不一定会问的？先推谁、推几个？</span></div>
-      <div class="q"><span><b>推进与交付</b>　项目卡两周没动静，第一步做什么？客户不反馈怎么推？人入职后你跟多久？</span></div>
-      <div class="q"><span><b>带教</b>　新人第一个月先会哪三件事？你怎么判断他是真会还是假会？</span></div>
+      <div class="q"><span><b>见客户</b>　对照 <a href="#evidence-A03">A03</a> 与 <a href="#evidence-A07">A07</a>，是哪句话改变了诊断？能力展示是否回应了客户眼前的问题？留下当事人确认的解释。</span></div>
+      <div class="q"><span><b>见人选</b>　从 <a href="#evidence-A04">A04</a> 与 <a href="#evidence-A10">A10</a> 出发，哪些只是猜测？要问本人什么？留下真实问答或待补采清单。</span></div>
+      <div class="q"><span><b>推进与交付</b>　用 <a href="#evidence-B10">B10</a> 共填一张案例卡。把事实、推断、承诺和结果分开，明确谁回填后续。</span></div>
+      <div class="q"><span><b>带教</b>　对照 <a href="#evidence-A06">A06</a>，先独立写下一句和理由，再看 Sophie 的回应。检查是否读懂顾虑，是否知道还要验证什么。</span></div>
     </div>
-    <div class="quote">每个案例追问：你看到了什么？为什么这么做？想达到什么目的？对方怎么反应？换什么情况就不能这样做？</div>
-    <p>白板统一记三栏：<span class="em">关键动作 / 最容易错的地方 / 要留下什么。</span>已有共识和待验证的问题分开记录。</p>
-    <p>散会前只定三件事：整理稿什么时候发、第一批从哪个组和哪些案例开始、下次什么时候碰头。</p>
+    <h3>收口时填写这五项</h3>
+    <div class="touch-group"><dl>
+      <div><dt>试点范围</dt><dd>选定首批业务场景、团队与具体案例。根据现有材料和补采条件决定，现场填写。</dd></div>
+      <div><dt>责任分工</dt><dd>谁提交原始材料、谁确认判断与目的、谁整理案例、谁组织试用，逐项指定到人。</dd></div>
+      <div><dt>交付材料</dt><dd>原始记录、核对后的案例卡、必要的反馈与状态证据。缺项标明补齐人。</dd></div>
+      <div><dt>两个日期</dt><dd>明确材料提交日和第一轮复盘日。需要会后确认的事项另列确认日期。</dd></div>
+      <div><dt>第一轮验收</dt><dd>原话可回查，事实与推断分开，当事人能校正目的，另一位顾问能据此解释下一步。业务效果在后续实际使用中继续验证。</dd></div>
+    </dl></div>
+    <p>会议纪要分开记录已达成共识、仍有分歧、需要补证据和已认领行动。试点表现场确认后，再据此推进。</p>
   </section>
 
   <footer>
@@ -1111,6 +1136,21 @@
   window.addEventListener('scroll',schedule,{passive:true});
   window.addEventListener('resize',function(){closeMenu();lastGroup=null;onScroll();});
   onScroll();
+
+  function revealEvidence(){
+    var id=window.location.hash.slice(1);
+    var card=document.getElementById(id);
+    if(card&&card.classList.contains('evidence-card')){
+      card.open=true;
+      requestAnimationFrame(function(){card.scrollIntoView({block:'start'});schedule();});
+    }
+  }
+  window.addEventListener('hashchange',revealEvidence);
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#evidence-"]');
+    if(a){var card=document.getElementById(a.getAttribute('href').slice(1));if(card){card.open=true;}}
+  });
+  revealEvidence();
 })();
 </script>
 
